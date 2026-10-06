@@ -4700,6 +4700,17 @@
             line-height: 1.5;
         }
         .admin-preview strong { color: var(--text-dark); }
+        .admin-nota {
+            margin-top: 14px;
+            font-size: 0.8rem;
+            color: var(--text-light);
+            background: #FFF9E6;
+            border: 1px dashed #E8D48A;
+            border-radius: 10px;
+            padding: 10px 12px;
+            line-height: 1.5;
+        }
+        .admin-nota strong { color: var(--text-dark); }
         @media (max-width: 640px) {
             .admin-cat-fila { grid-template-columns: 1fr 70px; }
             .admin-cat-fila .admin-cat-preview { display: none; }
@@ -5402,16 +5413,16 @@
     <div class="modal" id="adminLoginModal">
         <div class="modal-content admin-login" role="dialog" aria-label="Acceso al panel de administración">
             <div class="modal-header">
-                <h3 class="modal-title"><i class="fas fa-lock"></i> Administración — Ingresar</h3>
+                <h3 class="modal-title"><i class="fas fa-lock"></i> Administración de la tienda</h3>
                 <button class="modal-close" onclick="cerrarLoginAdmin()" aria-label="Cerrar">&times;</button>
             </div>
             <div class="modal-body">
-                <p class="admin-help">Área exclusiva del administrador de la tienda. Ingresa la clave para ajustar los precios al detal.</p>
-                <label class="admin-login-label">Clave de administración
-                    <input type="password" id="adminClave" autocomplete="off" placeholder="Clave"
+                <p class="admin-help">Esta área es privada. Ingresa tu clave para entrar a cambiar los precios de la tienda.</p>
+                <label class="admin-login-label">Tu clave
+                    <input type="password" id="adminClave" autocomplete="off" placeholder="Escribe tu clave aquí"
                            onkeydown="if(event.key==='Enter'){event.preventDefault(); entrarAdmin();}">
                 </label>
-                <div class="admin-login-error" id="adminLoginError" hidden><i class="fas fa-circle-exclamation"></i> Clave incorrecta. Inténtalo de nuevo.</div>
+                <div class="admin-login-error" id="adminLoginError" hidden><i class="fas fa-circle-exclamation"></i> La clave no es correcta. Inténtalo de nuevo.</div>
                 <div class="admin-login-acciones">
                     <button class="btn btn-primary" type="button" onclick="entrarAdmin()"><i class="fas fa-right-to-bracket"></i> Ingresar</button>
                     <button class="btn btn-secondary" type="button" onclick="cerrarLoginAdmin()">Cancelar</button>
@@ -5425,26 +5436,27 @@
     <div class="modal" id="adminModal">
         <div class="modal-content admin-panel" role="dialog" aria-label="Panel de precios del administrador">
             <div class="modal-header">
-                <h3 class="modal-title"><i class="fas fa-sliders-h"></i> Panel de precios — Administrador</h3>
+                <h3 class="modal-title"><i class="fas fa-sliders-h"></i> Panel de precios de la tienda</h3>
                 <button class="modal-close" onclick="cerrarPanelAdmin()" aria-label="Cerrar panel">&times;</button>
             </div>
             <div class="modal-body">
                 <p class="admin-help">
-                    Precio al detal = <strong>precio base × multiplicador × (1 + margen)</strong>.
-                    El margen puede ser global o por categoría, y cualquier producto puede tener un
-                    precio fijo. Aplica los cambios en vivo, guárdalos para este navegador o copia el
-                    código y pégalo en el bloque <strong>PRECIOS_DEFECTO</strong> del archivo para que
-                    apliquen a todos los visitantes.
+                    ✏️ <strong>Aquí decides cuánto ganas con cada venta.</strong><br>
+                    1️⃣ En <strong>"¿Cuánto quieres ganar?"</strong> escribe tu ganancia para toda la tienda.
+                    Ejemplo: <strong>25</strong> = por cada $100 de costo, ganas $25 (un juguete de $10.000 se vende en $12.500).<br>
+                    2️⃣ ¿Una categoría necesita ganar más o menos? Escribe su propio número en la lista.<br>
+                    3️⃣ ¿Un juguete con precio exacto? Búscalo abajo y fíjale el precio.<br>
+                    Cuando termines, pulsa <strong>"Ver cambios ahora"</strong>.
                 </p>
 
                 <div class="admin-grid">
-                    <label>Margen global (%)
+                    <label>¿Cuánto quieres ganar? (%)
                         <input type="number" id="adminMargenGlobal" min="0" step="1" placeholder="25">
                     </label>
-                    <label>Multiplicador base
+                    <label>¿Te cambiaron los costos? (×1 = igual)
                         <input type="number" id="adminMultiplicador" min="0.01" step="0.05" placeholder="1">
                     </label>
-                    <label>Redondear precios a
+                    <label>Precios terminados en números redondos
                         <select id="adminRedondeo">
                             <option value="0">Sin redondeo</option>
                             <option value="50">50</option>
@@ -5455,21 +5467,22 @@
                     </label>
                 </div>
 
-                <h4 class="admin-sub">Márgenes por categoría <small>(vacío = usa el margen global)</small></h4>
+                <h4 class="admin-sub">Ganancia por categoría <small>(deja vacío para usar la ganancia general)</small></h4>
                 <div class="admin-cats" id="adminCats"></div>
 
-                <h4 class="admin-sub">Precio fijo por producto <small>(gana a cualquier margen)</small></h4>
-                <input type="text" class="admin-buscar" id="adminBuscarProd" placeholder="Buscar producto por nombre o SKU para fijar su precio..." oninput="buscarProductoAdmin()">
+                <h4 class="admin-sub">Precio exacto para un juguete <small>(se vende tal cual, sin ganancia extra)</small></h4>
+                <input type="text" class="admin-buscar" id="adminBuscarProd" placeholder="Escribe el nombre del juguete… ej: excavadora" oninput="buscarProductoAdmin()">
                 <div class="admin-resultados" id="adminResultados"></div>
                 <div class="admin-fijados" id="adminFijados"></div>
 
                 <div class="admin-botones">
-                    <button class="btn btn-primary" type="button" onclick="aplicarPanelAdmin()"><i class="fas fa-sync-alt"></i> Aplicar en vivo</button>
-                    <button class="btn btn-secondary" type="button" onclick="guardarPanelAdmin()"><i class="fas fa-save"></i> Guardar en este navegador</button>
-                    <button class="btn btn-secondary" type="button" onclick="copiarConfigAdmin()"><i class="fas fa-code"></i> Copiar código</button>
-                    <button class="btn btn-secondary" type="button" onclick="restaurarPanelAdmin()"><i class="fas fa-undo"></i> Restaurar archivo</button>
-                    <button class="btn btn-secondary" type="button" onclick="cerrarSesionAdmin()"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</button>
+                    <button class="btn btn-primary" type="button" onclick="aplicarPanelAdmin()"><i class="fas fa-sync-alt"></i> Ver cambios ahora</button>
+                    <button class="btn btn-secondary" type="button" onclick="guardarPanelAdmin()"><i class="fas fa-save"></i> Guardar en MI computador</button>
+                    <button class="btn btn-secondary" type="button" onclick="copiarConfigAdmin()"><i class="fas fa-users"></i> Guardar para TODOS</button>
+                    <button class="btn btn-secondary" type="button" onclick="restaurarPanelAdmin()"><i class="fas fa-undo"></i> Volver a los precios del archivo</button>
+                    <button class="btn btn-secondary" type="button" onclick="cerrarSesionAdmin()"><i class="fas fa-sign-out-alt"></i> Salir</button>
                 </div>
+                <p class="admin-nota">💡 <strong>Guardar en MI computador:</strong> solo lo verás tú en este navegador. <strong>Guardar para TODOS:</strong> copia los precios para que tu página quede con ellos — pide a tu persona de confianza pegar el texto copiado donde dice <strong>PRECIOS_DEFECTO</strong> en el archivo de la página y publicarla de nuevo.</p>
                 <div class="admin-preview" id="adminPreview"></div>
             </div>
         </div>
@@ -5601,11 +5614,11 @@
            CÓMO CAMBIAR LOS PRECIOS (administrador):
            1. Rápido y solo para tu navegador: pulsa el enlace "Administración"
               del pie de página (o Ctrl+Shift+A / ?admin=1), ingresa la clave
-              de CONFIG.claveAdmin, ajusta márgenes y usa
-              "Guardar en este navegador".
+              de CONFIG.claveAdmin, ajusta las ganancias y usa
+              "Guardar en MI computador".
            2. Permanente y para todos los visitantes: en el mismo panel usa
-              "Copiar código", reemplaza el bloque PRECIOS_DEFECTO de abajo
-              por el código copiado y sube el archivo.
+              "Guardar para TODOS", reemplaza el bloque PRECIOS_DEFECTO de abajo
+              por el texto copiado y sube el archivo.
            ================================================================== */
         const PRECIOS_DEFECTO = {
             // Margen global por defecto: +25% sobre el precio base
@@ -12392,7 +12405,7 @@
                 if (err) err.hidden = true;
                 cerrarLoginAdmin();
                 abrirPanelAdmin();
-                showNotification('Bienvenido al panel de administración');
+                showNotification('¡Bienvenido! Aquí puedes cambiar los precios');
             } else {
                 if (err) {
                     err.hidden = false;
@@ -12408,7 +12421,7 @@
         function cerrarSesionAdmin() {
             try { sessionStorage.removeItem('jt_admin_ok'); } catch (e) {}
             cerrarPanelAdmin();
-            showNotification('Sesión de administración cerrada');
+            showNotification('Sesión cerrada. ¡Hasta pronto!');
         }
 
         function abrirPanelAdmin() {
@@ -12482,9 +12495,9 @@
                             ${esc(categoryLabel(cat))}
                             <small>(${counts[cat]})</small>
                         </span>
-                        <input type="number" min="0" step="1" data-cat="${esc(cat)}" placeholder="global"
-                               value="${valorInput}" title="Margen % para ${esc(categoryLabel(cat))}">
-                        <span class="admin-cat-preview">ej. base ${cop(barato ? barato.price : 0)} → <strong>${cop(finalBarato)}</strong></span>
+                        <input type="number" min="0" step="1" data-cat="${esc(cat)}" placeholder="igual"
+                               value="${valorInput}" title="Ganancia % para ${esc(categoryLabel(cat))}">
+                        <span class="admin-cat-preview">ej: de costo ${cop(barato ? barato.price : 0)} a venta <strong>${cop(finalBarato)}</strong></span>
                     </div>`;
             }).join('');
 
@@ -12503,7 +12516,7 @@
                 return `
                     <div class="admin-prod-fila">
                         <span class="admin-prod-nombre" title="${esc(nombre)}">${esc(nombre)}</span>
-                        <span class="admin-prod-base">base ${cop(p ? p.price : 0)}</span>
+                        <span class="admin-prod-base">costo ${cop(p ? p.price : 0)}</span>
                         <input type="number" min="1" step="100" data-fijado="${esc(id)}" value="${PRECIOS.preciosPersonalizados[id]}">
                         <button type="button" class="admin-btn-quitar" onclick="quitarPrecioFijo('${escJs(id)}')">Quitar</button>
                     </div>`;
@@ -12516,10 +12529,10 @@
             const ejemplo = redondearPrecio(10000 * PRECIOS.multiplicadorBase * (1 + PRECIOS.margenGlobal));
             const nCats = Object.keys(PRECIOS.margenesPorCategoria).length;
             const nFijados = Object.keys(PRECIOS.preciosPersonalizados).length;
-            el.innerHTML = 'Con esta configuración: producto base de ' + cop(10000) +
-                ' → <strong>' + cop(ejemplo) + '</strong>' +
-                ' · ' + nCats + (nCats === 1 ? ' categoría con margen propio' : ' categorías con margen propio') +
-                ' · ' + nFijados + (nFijados === 1 ? ' precio fijo' : ' precios fijos') + '.';
+            el.innerHTML = 'Ejemplo: un juguete de costo ' + cop(10000) +
+                ' se venderá en <strong>' + cop(ejemplo) + '</strong>' +
+                ' · ' + nCats + (nCats === 1 ? ' categoría con ganancia propia' : ' categorías con ganancia propia') +
+                ' · ' + nFijados + (nFijados === 1 ? ' juguete con precio exacto.' : ' juguetes con precio exacto.');
         }
 
         // Buscador de productos para fijar precio final
@@ -12532,16 +12545,16 @@
                 (p.name.toLowerCase().includes(q) || String(p.sku || '').toLowerCase().includes(q) || p.id.includes(q))
             ).slice(0, 8);
             if (!base.length) {
-                cont.innerHTML = '<div class="admin-preview">Sin resultados para "' + esc(q) + '".</div>';
+                cont.innerHTML = '<div class="admin-preview">No encontramos juguetes con "' + esc(q) + '". Prueba con otra palabra.</div>';
                 return;
             }
             cont.innerHTML = base.map(p => `
                 <div class="admin-prod-fila">
                     <span class="admin-prod-nombre" title="${esc(p.name)}">${esc(p.name)}</span>
-                    <span class="admin-prod-base">base ${cop(p.price)}</span>
-                    <span class="admin-prod-final">detal ${cop(precioDetal(p))}</span>
+                    <span class="admin-prod-base">costo ${cop(p.price)}</span>
+                    <span class="admin-prod-final">se vende en ${cop(precioDetal(p))}</span>
                     <span style="display:flex; gap:8px; align-items:center;">
-                        <input type="number" min="1" step="100" id="adminNuevo-${esc(p.id)}" placeholder="precio final">
+                        <input type="number" min="1" step="100" id="adminNuevo-${esc(p.id)}" placeholder="precio de venta">
                         <button type="button" class="admin-btn-fijar" onclick="fijarPrecioAdmin('${escJs(p.id)}')">Fijar</button>
                     </span>
                 </div>`).join('');
@@ -12550,7 +12563,7 @@
         function fijarPrecioAdmin(id) {
             const inp = document.getElementById('adminNuevo-' + id);
             const v = parseFloat(inp && inp.value);
-            if (isNaN(v) || v <= 0) { showNotification('Escribe un precio final válido', 'error'); return; }
+            if (isNaN(v) || v <= 0) { showNotification('Escribe el precio con números, por ejemplo: 15000', 'error'); return; }
             PRECIOS.preciosPersonalizados[id] = v;
             aplicarPanelAdmin();
             const buscador = document.getElementById('adminBuscarProd');
@@ -12568,7 +12581,7 @@
             leerPanelEnPrecios();
             recalcularPrecios();
             pintarPanelAdmin();
-            showNotification('✓ Precios actualizados en toda la página');
+            showNotification('¡Listo! Los precios nuevos ya se ven en toda la página');
         }
 
         function guardarPanelAdmin() {
@@ -12578,7 +12591,7 @@
             } catch (e) {}
             recalcularPrecios();
             pintarPanelAdmin();
-            showNotification('✓ Aplicado y guardado en este navegador');
+            showNotification('Guardado en este computador (solo tú los verás)');
         }
 
         function restaurarPanelAdmin() {
@@ -12586,7 +12599,7 @@
             PRECIOS = cargarPrecios();
             recalcularPrecios();
             pintarPanelAdmin();
-            showNotification('Restaurados los valores publicados en el archivo');
+            showNotification('Volvimos a los precios guardados en el archivo');
         }
 
         // Código listo para reemplazar el bloque PRECIOS_DEFECTO del archivo
@@ -12627,13 +12640,13 @@
 
         function copiarConfigAdmin() {
             const codigo = codigoConfigAdmin();
-            const listo = () => showNotification('✓ Código copiado: reemplaza PRECIOS_DEFECTO en index_detal.html');
+            const listo = () => showNotification('¡Copiado! Pega el texto donde dice PRECIOS_DEFECTO en el archivo index_detal.html');
             if (navigator.clipboard && navigator.clipboard.writeText) {
                 navigator.clipboard.writeText(codigo).then(listo).catch(function () {
-                    window.prompt('Copia el código generado:', codigo);
+                    window.prompt('Copia este texto y pégalo donde dice PRECIOS_DEFECTO en el archivo index_detal.html:', codigo);
                 });
             } else {
-                window.prompt('Copia el código generado:', codigo);
+                window.prompt('Copia este texto y pégalo donde dice PRECIOS_DEFECTO en el archivo index_detal.html:', codigo);
             }
         }
 
