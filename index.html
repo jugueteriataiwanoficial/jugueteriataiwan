@@ -12888,7 +12888,7 @@
                     <div class="product-category"><i class="fas ${categoryIcon(product.category)}"></i> ${esc(categoryLabel(product.category)).toUpperCase()}</div>
                     <h3 class="product-title">${esc(product.name)}</h3>
                     <div class="product-ref-line"><span>SKU: ${esc(product.sku || product.name)}</span></div>
-                    <p class="product-description">${esc(product.description)}</p>
+                    ${descripcionVisible(product) ? `<p class="product-description">${esc(product.description)}</p>` : ''}
                     <div class="product-price">
                         <div class="current-price">${cop(price)}</div>
                         ${ahorro ? `<div class="wholesale-badge"><i class="fas fa-tags"></i> Antes <span class="price-struck">${cop(compare)}</span> · Ahorras ${cop(ahorro)} (−${pctDesc}%)</div>` : ''}
@@ -13155,6 +13155,15 @@
         // Aplanar todas las opciones de talla de un producto
         function flattenSizeOptions(product) {
             return product.sizeGroups.flatMap(g => g.options.map(o => ({ ...o, groupKey: g.key })));
+        }
+
+        // La mayoria de referencias solo traen el SKU como descripcion y la
+        // tarjeta ya lo muestra en la linea de referencia (product-ref-line):
+        // no tiene sentido repetirlo en el parrafo de descripcion.
+        function descripcionVisible(product) {
+            const d = (product.description || '').trim();
+            if (!d) return false;
+            return !/^sku\s*:/i.test(d);
         }
 
         /* ------------------------------------------------------------------
