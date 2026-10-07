@@ -4920,7 +4920,7 @@
                     <div class="card-gallery">
                         <div class="card-gallery-track">
                             <div class="card-slide" style="--img:url('https://jugueteriataiwan.com/storage/products/30533/thumb/e1e78f2f-8d84-458a-8f73-afdac0a201e3.webp')" onclick="openImageLightbox('https://jugueteriataiwan.com/storage/products/30533/thumb/e1e78f2f-8d84-458a-8f73-afdac0a201e3.webp', 'PISTA NEON CARRO PILA LUZ CON NUMERO', 'pista-neon-carro-pila-luz-con-numero')">
-                                <img src="https://jugueteriataiwan.com/storage/products/30533/thumb/e1e78f2f-8d84-458a-8f73-afdac0a201e3.webp" alt="Pista Neón Carro con pila y luz, incluye número — Juguetería Taiwan" fetchpriority="high" decoding="async">
+                                <img src="https://jugueteriataiwan.com/storage/products/30533/thumb/e1e78f2f-8d84-458a-8f73-afdac0a201e3.webp" alt="Pista Neón Carro con pila y luz, incluye número — Juguetería Taiwan" width="400" height="500" fetchpriority="high" decoding="async" onerror="imgOnError(this)">
                             </div>
                         </div>
                     </div>
@@ -5105,7 +5105,7 @@
                      directo a la compra. -->
                 <div class="testimonial-card">
                     <div class="testimonial-image-container square" data-links-to-product="mesa-futbol-de-madera" style="--img:url('https://jugueteriataiwan.com/storage/products/30385/thumb/3b4c8612-2e7b-44d0-9d68-fa32e9efe45e.webp')" onclick="scrollToProduct('mesa-futbol-de-madera')" role="button" tabindex="0" aria-label="Ver Mesa Fútbol de Madera y comprar" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();scrollToProduct('mesa-futbol-de-madera');}">
-                        <img src="https://jugueteriataiwan.com/storage/products/30385/thumb/3b4c8612-2e7b-44d0-9d68-fa32e9efe45e.webp" alt="Mesa Fútbol de Madera — Juguetería Taiwan" loading="lazy">
+                        <img src="https://jugueteriataiwan.com/storage/products/30385/thumb/3b4c8612-2e7b-44d0-9d68-fa32e9efe45e.webp" alt="Mesa Fútbol de Madera — Juguetería Taiwan" loading="lazy" onerror="imgOnError(this)">
                     </div>
                     <div class="testimonial-content">
                         <p class="testimonial-text">Mesa Fútbol de Madera, el clásico futbolín para compartir en familia.</p>
@@ -5117,7 +5117,7 @@
 
                 <div class="testimonial-card">
                     <div class="testimonial-image-container square" data-links-to-product="pista-neon-carro-pila-luz-con-numero" style="--img:url('https://jugueteriataiwan.com/storage/products/30533/thumb/e1e78f2f-8d84-458a-8f73-afdac0a201e3.webp')" onclick="scrollToProduct('pista-neon-carro-pila-luz-con-numero')" role="button" tabindex="0" aria-label="Ver Pista Neón Carro Pila Luz y comprar" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();scrollToProduct('pista-neon-carro-pila-luz-con-numero');}">
-                        <img src="https://jugueteriataiwan.com/storage/products/30533/thumb/e1e78f2f-8d84-458a-8f73-afdac0a201e3.webp" alt="Pista Neón Carro con pila y luz, incluye número" loading="lazy">
+                        <img src="https://jugueteriataiwan.com/storage/products/30533/thumb/e1e78f2f-8d84-458a-8f73-afdac0a201e3.webp" alt="Pista Neón Carro con pila y luz, incluye número" loading="lazy" onerror="imgOnError(this)">
                     </div>
                     <div class="testimonial-content">
                         <p class="testimonial-text">Pista Neón Carro con pila y luz, incluye número.</p>
@@ -5129,7 +5129,7 @@
 
                 <div class="testimonial-card">
                     <div class="testimonial-image-container square" data-links-to-product="burbujero-mil-burbujas-pilas-cj-bubble-gun-4-motivos" style="--img:url('https://jugueteriataiwan.com/storage/products/30523/thumb/fe6f444a-ebca-4fea-bc42-198023f51e3a.webp')" onclick="scrollToProduct('burbujero-mil-burbujas-pilas-cj-bubble-gun-4-motivos')" role="button" tabindex="0" aria-label="Ver Burbujero Mil Burbujas y comprar" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();scrollToProduct('burbujero-mil-burbujas-pilas-cj-bubble-gun-4-motivos');}">
-                        <img src="https://jugueteriataiwan.com/storage/products/30523/thumb/fe6f444a-ebca-4fea-bc42-198023f51e3a.webp" alt="Burbujero Mil Burbujas con pilas, modelo CJ Bubble Gun" loading="lazy">
+                        <img src="https://jugueteriataiwan.com/storage/products/30523/thumb/fe6f444a-ebca-4fea-bc42-198023f51e3a.webp" alt="Burbujero Mil Burbujas con pilas, modelo CJ Bubble Gun" loading="lazy" onerror="imgOnError(this)">
                     </div>
                     <div class="testimonial-content">
                         <p class="testimonial-text">Burbujero Mil Burbujas con pilas, modelo CJ Bubble Gun en 4 motivos.</p>
@@ -12794,7 +12794,7 @@
             el.src = PLACEHOLDER_IMG;
             // Los marcos con fondo difuminado (--img) también muestran la
             // foto: se actualizan para no dejar un rectángulo vacío.
-            const cont = el.closest('.card-slide, .carousel-image-container, .lightbox-main');
+            const cont = el.closest('.card-slide, .carousel-image-container, .lightbox-main, .testimonial-image-container');
             if (cont) cont.style.setProperty('--img', `url("${PLACEHOLDER_IMG}")`);
         }
 
@@ -14187,7 +14187,7 @@
                                 return `
                                 <div class="cart-upsell-item">
                                     <span class="cart-upsell-tier tier-${tier}">${tier === 'bajo' ? 'Económico' : tier === 'medio' ? 'Precio medio' : 'Premium'}</span>
-                                    <img src="${esc(p.image)}" alt="${esc(p.name)}" loading="lazy">
+                                    <img src="${esc(p.image)}" alt="${esc(p.name)}" width="400" height="500" loading="lazy" onerror="imgOnError(this)">
                                     <div class="cart-upsell-item-info">
                                         <div class="cart-upsell-item-name">${esc(p.name)}</div>
                                         <div class="cart-upsell-item-price">${cop(desde)}</div>
@@ -14312,7 +14312,7 @@
                 const desde = Math.min(...flattenSizeOptions(p).map(o => o.price));
                 return `
                 <button type="button" class="lightbox-upsell-item" data-product-id="${esc(p.id)}" onclick="event.stopPropagation(); cambiarGaleriaAProducto('${escJs(p.id)}')">
-                    <img src="${esc(p.image)}" alt="${esc(p.name)}" loading="lazy">
+                    <img src="${esc(p.image)}" alt="${esc(p.name)}" width="400" height="500" loading="lazy" onerror="imgOnError(this)">
                     <div class="lightbox-upsell-item-name">${esc(p.name)}</div>
                     <div class="lightbox-upsell-item-price">${cop(desde)}</div>
                 </button>`;
