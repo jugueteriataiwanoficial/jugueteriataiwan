@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Juguetería Taiwan — Juguetes al Detal, Piñatería y más Online | Envíos a toda Colombia</title>
-    <meta name="description" content="Juguetería Taiwan: más de 22.000 productos de juguetería, didácticos, cubos Rubik, piñatería, tecnología, escolar y hogar. Compra al detal con envíos a toda Colombia: el costo del envío se cotiza según tu ciudad.">
+    <meta name="description" content="Juguetería Taiwan: más de 22.000 productos de juguetería, didácticos, cubos Rubik, piñatería, tecnología, escolar y hogar. Compra al detal con envíos a toda Colombia y paga a cuotas con Addi o Sistecrédito.">
     <meta name="keywords" content="jugueteria taiwan, juguetes al detal, juguetes online colombia, piñateria, cubos rubik, juguetes didacticos, cacharros, burbujeros, jugueteria online">
     <link rel="canonical" href="https://jugueteriataiwan.com">
     <meta property="og:title" content="Juguetería Taiwan — Juguetes al Detal en Colombia">
-    <meta property="og:description" content="Juguetería, didácticos, cubos Rubik, piñatería, tecnología, escolar y hogar. Compra al detal online. Envíos a toda Colombia: el costo del envío se cotiza según ciudad.">
+    <meta property="og:description" content="Juguetería, didácticos, cubos Rubik, piñatería, tecnología, escolar y hogar. Compra al detal online con envíos a toda Colombia.">
     <meta property="og:image:alt" content="Juguetería Taiwan — juguetes al detal en Colombia">
     <meta property="og:url" content="https://jugueteriataiwan.com">
     <meta property="og:type" content="website">
@@ -16,7 +16,7 @@
     <meta property="og:locale" content="es_CO">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Juguetería Taiwan — Juguetes al Detal en Colombia">
-    <meta name="twitter:description" content="Juguetería, didácticos, cubos Rubik, piñatería y más. Envíos a toda Colombia: el costo del envío se cotiza según ciudad.">
+    <meta name="twitter:description" content="Juguetería, didácticos, cubos Rubik, piñatería y más. Compra al detal con envíos a toda Colombia.">
     <meta name="twitter:image" content="https://jugueteriataiwan.com/storage/products/30533/thumb/e1e78f2f-8d84-458a-8f73-afdac0a201e3.webp">
     <meta name="theme-color" content="#00bcd4">
     <meta name="robots" content="index, follow, max-image-preview:large">
@@ -42,7 +42,7 @@
       "telephone": "+573106988465",
       "priceRange": "$",
       "currenciesAccepted": "COP",
-      "paymentAccepted": "Efectivo, Contra entrega, Transferencia",
+      "paymentAccepted": "Efectivo, Contra entrega, Transferencia, Crédito en cuotas",
       "address": {
         "@type": "PostalAddress",
         "streetAddress": "Centro Comercial Taiwan, Local 27, Cra. 9 #13a - 12",
@@ -66,7 +66,7 @@
         {"@type":"Question","name":"¿Cuál es el WhatsApp de la tienda?","acceptedAnswer":{"@type":"Answer","text":"Puedes escribirnos al +57 310 698 8465 para confirmar pedidos y cotizaciones al por mayor, o al +57 313 878 6096 para atención general."}},
         {"@type":"Question","name":"¿Dónde queda la tienda física?","acceptedAnswer":{"@type":"Answer","text":"Estamos en el Centro Comercial Taiwan, Local 27, Cra. 9 #13a - 12. Puedes ver la ruta con el botón Cómo llegar en el pie de página."}},
         {"@type":"Question","name":"¿Puedo pedir un producto que no está en el catálogo?","acceptedAnswer":{"@type":"Answer","text":"Sí, manejamos encargos: escríbenos por WhatsApp la referencia o una foto del producto que buscas y lo cotizamos."}},
-        {"@type":"Question","name":"¿Qué métodos de pago aceptan?","acceptedAnswer":{"@type":"Answer","text":"Pago contra entrega y transferencia. Confirmas tu pedido por WhatsApp y el pago se acuerda según tu ciudad."}},
+        {"@type":"Question","name":"¿Qué métodos de pago aceptan?","acceptedAnswer":{"@type":"Answer","text":"Pago contra entrega, transferencia y crédito en cuotas con Addi o Sistecrédito. Confirmas tu pedido por WhatsApp y el pago se acuerda según tu ciudad."}},
         {"@type":"Question","name":"¿Los juguetes son aptos para niños?","acceptedAnswer":{"@type":"Answer","text":"Trabajamos con proveedores reconocidos y seleccionamos productos resistentes. Revisa la edad recomendada en cada referencia y escríbenos si tienes dudas."}},
         {"@type":"Question","name":"¿Qué pasa si mi producto llega dañado o no es lo que pedí?","acceptedAnswer":{"@type":"Answer","text":"Escríbenos por WhatsApp dentro de los 5 días hábiles siguientes a la entrega y aplicamos nuestra política de devolución."}}
       ]
@@ -2416,6 +2416,37 @@
             gap: 14px;
             margin-bottom: 20px;
         }
+        /* Con la opción de crédito (Addi / Sistecrédito) son 3 formas
+           de pago: auto-fit las acomoda y en móvil pasa a una columna. */
+        .payment-method-toggle.con-credito {
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        }
+        .credito-plazo-wrap {
+            margin: -8px 0 20px;
+            padding: 12px 14px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #E0F7FA, #FFF9E6);
+            border: 1px solid #B2EBF2;
+        }
+        .credito-plazo-titulo {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
+        .credito-plazo-opciones { display: flex; gap: 8px; flex-wrap: wrap; }
+        .credito-plazo-resumen {
+            margin-top: 8px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+        .credito-plazo-nota {
+            margin-top: 6px;
+            font-size: 0.72rem;
+            color: var(--text-light);
+            line-height: 1.4;
+        }
         .delivery-option,
         .payment-option {
             display: flex;
@@ -3380,6 +3411,63 @@
             0% { transform: scale(0.97); }
             45% { transform: scale(1.02); box-shadow: 0 0 0 6px rgba(76, 175, 80, 0.18); }
             100% { transform: scale(1); }
+        }
+
+        /* --- Simulador de cuotas (Addi / Sistecrédito) dentro del
+               panel de cantidades de cada tarjeta y del checkout.
+               Reutiliza tonos y radios de la identidad de la tienda. --- */
+        .cuota-simulador { margin-top: 8px; }
+        .cuota-desde {
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+        .cuota-plazos { display: flex; gap: 6px; margin-top: 7px; flex-wrap: wrap; }
+        .cuota-plazo {
+            border: 1.5px solid #B2EBF2;
+            background: var(--white);
+            color: var(--text-dark);
+            border-radius: 999px;
+            padding: 4px 12px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .cuota-plazo:hover { background: #E0F7FA; }
+        .cuota-plazo.activo {
+            background: var(--gradient-primary);
+            border-color: transparent;
+            color: var(--white);
+        }
+        .card-goal-meter .cuota-nota { margin-top: 6px; }
+
+        /* Cuota estimada bajo el total del carrito y del checkout */
+        .cart-cuota {
+            text-align: center;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin: 0 0 4px;
+        }
+        .cod-footer-cuota {
+            text-align: center;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin: 0 0 6px;
+        }
+        .cod-footer-nota {
+            text-align: center;
+            font-size: 0.74rem;
+            color: var(--text-light);
+            margin: 0 0 10px;
+            line-height: 1.4;
+        }
+        .order-summary-line.cuota-resumen {
+            color: var(--primary-color);
+            font-weight: 600;
         }
 
         /* --- Etiqueta de ahorro por mayor --- */
@@ -4810,7 +4898,7 @@
                          Si quieres volver a mostrar escasez, hazlo con stock real desde el backend. -->
                     <div class="hero-benefits">
                         <span class="hero-benefit"><i class="fas fa-cubes"></i> +22.000 productos en catálogo</span>
-                        <span class="hero-benefit"><i class="fas fa-truck"></i> Envíos a toda Colombia · Costo según ciudad</span>
+                        <span class="hero-benefit" data-neutro='<i class="fas fa-truck"></i> Envíos a toda Colombia'><i class="fas fa-credit-card"></i> Paga a cuotas con Addi o Sistecrédito</span>
                         <span class="hero-benefit"><i class="fas fa-tags"></i> Precios al detal en toda la tienda</span>
                         <span class="hero-benefit"><i class="fas fa-shield-alt"></i> Pago seguro con todos los medios</span>
                     </div>
@@ -4843,7 +4931,7 @@
                         <p class="product-description">Producto destacado del catálogo. Confirmamos disponibilidad y detalles por WhatsApp.</p>
                         <div class="product-price">
                             <div class="current-price" id="heroPriceRange">$68.800</div>
-                            <div class="wholesale-badge">🚚 Envío nacional: el costo se cotiza según tu ciudad</div>
+                            <div class="wholesale-badge" data-neutro='🚚 Envíos a toda Colombia'>💳 Paga a cuotas con Addi o Sistecrédito</div>
                         </div>
                         <button class="add-to-cart-btn" onclick="scrollToProduct('pista-neon-carro-pila-luz-con-numero')">
                             <i class="fas fa-shopping-bag"></i>COMPRAR AHORA
@@ -4924,7 +5012,7 @@
     <section class="animated-banner">
         <div class="animated-banner-content">
             <span><i class="fas fa-truck"></i> ENVÍOS A TODA COLOMBIA</span>
-            <span><i class="fas fa-gift"></i> ENVÍO PAGADO: SE COTIZA SEGÚN TU CIUDAD</span>
+            <span data-solo-credito><i class="fas fa-credit-card"></i> COMPRA AHORA Y PAGA EN CUOTAS</span>
             <span><i class="fas fa-shield-alt"></i> PAGO SEGURO CON TODOS LOS MEDIOS</span>
             <span><i class="fas fa-tags"></i> PRECIOS AL DETAL EN TODA LA TIENDA</span>
         </div>
@@ -4966,7 +5054,14 @@
                         <i class="fas fa-truck"></i>
                     </div>
                     <h4 class="trust-title">Envío Nacional</h4>
-                    <p class="trust-description">A toda Colombia · El costo del envío se cotiza según tu ciudad</p>
+                    <p class="trust-description">Llegamos a toda Colombia</p>
+                </div>
+                <div class="trust-item" data-solo-credito>
+                    <div class="trust-icon">
+                        <i class="fas fa-credit-card"></i>
+                    </div>
+                    <h4 class="trust-title">Paga a crédito</h4>
+                    <p class="trust-description">Compra hoy y paga en cuotas con Addi o Sistecrédito</p>
                 </div>
                 <div class="trust-item">
                     <div class="trust-icon">
@@ -5117,7 +5212,7 @@
                 </div>
                 <div class="faq-answer">
                     <div class="faq-answer-content">
-                        Pago contra entrega y transferencia. Confirmas tu pedido por WhatsApp y el pago se acuerda según tu ciudad.
+                        Pago contra entrega, transferencia<span data-solo-credito> y crédito en cuotas (Addi o Sistecrédito)</span>. Confirmas tu pedido por WhatsApp y el pago se acuerda según tu ciudad.
                     </div>
                 </div>
             </div>
@@ -5170,6 +5265,7 @@
                 <span>Total:</span>
                 <span id="cartTotal">$0</span>
             </div>
+            <div class="cart-cuota" id="cartCuota" hidden aria-live="polite"></div>
             <button class="checkout-btn" onclick="openOrderForm()">
                 <i class="fab fa-whatsapp"></i> Confirmar pedido por WhatsApp
             </button>
@@ -5189,7 +5285,7 @@
                     <button class="lightbox-nav prev" onclick="lightboxStep(-1)" aria-label="Imagen anterior">
                         <i class="fas fa-chevron-left"></i>
                     </button>
-                    <img id="lightboxImage" src="" alt="">
+                    <img id="lightboxImage" src="" alt="" width="400" height="500" onerror="imgOnError(this)">
                     <button class="lightbox-nav next" onclick="lightboxStep(1)" aria-label="Imagen siguiente">
                         <i class="fas fa-chevron-right"></i>
                     </button>
@@ -5341,7 +5437,7 @@
 
                     <div class="cod-section fase-oculta" data-fase="4">
                         <div class="cod-section-title"><span class="step-num">4</span> Forma de pago</div>
-                        <div class="payment-method-toggle">
+                        <div class="payment-method-toggle con-credito">
                             <label class="payment-option selected">
                                 <input type="radio" name="paymentMethod" value="contra-entrega" checked onchange="updatePaymentSelection()">
                                 <span class="payment-option-icon"><i class="fas fa-money-bill-wave"></i></span>
@@ -5353,6 +5449,17 @@
                                 <span class="payment-option-icon"><i class="fas fa-university"></i></span>
                                 <span class="payment-option-text"><strong>Transferencia</strong><small>Se confirma por WhatsApp</small></span>
                             </label>
+                            <label class="payment-option" data-solo-credito>
+                                <input type="radio" name="paymentMethod" value="credito" onchange="updatePaymentSelection()">
+                                <span class="payment-option-icon"><i class="fas fa-credit-card"></i></span>
+                                <span class="payment-option-text"><strong>Crédito (Addi / Sistecrédito)</strong><small>Pagas en cuotas</small></span>
+                            </label>
+                        </div>
+                        <div class="credito-plazo-wrap" id="creditoPlazoWrap" style="display:none;">
+                            <div class="credito-plazo-titulo">Elige en cuántas cuotas quieres pagar:</div>
+                            <div class="credito-plazo-opciones" id="creditoPlazoOpciones" role="group" aria-label="Plazo de las cuotas"></div>
+                            <div class="credito-plazo-resumen" id="creditoPlazoResumen" aria-live="polite"></div>
+                            <div class="credito-plazo-nota">Valor estimado, sujeto a aprobación del aliado de crédito. Confirmamos el proceso por WhatsApp.</div>
                         </div>
                     </div>
 
@@ -5370,6 +5477,8 @@
                     <span>Total a pagar</span>
                     <strong id="codFooterTotal">$0</strong>
                 </div>
+                <p class="cod-footer-cuota" id="codFooterCuota" hidden></p>
+                <p class="cod-footer-nota">🚚 El envío se cotiza según tu ciudad y lo confirmamos por WhatsApp con cariño cuando armemos tu pedido.</p>
                 <button type="button" class="whatsapp-btn" id="whatsappBtn" onclick="sendWhatsAppOrder()">
                     <i class="fab fa-whatsapp"></i>
                     <span id="whatsappBtnLabel">Confirmar pedido por WhatsApp</span>
@@ -5496,7 +5605,7 @@
                     <h3>Juguetería Taiwan</h3>
                     <p>Tu tienda de confianza en juguetería, didácticos, cubos Rubik, piñatería, tecnología, escolar y mucho más. Compra al detal con envíos a toda Colombia.</p>
                     <p class="footer-contact-note">🧸 +22.000 productos disponibles</p>
-                    <p class="footer-contact-note">🚚 Envíos a toda Colombia · El costo del envío se cotiza según ciudad</p>
+                    <p class="footer-contact-note">🚚 Envíos a toda Colombia</p>
                     <div class="footer-social">
                         <a href="https://www.instagram.com/jugueteriataiwan" target="_blank" rel="noopener" title="Instagram" aria-label="Instagram de Juguetería Taiwan">
                             <i class="fab fa-instagram"></i>
@@ -5576,6 +5685,18 @@
             // destino y se suma al pedido. Ninguna parte del sitio debe prometer
             // envío gratis mientras esta bandera esté activa.
             envioPagado: true,
+
+            // Pago a crédito con aliados (Addi / Sistecrédito): mensajes de
+            // "paga a cuotas", simulador en las tarjetas, aviso en el carrito
+            // y opción de pago en el checkout. Pon activo: false y todo lo
+            // de crédito desaparece sin dejar rastro.
+            credito: {
+                activo: true,
+                aliados: ['Addi', 'Sistecrédito'],
+                plazos: [3, 6, 12],   // plazos que se ofrecen en cuotas
+                tasaMensual: 0.0,     // 0 = cuota simple (total / plazo)
+                montoMinimo: 0        // compra mínima para pagar a crédito
+            },
 
             // Clave para abrir el panel de administración (enlace "Administración"
             // del pie de página, ?admin=1 o Ctrl+Shift+A). CÁMBIALA AQUI.
@@ -12305,14 +12426,23 @@
             },
         ];
 
+        // Productos sin foto real (imagen SVG de respaldo con emoji) se
+        // ocultan de la tienda: el cliente nunca ve un emoji donde debería
+        // haber una foto. En cuanto Valeria les suba la foto real al
+        // catálogo, reaparecen solos, sin tocar nada más. El panel de
+        // administración los sigue viendo porque usa CATALOGO_BASE.
+        function soloConFotoReal(lista) {
+            return lista.filter(p => !(p.image || '').startsWith('data:image/svg'));
+        }
+
         // Catálogo efectivo con los precios al detal aplicados. El panel de
         // administración reasigna esta variable al cambiar márgenes.
-        let products = aplicarPrecios(CATALOGO_BASE);
+        let products = aplicarPrecios(soloConFotoReal(CATALOGO_BASE));
 
         // Recalcula todos los precios visibles: catálogo, carruseles, buscador,
         // carrito (reprecia las líneas ya agregadas) y tarjeta del hero.
         function recalcularPrecios() {
-            products = aplicarPrecios(CATALOGO_BASE);
+            products = aplicarPrecios(soloConFotoReal(CATALOGO_BASE));
 
             // El carrito guarda el precio del momento en que se agregó cada
             // línea: se realinea con el precio vigente del catálogo.
@@ -12653,6 +12783,21 @@
         // Foto de respaldo para productos sin imagen en el catálogo
         const PLACEHOLDER_IMG = "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20400%20500%22%3E%3Crect%20width%3D%22400%22%20height%3D%22500%22%20fill%3D%22%23E0F7FA%22%2F%3E%3Ctext%20x%3D%22200%22%20y%3D%22285%22%20font-size%3D%22130%22%20text-anchor%3D%22middle%22%3E%F0%9F%A7%B8%3C%2Ftext%3E%3C%2Fsvg%3E";
 
+        // Respaldo universal de imágenes: si una foto falla (URL rota o
+        // producto sin foto real), se cambia al placeholder sin dejar el
+        // ícono de imagen rota. fbkFrom evita bucles: recuerda la URL que
+        // ya se reemplazó y permite el respaldo de la siguiente foto que
+        // falle (galería, carrusel y lightbox reciclan la misma <img>).
+        function imgOnError(el) {
+            if (!el || el.dataset.fbkFrom === el.src) return;
+            el.dataset.fbkFrom = el.src;
+            el.src = PLACEHOLDER_IMG;
+            // Los marcos con fondo difuminado (--img) también muestran la
+            // foto: se actualizan para no dejar un rectángulo vacío.
+            const cont = el.closest('.card-slide, .carousel-image-container, .lightbox-main');
+            if (cont) cont.style.setProperty('--img', `url("${PLACEHOLDER_IMG}")`);
+        }
+
         // Fotos de un producto, venga con 1 o con N
         function productImages(product) {
             const imgs = (product.images && product.images.length) ? product.images : [product.image];
@@ -12661,6 +12806,7 @@
         }
         // Initialize page
         document.addEventListener('DOMContentLoaded', function() {
+            aplicarEstadoCredito();
             loadProducts();
             updateCartUI();
             updateCartCount();
@@ -12931,7 +13077,7 @@
                     </div>
 
                     <div class="payment-info">
-                        <i class="fas fa-truck"></i>Envíos a toda Colombia · El costo del envío se cotiza según ciudad
+                        ${creditoDisponiblePara(price) ? `<i class="fas fa-credit-card"></i>Paga a cuotas con ${esc(CONFIG.credito.aliados.join(' o '))}` : `<i class="fas fa-truck"></i>Envíos a toda Colombia`}
                     </div>
                 </div>
             `;
@@ -13192,7 +13338,9 @@
                                  onclick="openImageLightbox('${escJs(src)}', '${escJs(product.name)}', '${escJs(product.id)}')">
                                 <img src="${esc(src)}"
                                      alt="${esc(product.name)} - foto ${i + 1} de ${imgs.length}"
-                                     ${i === 0 ? 'decoding="async"' : 'loading="lazy" decoding="async"'}>
+                                     width="400" height="500"
+                                     ${i === 0 ? 'decoding="async"' : 'loading="lazy" decoding="async"'}
+                                     onerror="imgOnError(this)">
                             </div>
                         `).join('')}
                     </div>
@@ -13404,10 +13552,80 @@
         }
 
         /* ------------------------------------------------------------------
-           AVISO DE ENVÍO DENTRO DE LA TARJETA (panel de cantidades)
-           El envío NO es gratis: se cotiza por WhatsApp según la ciudad de
-           destino. El panel muestra el subtotal en vivo de esta tarjeta y
-           el aviso permanente del costo de envío.
+           PAGO A CRÉDITO (Addi / Sistecrédito) — CONFIG.credito
+           Helpers centrales: si Valeria apaga CONFIG.credito.activo todo
+           lo que llame a estas funciones deja de pintarse, sin errores.
+           Con tasaMensual = 0 la cuota es total / plazo; si fija una tasa,
+           se usa la cuota de amortización estándar.
+           ------------------------------------------------------------------ */
+        function creditoActivo() {
+            return !!(CONFIG.credito && CONFIG.credito.activo);
+        }
+
+        // ¿Este monto puede pagarse a crédito? (respeta el mínimo configurable)
+        function creditoDisponiblePara(monto) {
+            return creditoActivo() && monto >= ((CONFIG.credito && CONFIG.credito.montoMinimo) || 0);
+        }
+
+        // Cuota mensual estimada de un monto en un plazo dado
+        function cuotaMensual(monto, plazo) {
+            const i = (CONFIG.credito && CONFIG.credito.tasaMensual) || 0;
+            if (i <= 0) return monto / plazo;
+            return monto * i / (1 - Math.pow(1 + i, -plazo));
+        }
+
+        // "Desde $X al mes": la cuota más baja es la del plazo más largo
+        function textoDesdeCuota(monto) {
+            if (!creditoDisponiblePara(monto)) return '';
+            return `Desde ${cop(cuotaMensual(monto, plazoPorDefecto()))} al mes`;
+        }
+
+        function plazosCredito() {
+            return (CONFIG.credito && CONFIG.credito.plazos && CONFIG.credito.plazos.length) ? CONFIG.credito.plazos : [12];
+        }
+
+        function plazoPorDefecto() {
+            return Math.max(...plazosCredito());
+        }
+
+        // Plazo elegido por producto en el simulador de cada tarjeta
+        const cuotaPlazoElegido = {};
+
+        function setPlazoCuota(productId, plazo) {
+            cuotaPlazoElegido[productId] = plazo;
+            updateCardPricePreview(productId);
+        }
+
+        // Aplica el estado del crédito a los avisos estáticos del HTML:
+        // - [data-solo-credito]: bloques que solo existen con el crédito
+        //   activo (opción de pago, banner, tarjeta de confianza, FAQ).
+        // - [data-neutro]: bloques que con el crédito apagado vuelven a su
+        //   texto neutral de envíos (hero y tarjeta destacada).
+        // Así, poniendo CONFIG.credito.activo en false, todo lo de crédito
+        // desaparece sin errores y sin editar el HTML.
+        function aplicarEstadoCredito() {
+            const activo = creditoActivo();
+
+            document.querySelectorAll('[data-solo-credito]').forEach(el => {
+                el.style.display = activo ? '' : 'none';
+            });
+
+            document.querySelectorAll('[data-neutro]').forEach(el => {
+                if (!el.dataset.creditoHtml) el.dataset.creditoHtml = el.innerHTML;
+                el.innerHTML = activo ? el.dataset.creditoHtml : el.dataset.neutro;
+            });
+
+            // Sin crédito, la fase 4 del checkout vuelve a su grid original
+            document.querySelectorAll('.payment-method-toggle').forEach(el => {
+                el.classList.toggle('con-credito', activo);
+            });
+        }
+
+        /* ------------------------------------------------------------------
+           PANEL DE CANTIDADES DE LA TARJETA
+           Muestra el subtotal en vivo de esta tarjeta y, con el crédito
+           activo, el simulador de cuotas. La información de envío vive
+           solo en el último paso del checkout (y en el FAQ).
            ------------------------------------------------------------------ */
         function updateCardPricePreview(productId) {
             const product = products.find(p => p.id === productId);
@@ -13425,15 +13643,36 @@
                 selCount += qty;
             });
 
+            // Base del simulador: subtotal seleccionado o precio unitario
+            const desde = Math.min(...opts.map(o => o.price));
+            const monto = selSubtotal > 0 ? selSubtotal : desde;
+
             meter.classList.remove('reached');
-            meter.innerHTML = `
+
+            let html = `
                 <div class="mayorista-progress-top">
-                    <span>🚚 Envío pagado: se cotiza según ciudad</span>
-                    <span class="mayorista-progress-chip">${selCount > 0 ? `${cop(selSubtotal)} aquí` : 'No incluido'}</span>
-                </div>
-                <div class="mayorista-progress-note">El valor del envío no está incluido${selCount > 0
-                    ? `. Llevas <strong>${cop(selSubtotal)}</strong> en esta tarjeta.`
-                    : ': lo confirmamos por WhatsApp con tu pedido.'}</div>`;
+                    <span>Tu selección${selCount > 0 ? ` (${selCount} unidad${selCount > 1 ? 'es' : ''})` : ''}</span>
+                    <span class="mayorista-progress-chip">${cop(selSubtotal > 0 ? selSubtotal : desde)}${selSubtotal > 0 ? ' aquí' : ' desde'}</span>
+                </div>`;
+
+            if (creditoDisponiblePara(monto)) {
+                const plazoSel = cuotaPlazoElegido[product.id] || plazoPorDefecto();
+                const cuota = cuotaMensual(monto, plazoSel);
+                html += `
+                    <div class="cuota-simulador">
+                        <div class="cuota-desde">💳 Paga a cuotas con ${esc(CONFIG.credito.aliados.join(' o '))}: <strong>desde ${cop(cuota)} al mes</strong></div>
+                        <div class="cuota-plazos" role="group" aria-label="Plazo de las cuotas de ${esc(product.name)}">
+                            ${plazosCredito().map(n => `
+                                <button type="button" class="cuota-plazo${n === plazoSel ? ' activo' : ''}"
+                                        aria-pressed="${n === plazoSel}"
+                                        onclick="setPlazoCuota('${escJs(product.id)}', ${n})">${n} cuotas</button>
+                            `).join('')}
+                        </div>
+                        <div class="mayorista-progress-note cuota-nota">Valor estimado, sujeto a aprobación del aliado de crédito</div>
+                    </div>`;
+            }
+
+            meter.innerHTML = html;
         }
 
         /* ------------------------------------------------------------------
@@ -13453,7 +13692,8 @@
             return { count, total };
         }
 
-        // Aviso de envío dentro del carrito: pagado, cotizado por WhatsApp
+        // Resumen dentro del carrito: subtotal en vivo. La información de
+        // envío se revela en el último paso del checkout.
         function updateMayoristaProgress() {
             const box = document.getElementById('mayoristaProgress');
             if (!box) return;
@@ -13465,10 +13705,9 @@
 
             box.innerHTML = `
                 <div class="mayorista-progress-top">
-                    <span>🚚 Envío a toda Colombia</span>
+                    <span>Subtotal de tu carrito</span>
                     <span class="mayorista-progress-chip">${cop(summary.total)} en productos</span>
                 </div>
-                <div class="mayorista-progress-note">El envío <strong>no es gratis</strong>: su valor depende de tu ciudad de destino, se confirma por WhatsApp y se suma al pedido. No está incluido en este total.</div>
             `;
         }
 
@@ -13619,6 +13858,8 @@
                     </div>
                 `;
                 cartTotal.textContent = '$0';
+                const cuotaVacia = document.getElementById('cartCuota');
+                if (cuotaVacia) cuotaVacia.hidden = true;
                 hideCartTimer();
                 return;
             }
@@ -13629,11 +13870,21 @@
             const summary = getCartSummary();
             cartTotal.innerHTML = `<div>${cop(summary.total)}</div>`;
 
+            // Ventaja de pago a crédito bajo el total del carrito
+            const cuotaEl = document.getElementById('cartCuota');
+            if (cuotaEl) {
+                const textoCuota = creditoDisponiblePara(summary.total)
+                    ? `💳 ${textoDesdeCuota(summary.total)} con ${CONFIG.credito.aliados.join(' o ')}`
+                    : '';
+                cuotaEl.hidden = !textoCuota;
+                cuotaEl.textContent = textoCuota;
+            }
+
             // Render cart items
             cartItems.innerHTML = cart.map((item, index) => {
                 return `
                 <div class="cart-item">
-                    <img src="${esc(item.image)}" alt="${esc(item.name)}" class="cart-item-image" loading="lazy">
+                    <img src="${esc(item.image)}" alt="${esc(item.name)}" class="cart-item-image" width="400" height="500" loading="lazy" onerror="imgOnError(this)">
                     <div class="cart-item-details">
                         <h4 class="cart-item-title">${esc(item.name)}</h4>
                         <div class="cart-item-info">SKU: ${esc(item.sku || '—')}</div>
@@ -13667,7 +13918,7 @@
                                 return `
                                 <div class="cart-upsell-item">
                                     <span class="cart-upsell-tier tier-${tier}">${tier === 'bajo' ? 'Económico' : tier === 'medio' ? 'Precio medio' : 'Premium'}</span>
-                                    <img src="${esc(p.image)}" alt="${esc(p.name)}" loading="lazy">
+                                    <img src="${esc(p.image)}" alt="${esc(p.name)}" width="400" height="500" loading="lazy" onerror="imgOnError(this)">
                                     <div class="cart-upsell-item-info">
                                         <div class="cart-upsell-item-name">${esc(p.name)}</div>
                                         <div class="cart-upsell-item-price">${cop(desde)}</div>
@@ -13844,7 +14095,43 @@
             if (!selected) return;
             document.querySelectorAll('.payment-option').forEach(opt => opt.classList.remove('selected'));
             selected.closest('.payment-option').classList.add('selected');
+            // Con "Crédito (Addi / Sistecrédito)" se despliega el plazo
+            const wrap = document.getElementById('creditoPlazoWrap');
+            if (wrap) {
+                const esCredito = selected.value === 'credito' && creditoActivo();
+                wrap.style.display = esCredito ? 'block' : 'none';
+                if (esCredito) renderCreditoPlazos();
+            }
             updateSubmitAvailability(true);
+        }
+
+        // Plazo elegido en el checkout (fase 4). Se reporta al WhatsApp del
+        // pedido junto con la cuota estimada.
+        let plazoCheckout = null;
+
+        function renderCreditoPlazos() {
+            const box = document.getElementById('creditoPlazoOpciones');
+            const resumen = document.getElementById('creditoPlazoResumen');
+            if (!box || !creditoActivo()) return;
+            const total = getCartSummary().total;
+            if (!plazoCheckout || !plazosCredito().includes(plazoCheckout)) {
+                plazoCheckout = plazoPorDefecto();
+            }
+            box.innerHTML = plazosCredito().map(n => `
+                <button type="button" class="cuota-plazo${n === plazoCheckout ? ' activo' : ''}"
+                        aria-pressed="${n === plazoCheckout}"
+                        onclick="setPlazoCheckout(${n})">${n} cuotas</button>
+            `).join('');
+            if (resumen) {
+                resumen.textContent = creditoDisponiblePara(total)
+                    ? `${cop(cuotaMensual(total, plazoCheckout))} al mes durante ${plazoCheckout} meses`
+                    : 'Confirmamos tu cuota por WhatsApp junto con el pedido';
+            }
+        }
+
+        function setPlazoCheckout(plazo) {
+            plazoCheckout = plazo;
+            renderCreditoPlazos();
         }
 
         // Renderizar el resumen del pedido dentro del formulario.
@@ -13864,7 +14151,7 @@
                     ${cart.map((item, index) => {
                         return `
                         <div class="order-summary-row">
-                            <img src="${esc(item.image)}" alt="${esc(item.name)}" loading="lazy">
+                            <img src="${esc(item.image)}" alt="${esc(item.name)}" width="400" height="500" loading="lazy" onerror="imgOnError(this)">
                             <div class="order-summary-row-info">
                                 <div class="order-summary-row-name">${esc(item.name)}</div>
                                 <div class="order-summary-row-meta">SKU: ${esc(item.sku || '—')}</div>
@@ -13878,9 +14165,10 @@
                         </div>`;
                     }).join('')}
                     <div class="order-summary-line"><span>Subtotal</span><span>${cop(summary.total)}</span></div>
-                    <div class="order-summary-line cod-missing"><span>Envío</span><span>Pagado: se cotiza por WhatsApp (no incluido)</span></div>
+                    <div class="order-summary-line"><span>Envío</span><span>Se cotiza según tu ciudad y se confirma por WhatsApp 🙂</span></div>
                     <div class="order-summary-line"><span>Entrega</span><span>${esTienda ? 'Retiro en tienda (CC Taiwan L-27)' : 'Se confirma por WhatsApp'}</span></div>
                     <div class="order-summary-line total"><span>Total</span><span>${cop(summary.total)}</span></div>
+                    ${creditoDisponiblePara(summary.total) ? `<div class="order-summary-line cuota-resumen"><span>💳 Paga a cuotas con ${esc(CONFIG.credito.aliados.join(' o '))}</span><span>${textoDesdeCuota(summary.total)}</span></div>` : ''}
                 `;
 
                 // Bundles dentro del checkout: 3 sugeridos por ticket (bajo,
@@ -13913,6 +14201,15 @@
 
             const footerTotal = document.getElementById('codFooterTotal');
             if (footerTotal) footerTotal.textContent = cop(summary.total);
+            // Ventaja de cuotas junto al total del checkout (solo con crédito activo)
+            const footerCuota = document.getElementById('codFooterCuota');
+            if (footerCuota) {
+                const textoFooterCuota = creditoDisponiblePara(summary.total)
+                    ? `💳 ${textoDesdeCuota(summary.total)} con ${CONFIG.credito.aliados.join(' o ')} · Valor estimado`
+                    : '';
+                footerCuota.hidden = !textoFooterCuota;
+                footerCuota.textContent = textoFooterCuota;
+            }
             // El label del boton de confirmar lo decide el estado de las
             // fases (updateSubmitAvailability): dice el total cuando todo
             // es valido o guia con el proximo paso cuando falta algo.
@@ -14283,6 +14580,11 @@
                 'contra-entrega': 'Pago Contra Entrega',
                 'transferencia': 'Transferencia (se confirma por WhatsApp)'
             };
+            // Crédito con aliados: la etiqueta se arma en vivo para que
+            // respete CONFIG.credito (aliados) y desaparezca si está apagado.
+            if (creditoActivo()) {
+                paymentLabels['credito'] = `Crédito en cuotas (${CONFIG.credito.aliados.join(' / ')})`;
+            }
 
             const telefono = String(formData.get('customerPhone') || '').replace(/\D/g, '');
             if (telefono.length !== 10) {
@@ -14308,6 +14610,18 @@
                 message += `📍 *Dirección:* ${formData.get('customerAddress')}\n`;
             }
             message += `💳 *Método de Pago:* ${paymentLabels[formData.get('paymentMethod')] || formData.get('paymentMethod')}\n\n`;
+
+            // Con crédito elegido se informa el plazo y la cuota estimada,
+            // para que quien atiende el pedido gestione el aliado sin adivinar.
+            if (formData.get('paymentMethod') === 'credito' && creditoActivo()) {
+                const totalCredito = getCartSummary().total;
+                const plazo = (plazoCheckout && plazosCredito().includes(plazoCheckout)) ? plazoCheckout : plazoPorDefecto();
+                if (creditoDisponiblePara(totalCredito)) {
+                    message += `🧮 *Cuotas:* ${plazo} cuotas de aprox. ${cop(cuotaMensual(totalCredito, plazo))} al mes (valor estimado, sujeto a aprobación de ${CONFIG.credito.aliados.join(' o ')})\n\n`;
+                } else {
+                    message += `🧮 *Cuotas:* A convenir con ${CONFIG.credito.aliados.join(' o ')} por WhatsApp\n\n`;
+                }
+            }
 
             message += `🛒 *PRODUCTOS:*\n`;
             const summary = getCartSummary();
@@ -14396,7 +14710,7 @@
                     const desde = Math.min(...flattenSizeOptions(product).map(o => o.price));
                     return `
                     <div class="search-result-item" onclick="scrollToProduct('${escJs(product.id)}')">
-                        <img src="${esc(product.image)}" alt="${esc(product.name)}" class="search-result-image">
+                        <img src="${esc(product.image)}" alt="${esc(product.name)}" class="search-result-image" width="400" height="500" loading="lazy" onerror="imgOnError(this)">
                         <div>
                             <div class="search-result-title">${esc(product.name)}</div>
                             <div class="search-result-price">${cop(desde)}</div>
@@ -14650,15 +14964,18 @@
 
                     item.innerHTML = `
                         <div class="carousel-image-container" style="--img:url('${esc(product.image)}')">
-                            <img src="${esc(product.image)}" alt="Juguete ${esc(product.name)} — Juguetería Taiwan" class="carousel-image" loading="lazy" decoding="async"
-                                 onload="this.classList.add('loaded'); this.parentElement.classList.add('loaded')">
+                            <img src="${esc(product.image)}" alt="Juguete ${esc(product.name)} — Juguetería Taiwan" class="carousel-image" width="400" height="500" loading="lazy" decoding="async"
+                                 onload="this.classList.add('loaded'); this.parentElement.classList.add('loaded')"
+                                 onerror="imgOnError(this)">
                             <span class="carousel-item-badge">${esc(categoryLabel(product.category))}</span>
                             <div class="carousel-overlay">
                                 <div class="carousel-product-name">${esc(product.name)}</div>
                                 <div class="carousel-product-price">${cop(product.price)}</div>
                                 ${product.comparePrice > product.price
                                     ? `<div class="carousel-product-mayor">Antes ${cop(product.comparePrice)} · Ahorras ${cop(product.comparePrice - product.price)}</div>`
-                                    : `<div class="carousel-product-mayor">🚚 Envío pagado: se cotiza según ciudad</div>`}
+                                    : (creditoDisponiblePara(product.price)
+                                        ? `<div class="carousel-product-mayor">💳 Paga a cuotas con ${esc(CONFIG.credito.aliados.join(' o '))}</div>`
+                                        : `<div class="carousel-product-mayor">🚚 Envíos a toda Colombia</div>`)}
                             </div>
                         </div>
                     `;
