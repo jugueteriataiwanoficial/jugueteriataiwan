@@ -73,6 +73,18 @@
     }
     </script>
 
+    <!-- Guard temprano de imágenes: los <img onerror="imgOnError(this)"> del
+         HTML pueden dispararse ANTES de que el script principal (al final
+         del body) cargue — por ejemplo la foto del lightbox nace con src=""
+         y su onerror salta de inmediato. Esta versión mínima evita el
+         ReferenceError; la versión completa del script principal la
+         reemplaza en cuanto ejecuta. -->
+    <script>
+        function imgOnError(el) {
+            try { el.style.visibility = 'hidden'; } catch (e) {}
+        }
+    </script>
+
     <!-- Analítica de Juguetería Taiwan: pega aquí tus etiquetas cuando las tengas
          (Meta Pixel, GA4/gtag.js, Clarity). Las funciones track() del sitio ya
          reportan ViewContent, AddToCart, InitiateCheckout y Lead a cualquier
@@ -3446,6 +3458,44 @@
         /* --- Simulador de cuotas (Addi / Sistecrédito) dentro del
                panel de cantidades de cada tarjeta y del checkout.
                Reutiliza tonos y radios de la identidad de la tienda. --- */
+        /* --- Aviso de cuotas COLAPSADO por defecto (Addi / Sistecrédito)
+               dentro del panel de cantidades de cada tarjeta. El comprador
+               conoce la opción por el aviso compacto, pero el selector de
+               plazos solo aparece si lo despliega: el crédito no es la
+               opción por defecto, el precio de contado manda. --- */
+        .cuota-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            width: 100%;
+            margin-top: 8px;
+            padding: 7px 10px;
+            border: 1.5px dashed #B2EBF2;
+            border-radius: 10px;
+            background: #F2FAFC;
+            font-family: inherit;
+            font-size: 0.74rem;
+            line-height: 1.3;
+            color: var(--text-light);
+            cursor: pointer;
+            text-align: left;
+            transition: background 0.2s ease, border-color 0.2s ease;
+        }
+        .cuota-toggle:hover { background: #E0F7FA; border-color: var(--primary-light); }
+        .cuota-toggle.abierta { border-style: solid; }
+        .cuota-toggle-text { min-width: 0; }
+        .cuota-toggle-chip {
+            flex-shrink: 0;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            color: var(--primary-color);
+            font-weight: 700;
+            white-space: nowrap;
+        }
+        .cuota-toggle-chip .chev { font-size: 0.62rem; transition: transform 0.2s ease; }
+        .cuota-toggle.abierta .cuota-toggle-chip .chev { transform: rotate(180deg); }
         .cuota-simulador { margin-top: 8px; }
         .cuota-desde {
             font-size: 0.82rem;
@@ -5719,14 +5769,16 @@
             // Pago a crédito con aliados (Addi / Sistecrédito): aviso en el
             // carrito y opción de pago en el checkout. Pon activo: false y
             // todo lo de crédito desaparece sin dejar rastro.
-            // simuladorEnTarjetas: NO todos los clientes compran a cuotas,
-            // así que las tarjetas de producto van LIMPIAS por defecto (sin
-            // el selector de 3/6/12 cuotas ni el texto "paga a cuotas").
-            // El crédito sigue disponible como opción en el checkout.
-            // Ponlo en true para volver a mostrar el simulador en cada tarjeta.
+            // simuladorEnTarjetas: informa la opción de cuotas DENTRO de las
+            // tarjetas de producto, pero COLAPSADA por defecto: el comprador
+            // ve un aviso compacto ("También puedes pagar a cuotas...") y
+            // solo si le interesa lo despliega con "Ver cuotas". El precio
+            // de contado sigue siendo lo primero que se ve (el crédito NO
+            // es la opción por defecto), pero el comprador final sí conoce
+            // la opción. Ponlo en false para ocultar el aviso en las tarjetas.
             credito: {
                 activo: true,
-                simuladorEnTarjetas: false,
+                simuladorEnTarjetas: true,
                 aliados: ['Addi', 'Sistecrédito'],
                 plazos: [3, 6, 12],   // plazos que se ofrecen en cuotas
                 tasaMensual: 0.0,     // 0 = cuota simple (total / plazo)
@@ -13597,10 +13649,10 @@
             return !!(CONFIG.credito && CONFIG.credito.activo);
         }
 
-        // ¿Se muestra el simulador de cuotas DENTRO de las tarjetas de
-        // producto? Apagado por defecto: no todos los clientes compran con
-        // Addi / Sistecrédito y la tarjeta queda más limpia (solo precio y
-        // cantidad). El crédito se sigue ofreciendo en el checkout.
+        // ¿Se muestra el aviso de cuotas DENTRO de las tarjetas de producto?
+        // Va encendido para que el comprador final CONOZCA la opción, pero el
+        // selector de plazos nace COLAPSADO (no es la opción por defecto):
+        // se despliega solo si el cliente toca "Ver cuotas".
         function simuladorTarjetasActivo() {
             return !!(CONFIG.credito && CONFIG.credito.activo && CONFIG.credito.simuladorEnTarjetas);
         }
@@ -13634,8 +13686,19 @@
         // Plazo elegido por producto en el simulador de cada tarjeta
         const cuotaPlazoElegido = {};
 
+        // Avisos de cuotas desplegados por producto: por DEFECTO ninguno
+        // está abierto. El cliente lo abre solo si le interesa la opción.
+        const cuotaSimuladorAbierto = {};
+
         function setPlazoCuota(productId, plazo) {
             cuotaPlazoElegido[productId] = plazo;
+            updateCardPricePreview(productId);
+        }
+
+        // Despliega/pliega el simulador de cuotas de una tarjeta. Nace
+        // colapsado: el crédito se conoce, pero no se impone.
+        function toggleCuotaSimulador(productId) {
+            cuotaSimuladorAbierto[productId] = !cuotaSimuladorAbierto[productId];
             updateCardPricePreview(productId);
         }
 
@@ -13701,9 +13764,18 @@
             if (creditoDisponiblePara(monto) && simuladorTarjetasActivo()) {
                 const plazoSel = cuotaPlazoElegido[product.id] || plazoPorDefecto();
                 const cuota = cuotaMensual(monto, plazoSel);
+                const abierta = !!cuotaSimuladorAbierto[product.id];
+                // El crédito NO es la opción por defecto: por defecto solo
+                // se muestra el aviso compacto; el selector de plazos se
+                // despliega con "Ver cuotas" si al cliente le interesa.
                 html += `
+                    <button type="button" class="cuota-toggle${abierta ? ' abierta' : ''}" onclick="toggleCuotaSimulador('${escJs(product.id)}')" aria-expanded="${abierta}" aria-controls="goalmeter-${esc(product.id)}">
+                        <span class="cuota-toggle-text">💳 También puedes pagar a cuotas con ${esc(CONFIG.credito.aliados.join(' o '))}</span>
+                        <span class="cuota-toggle-chip">${abierta ? 'Ocultar' : 'Ver cuotas'} <i class="fas fa-chevron-down chev" aria-hidden="true"></i></span>
+                    </button>
+                    ${abierta ? `
                     <div class="cuota-simulador">
-                        <div class="cuota-desde">💳 Paga a cuotas con ${esc(CONFIG.credito.aliados.join(' o '))}: <strong>desde ${cop(cuota)} al mes</strong></div>
+                        <div class="cuota-desde">Cuota estimada con ${esc(CONFIG.credito.aliados.join(' o '))}: <strong>${cop(cuota)} al mes</strong></div>
                         <div class="cuota-plazos" role="group" aria-label="Plazo de las cuotas de ${esc(product.name)}">
                             ${plazosCredito().map(n => `
                                 <button type="button" class="cuota-plazo${n === plazoSel ? ' activo' : ''}"
@@ -13712,7 +13784,7 @@
                             `).join('')}
                         </div>
                         <div class="mayorista-progress-note cuota-nota">Valor estimado, sujeto a aprobación del aliado de crédito</div>
-                    </div>`;
+                    </div>` : ''}`;
             }
 
             meter.innerHTML = html;
@@ -13917,7 +13989,7 @@
             const cuotaEl = document.getElementById('cartCuota');
             if (cuotaEl) {
                 const textoCuota = creditoDisponiblePara(summary.total)
-                    ? `💳 ${textoDesdeCuota(summary.total)} con ${CONFIG.credito.aliados.join(' o ')}`
+                    ? `💳 También puedes pagar a cuotas: ${textoDesdeCuota(summary.total)} con ${CONFIG.credito.aliados.join(' o ')}`
                     : '';
                 cuotaEl.hidden = !textoCuota;
                 cuotaEl.textContent = textoCuota;
@@ -14211,7 +14283,7 @@
                     <div class="order-summary-line"><span>Envío</span><span>Se cotiza según tu ciudad y se confirma por WhatsApp 🙂</span></div>
                     <div class="order-summary-line"><span>Entrega</span><span>${esTienda ? 'Retiro en tienda (CC Taiwan L-27)' : 'Se confirma por WhatsApp'}</span></div>
                     <div class="order-summary-line total"><span>Total</span><span>${cop(summary.total)}</span></div>
-                    ${creditoDisponiblePara(summary.total) ? `<div class="order-summary-line cuota-resumen"><span>💳 Paga a cuotas con ${esc(CONFIG.credito.aliados.join(' o '))}</span><span>${textoDesdeCuota(summary.total)}</span></div>` : ''}
+                    ${creditoDisponiblePara(summary.total) ? `<div class="order-summary-line cuota-resumen"><span>💳 También puedes pagar a cuotas con ${esc(CONFIG.credito.aliados.join(' o '))}</span><span>${textoDesdeCuota(summary.total)}</span></div>` : ''}
                 `;
 
                 // Bundles dentro del checkout: 3 sugeridos por ticket (bajo,
@@ -14248,7 +14320,7 @@
             const footerCuota = document.getElementById('codFooterCuota');
             if (footerCuota) {
                 const textoFooterCuota = creditoDisponiblePara(summary.total)
-                    ? `💳 ${textoDesdeCuota(summary.total)} con ${CONFIG.credito.aliados.join(' o ')} · Valor estimado`
+                    ? `💳 También puedes pagar a cuotas: ${textoDesdeCuota(summary.total)} con ${CONFIG.credito.aliados.join(' o ')} · Valor estimado`
                     : '';
                 footerCuota.hidden = !textoFooterCuota;
                 footerCuota.textContent = textoFooterCuota;
