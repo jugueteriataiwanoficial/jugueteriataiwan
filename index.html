@@ -807,6 +807,11 @@
             transform: translateX(400px);
             transition: transform 0.3s ease;
             display: none;
+            /* Es un AVISO informativo: NUNCA debe interceptar clics. Sin
+               esto quedaba flotando encima de los botones del encabezado
+               (carrito, WhatsApp) durante los ~3 segundos que dura y se
+               los "comía": el cliente tocaba el carrito y no pasaba nada. */
+            pointer-events: none;
         }
         .notification.show {
             display: block;
@@ -1945,10 +1950,16 @@
             opacity: 0;
             visibility: hidden;
             transition: all 0.3s ease;
+            /* Cerrado NO intercepta clics NI SIQUIERA durante el desvanecido
+               de 0.3s: sin esto, el cliente que cerraba el formulario de
+               pedido y tocaba de inmediato el carrito perdía el clic — el
+               overlay invisible aun estaba encima comiéndoselo. */
+            pointer-events: none;
         }
         .modal.show {
             opacity: 1;
             visibility: visible;
+            pointer-events: auto;
         }
 
         /* Lightbox de imágenes de producto */
@@ -2028,7 +2039,7 @@
             flex-shrink: 0;
             /* Alineada con el techo de la foto principal para que la
                columna de miniaturas no crezca más que la foto. */
-            max-height: min(720px, 66vh);
+            max-height: var(--alto-foto, min(720px, 66vh));
             overflow-y: auto;
             padding: 2px;
         }
@@ -2081,10 +2092,10 @@
             background: #EAF6F9;
             border-radius: 12px;
             min-height: 340px;
-            /* La foto principal es la protagonista del visor: usa la version
-               /full/ (1080px) y se permite hasta el 66% de la pantalla para
-               que se vea GRANDE, legible y completa. */
-            max-height: min(720px, 66vh);
+            /* Techo de la foto principal: 2/3 de pantalla en escritorio
+               (la versión /full/ de 1080px la llena con nitidez). */
+            --alto-foto: min(720px, 66vh);
+            max-height: var(--alto-foto);
             overflow: hidden;
         }
         /* Fondo borroso con la propia foto (mismo truco de las tarjetas):
@@ -2105,8 +2116,12 @@
         .lightbox-main img {
             position: relative;
             z-index: 1;
+            width: auto;
+            /* La foto ocupa SIEMPRE el tamaño del visor (la miniatura se
+               escala al marco mientras descarga la versión /full/ de 1080px):
+               nunca se ve chica ni a su tamaño natural de miniatura. */
+            height: var(--alto-foto);
             max-width: 100%;
-            max-height: min(720px, 66vh);
             object-fit: contain;
             border-radius: 12px;
             cursor: default;
@@ -2183,32 +2198,12 @@
             padding-top: 10px;
             border-top: 1px solid var(--border-color);
         }
-        /* La tira de sugeridos NACE PLEGADA (igual que el simulador de
-           cuotas de las tarjetas): solo el título y el botón "Ver" para
-           que la foto principal se lleve casi toda la pantalla del visor. */
-        .lightbox-upsell-toggle {
-            display: flex;
-            width: 100%;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
-            background: none;
-            border: 1.5px dashed #B2EBF2;
-            border-radius: 999px;
-            padding: 7px 14px;
-            font-family: inherit;
-            font-size: 0.85rem;
+        .lightbox-upsell-title {
+            font-size: 0.92rem;
             font-weight: 700;
             color: var(--text-dark);
-            cursor: pointer;
-            transition: background 0.2s ease;
+            margin-bottom: 8px;
         }
-        .lightbox-upsell-toggle:hover { background: #E0F7FA; }
-        .lightbox-upsell-toggle .chev { font-size: 0.72rem; transition: transform 0.2s ease; color: var(--primary-color); }
-        .lightbox-upsell-toggle.abierta { border-style: solid; }
-        .lightbox-upsell-toggle.abierta .chev { transform: rotate(180deg); }
-        .lightbox-upsell.abierta .lightbox-upsell-track { display: flex; margin-top: 8px; }
-        .lightbox-upsell:not(.abierta) .lightbox-upsell-track { display: none; }
         .lightbox-upsell-track {
             display: flex;
             gap: 12px;
@@ -2310,8 +2305,7 @@
             .lightbox-thumb { width: 52px; height: 52px; }
             /* Foto principal protagonista también en móvil: casi media
                pantalla para que el producto se vea grande y completo. */
-            .lightbox-main { min-height: 240px; max-height: 46vh; }
-            .lightbox-main img { max-height: 46vh; }
+            .lightbox-main { --alto-foto: 46vh; min-height: 240px; }
             .lightbox-cta { padding: 12px 22px; font-size: 0.9rem; }
             /* Cards de sugeridos completos en movil: entran ~2.5 visibles */
             .lightbox-upsell { margin-top: 12px; padding-top: 10px; }
@@ -3567,16 +3561,32 @@
         }
         .card-goal-meter .cuota-nota { margin-top: 6px; }
 
-        /* Cuota estimada bajo el total del carrito y del checkout: con el
-           crédito activo el cliente ELIGE sus cuotas aquí mismo (3/6/12...)
-           y esa elección viaja en el mensaje de WhatsApp del pedido. Nace
-           PLEGADO como el simulador de las tarjetas (Ver cuotas / Ocultar)
-           y la cuota activa se puede deseleccionar tocándola otra vez. */
+        /* Cuota estimada bajo el total del carrito: con el crédito activo el
+           cliente ELIGE sus cuotas aquí mismo (3/6/12...) y esa elección
+           viaja en el mensaje de WhatsApp del pedido. Nace plegado como el
+           simulador de las tarjetas (Ver cuotas / Ocultar); al desplegar,
+           las opciones flotan ARRIBA del total como popover — así la lista
+           de productos del carrito JAMÁS se encoge ni se oculta — y al
+           elegir (o deseleccionar tocando la activa) se pliega sola. */
         .cart-cuota {
+            position: relative;
             text-align: left;
             margin: 0 0 6px;
         }
         .cart-cuota .cuota-toggle { width: 100%; justify-content: space-between; }
+        .cart-cuota .cuota-simulador {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: calc(100% + 8px);
+            z-index: 30;
+            background: var(--white);
+            border: 1.5px solid #B2EBF2;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(26, 26, 46, 0.18);
+            padding: 12px;
+            margin-top: 0;
+        }
         .cart-cuota-resumen {
             display: block;
             margin-top: 6px;
@@ -5510,10 +5520,7 @@
                 </button>
             </div>
             <div class="lightbox-upsell" id="lightboxUpsell" style="display:none;">
-                <button type="button" class="lightbox-upsell-toggle" id="lightboxUpsellToggle" onclick="toggleUpsellLightbox()" aria-expanded="false" aria-controls="lightboxUpsellTrack">
-                    <span>🎁 También te puede interesar</span>
-                    <span class="chev"><span id="lightboxUpsellToggleTxt">Ver</span> <i class="fas fa-chevron-down" aria-hidden="true"></i></span>
-                </button>
+                <h4 class="lightbox-upsell-title">También te puede interesar</h4>
                 <div class="lightbox-upsell-track" id="lightboxUpsellTrack"></div>
             </div>
         </div>
@@ -13044,8 +13051,18 @@
         // haber una foto. En cuanto Valeria les suba la foto real al
         // catálogo, reaparecen solos, sin tocar nada más. El panel de
         // administración los sigue viendo porque usa CATALOGO_BASE.
+        // IMAGENES_ROTAS_EN_SERVIDOR: referencias cuya foto da 404 en el
+        // servidor (verificado el 09-10-2026). Se ocultan igual que las sin
+        // foto: al arreglarlas en el sitio, quitar el id de esta lista.
+        const IMAGENES_ROTAS_EN_SERVIDOR = [
+            'agenda-2027-lineas-14524cm-2',        // escolar — foto 404 (producto 30041)
+            'bolas-de-hidrogel-unicolor-x20000-cjx5xcol', // slime — foto 404 (producto 30067)
+        ];
         function soloConFotoReal(lista) {
-            return lista.filter(p => !(p.image || '').startsWith('data:image/svg'));
+            return lista.filter(p =>
+                !(p.image || '').startsWith('data:image/svg') &&
+                !IMAGENES_ROTAS_EN_SERVIDOR.includes(p.id)
+            );
         }
 
         // Catálogo efectivo con los precios al detal aplicados. El panel de
@@ -13111,7 +13128,13 @@
             if (img) {
                 img.dataset.thumb = p.image;
                 img.onerror = imgOnError; // respaldo full -> thumb -> placeholder
-                img.src = imgFullUrl(p.image);
+                // Miniatura inmediata (ya en caché) y sube a /full/ al cargar.
+                img.src = p.image;
+                const cargaFull = new Image();
+                cargaFull.onload = () => {
+                    if (TIENDA.productoDestacado === p.id && img.src !== cargaFull.src) img.src = cargaFull.src;
+                };
+                cargaFull.src = imgFullUrl(p.image);
                 img.alt = p.name + ' — ' + TIENDA.nombre;
             }
             if (cat) cat.innerHTML = `<i class="fas ${categoryIcon(p.category)}"></i> ${esc(categoryLabel(p.category)).toUpperCase()}`;
@@ -15238,13 +15261,15 @@
         }
 
         // Elige (o DESELIGE) las cuotas desde el carrito: tocar la cuota
-        // activa la quita. Se refleja en el aviso, en el checkout (si el
-        // pago es a crédito) y en el mensaje de WhatsApp.
+        // activa la quita. Al elegir o deseleccionar, el selector se pliega
+        // solo y queda el resumen compacto. Se refleja en el checkout (si
+        // el pago es a crédito) y en el mensaje de WhatsApp.
         function setPlazoCarrito(n) {
             if (!plazosCredito().includes(n)) return;
             plazoCarrito = (plazoCarrito === n) ? null : n;
             plazoCheckout = plazoCarrito;
             persistirPlazoCarrito();
+            cuotaCarritoAbierta = false;   // pliega el popover tras la acción
             renderCartCuota();
             // Si el formulario de pedido está abierto, refresca el selector
             // y el resumen para que ambos muestren la misma elección.
@@ -15254,15 +15279,34 @@
             }
         }
 
-        // Pliega/despliega el simulador de cuotas del carrito.
+        // Pliega/despliega el selector de cuotas del carrito (popover).
         function toggleCuotaCarrito() {
             cuotaCarritoAbierta = !cuotaCarritoAbierta;
             renderCartCuota();
         }
 
+        // Clic fuera del selector de cuotas lo pliega (el popover flota
+        // sobre la lista del carrito; tocar cualquier otra cosa lo cierra).
+        // OJO: al abrir, el propio clic re-construye el aviso y el botón
+        // queda suelto del DOM un instante; un elemento desconectado NO
+        // cuenta como "clic fuera" — sin esta guarda, el mismo clic que
+        // abría las cuotas las cerraba al instante ("se oculta solo").
+        document.addEventListener('click', function (e) {
+            if (!cuotaCarritoAbierta) return;
+            const caja = document.getElementById('cartCuota');
+            if (!caja) return;
+            const destino = e.target;
+            if (!destino || !destino.isConnected) return;   // clic que abrió/reconstruyó
+            if (!caja.contains(destino)) {
+                cuotaCarritoAbierta = false;
+                renderCartCuota();
+            }
+        });
+
         // Aviso de cuotas del carrito: NACE PLEGADO como en las tarjetas
-        // (aviso compacto + "Ver cuotas"). Desplegado muestra los plazos
-        // con la cuota mensual; tocar la cuota activa la deselecciona.
+        // (aviso compacto + "Ver cuotas"). Al desplegar, las opciones flotan
+        // ARRIBA del total como popover: la lista de productos no se encoge
+        // ni se oculta. Tocar la cuota activa la deselecciona.
         function renderCartCuota() {
             const cuotaEl = document.getElementById('cartCuota');
             const summary = getCartSummary();
@@ -15277,7 +15321,7 @@
             cuotaEl.hidden = false;
             if (!cuotaCarritoAbierta) {
                 cuotaEl.innerHTML = `
-                    <button type="button" class="cuota-toggle${elegido ? ' abierta' : ''}" onclick="toggleCuotaCarrito()" aria-expanded="false" aria-controls="cartCuota" style="width:100%; justify-content:space-between; text-align:left;">
+                    <button type="button" class="cuota-toggle" onclick="toggleCuotaCarrito()" aria-expanded="false" aria-controls="cartCuota">
                         <span class="cuota-toggle-text">💳 ${elegido
                             ? `Pagarás en ${elegido} cuotas de <strong>${cop(cuotaMensual(summary.total, elegido))}</strong> al mes`
                             : `Paga a cuotas con ${esc(CONFIG.credito.aliados.join(' o '))}: desde <strong>${cop(cuotaMensual(summary.total, plazoPorDefecto()))}</strong> al mes`}</span>
@@ -15290,14 +15334,14 @@
                         title="${n === elegido ? 'Toca otra vez para quitar la elección' : `Cuota aproximada ${cop(cuotaMensual(summary.total, n))} al mes`}"
                         aria-pressed="${n === elegido}" onclick="setPlazoCarrito(${n})">${n} cuotas</button>`).join('');
             cuotaEl.innerHTML = `
-                <button type="button" class="cuota-toggle abierta" onclick="toggleCuotaCarrito()" aria-expanded="true" aria-controls="cartCuota" style="width:100%; justify-content:space-between; text-align:left;">
+                <button type="button" class="cuota-toggle abierta" onclick="toggleCuotaCarrito()" aria-expanded="true" aria-controls="cartCuota">
                     <span class="cuota-toggle-text">💳 Paga a cuotas con ${esc(CONFIG.credito.aliados.join(' o '))}</span>
                     <span class="cuota-toggle-chip">Ocultar <i class="fas fa-chevron-down chev" aria-hidden="true"></i></span>
                 </button>
-                <div class="cuota-simulador" style="margin-top:8px;">
-                    <div class="cuota-plazos" role="group" aria-label="Plazo de las cuotas" style="justify-content:center;">${botones}</div>
+                <div class="cuota-simulador" role="group" aria-label="Plazo de las cuotas">
+                    <div class="cuota-plazos">${botones}</div>
                     <div class="cart-cuota-resumen">${elegido
-                        ? `Elegiste ${elegido} cuotas de <strong>${cop(cuotaMensual(summary.total, elegido))}</strong> al mes — toca la cuota marcada para quitar la elección`
+                        ? `Elegiste ${elegido} cuotas de <strong>${cop(cuotaMensual(summary.total, elegido))}</strong> al mes — toca la marcada para quitar la elección`
                         : `Elige tus cuotas — desde <strong>${cop(cuotaMensual(summary.total, plazoPorDefecto()))}</strong> al mes`}</div>
                     <div class="cart-cuota-nota">Valor estimado, sujeto a aprobación del aliado. Se envía con tu pedido por WhatsApp.</div>
                 </div>`;
@@ -15447,11 +15491,12 @@
             img.classList.remove('cambia');
             void img.offsetWidth;
             img.classList.add('cambia');
-            // La foto aparece AL INSTANTE con la miniatura (que ya está en
-            // caché de las tarjetas) y sube solita a la versión /full/ de
-            // 1080px en cuanto termina de descargar: nunca hay hueco vacío,
-            // imagen anterior ni borrosidad — la principal siempre termina
-            // nitida y grande.
+            // LA IMAGEN SIEMPRE LLENA EL MARCO (el CSS la escala al tamaño
+            // del visor, sea miniatura o /full/). Primero se pinta con la
+            // miniatura — que ya está en caché de las tarjetas, así aparece
+            // AL INSTANTE y grande — y en cuanto descarga la versión /full/
+            // de 1080px se intercambia en el mismo marco: sin huecos, sin
+            // saltos y siempre visible; el resultado final es nitido.
             img.dataset.fbk = '';
             img.onerror = function () {
                 if (this.dataset.fbk === this.src) return;
@@ -15459,10 +15504,6 @@
                 if (this.src !== src) { this.src = src; return; }
                 imgOnError(this);
             };
-            // La foto aprovecha TODO el espacio del visor (los atributos
-            // width/height del HTML son solo la reserva de espacio inicial).
-            img.style.width = 'auto';
-            img.style.height = 'auto';
             img.src = src;
             const cargaFull = new Image();
             cargaFull.onload = () => {
@@ -15531,25 +15572,6 @@
 
         // "Tambien te puede interesar": otros productos, priorizando la
         // misma categoria (como el "clientes tambien compraron" de Amazon).
-        // La tira nace PLEGADA (botón "Ver") para que la foto principal
-        // del visor se vea grande; se despliega solo si le interesa al
-        // cliente — igual que el simulador de cuotas de las tarjetas.
-        let upsellLightboxAbierto = false;
-
-        function toggleUpsellLightbox() {
-            upsellLightboxAbierto = !upsellLightboxAbierto;
-            actualizarUpsellLightbox();
-        }
-
-        function actualizarUpsellLightbox() {
-            const cont = document.getElementById('lightboxUpsell');
-            const btn = document.getElementById('lightboxUpsellToggle');
-            const txt = document.getElementById('lightboxUpsellToggleTxt');
-            if (cont) cont.classList.toggle('abierta', upsellLightboxAbierto);
-            if (btn) btn.setAttribute('aria-expanded', String(upsellLightboxAbierto));
-            if (txt) txt.textContent = upsellLightboxAbierto ? 'Ocultar' : 'Ver';
-        }
-
         function renderGalleryUpsell(productId) {
             const box = document.getElementById('lightboxUpsell');
             const track = document.getElementById('lightboxUpsellTrack');
@@ -15592,10 +15614,6 @@
             pintarGaleria();
             renderGalleryThumbs();
             renderGalleryUpsell(productId);
-            // La tira de sugeridos nace PLEGADA en cada apertura: la foto
-            // principal es la protagonista del visor.
-            upsellLightboxAbierto = false;
-            actualizarUpsellLightbox();
             lightbox.classList.add('show');
             document.body.classList.add('body-no-scroll');
             const panel = lightbox.querySelector('.lightbox-panel');
@@ -16146,13 +16164,20 @@
                 document.querySelector('.floating-cart'),
                 document.querySelector('.cart-sidebar')
             ];
-            
+
+            // Un clic cuyo objetivo quedó SUELTO del DOM (pasa cuando el propio
+            // carrito se re-renderiza a mitad de clic: Ver cuotas, elegir
+            // cuotas, cambiar cantidades...) NUNCA es "clic afuera": sin
+            // esta guarda, ese mismo clic cerraba el carrito completo
+            // ("tocaba Ver cuotas y todo se ocultaba").
+            if (!e.target || !e.target.isConnected) return;
+
             const isClickInsideCart = cartTriggers.some(el => el && el.contains(e.target));
             // Los clics dentro del formulario COD (p.ej. el boton "Editar" que
             // abre el carrito) no cuentan como "afuera": si no, el mismo clic
             // que abre el carrito lo vuelve a cerrar al burbujear al document.
             const isClickFromOrderModal = e.target.closest && e.target.closest('#orderModal');
-            
+
             if (cartSidebar.classList.contains('open') && !isClickInsideCart && !isClickFromOrderModal) {
                 toggleCart();
             }
