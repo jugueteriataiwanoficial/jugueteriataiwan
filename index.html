@@ -1980,7 +1980,7 @@
             background: var(--white);
             border-radius: 18px;
             width: 100%;
-            max-width: 940px;
+            max-width: 1080px;
             max-height: 94vh;
             overflow-y: auto;
             /* Si aun asi aparece (pantallas muy bajas), que sea fino y no
@@ -2028,7 +2028,7 @@
             flex-shrink: 0;
             /* Alineada con el techo de la foto principal para que la
                columna de miniaturas no crezca más que la foto. */
-            max-height: min(500px, 52vh);
+            max-height: min(720px, 66vh);
             overflow-y: auto;
             padding: 2px;
         }
@@ -2080,11 +2080,11 @@
             justify-content: center;
             background: #EAF6F9;
             border-radius: 12px;
-            min-height: 320px;
-            /* Techo calibrado con la tira de sugeridos compacta: la foto
-               principal se ve grande y con nitidez (usa la versión /full/
-               de 1080px) y el panel completo cabe en la pantalla. */
-            max-height: min(500px, 52vh);
+            min-height: 340px;
+            /* La foto principal es la protagonista del visor: usa la version
+               /full/ (1080px) y se permite hasta el 66% de la pantalla para
+               que se vea GRANDE, legible y completa. */
+            max-height: min(720px, 66vh);
             overflow: hidden;
         }
         /* Fondo borroso con la propia foto (mismo truco de las tarjetas):
@@ -2106,7 +2106,7 @@
             position: relative;
             z-index: 1;
             max-width: 100%;
-            max-height: min(500px, 52vh);
+            max-height: min(720px, 66vh);
             object-fit: contain;
             border-radius: 12px;
             cursor: default;
@@ -2183,12 +2183,32 @@
             padding-top: 10px;
             border-top: 1px solid var(--border-color);
         }
-        .lightbox-upsell-title {
-            font-size: 0.92rem;
+        /* La tira de sugeridos NACE PLEGADA (igual que el simulador de
+           cuotas de las tarjetas): solo el título y el botón "Ver" para
+           que la foto principal se lleve casi toda la pantalla del visor. */
+        .lightbox-upsell-toggle {
+            display: flex;
+            width: 100%;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            background: none;
+            border: 1.5px dashed #B2EBF2;
+            border-radius: 999px;
+            padding: 7px 14px;
+            font-family: inherit;
+            font-size: 0.85rem;
             font-weight: 700;
             color: var(--text-dark);
-            margin-bottom: 8px;
+            cursor: pointer;
+            transition: background 0.2s ease;
         }
+        .lightbox-upsell-toggle:hover { background: #E0F7FA; }
+        .lightbox-upsell-toggle .chev { font-size: 0.72rem; transition: transform 0.2s ease; color: var(--primary-color); }
+        .lightbox-upsell-toggle.abierta { border-style: solid; }
+        .lightbox-upsell-toggle.abierta .chev { transform: rotate(180deg); }
+        .lightbox-upsell.abierta .lightbox-upsell-track { display: flex; margin-top: 8px; }
+        .lightbox-upsell:not(.abierta) .lightbox-upsell-track { display: none; }
         .lightbox-upsell-track {
             display: flex;
             gap: 12px;
@@ -2288,15 +2308,13 @@
                 overflow-y: hidden;
             }
             .lightbox-thumb { width: 52px; height: 52px; }
-            /* Foto principal proporcional al alto de pantalla: asi el panel
-               completo (galeria + caption + sugeridos) cabe sin recortar
-               la tira de productos sugeridos en la parte de abajo. */
-            .lightbox-main { min-height: 180px; max-height: 30vh; }
-            .lightbox-main img { max-height: 30vh; }
+            /* Foto principal protagonista también en móvil: casi media
+               pantalla para que el producto se vea grande y completo. */
+            .lightbox-main { min-height: 240px; max-height: 46vh; }
+            .lightbox-main img { max-height: 46vh; }
             .lightbox-cta { padding: 12px 22px; font-size: 0.9rem; }
             /* Cards de sugeridos completos en movil: entran ~2.5 visibles */
-            .lightbox-upsell { margin-top: 14px; padding-top: 12px; }
-            .lightbox-upsell-title { margin-bottom: 10px; }
+            .lightbox-upsell { margin-top: 12px; padding-top: 10px; }
             .lightbox-upsell-item { flex: 0 0 124px; }
         }
 
@@ -3551,23 +3569,19 @@
 
         /* Cuota estimada bajo el total del carrito y del checkout: con el
            crédito activo el cliente ELIGE sus cuotas aquí mismo (3/6/12...)
-           y esa elección viaja en el mensaje de WhatsApp del pedido. */
+           y esa elección viaja en el mensaje de WhatsApp del pedido. Nace
+           PLEGADO como el simulador de las tarjetas (Ver cuotas / Ocultar)
+           y la cuota activa se puede deseleccionar tocándola otra vez. */
         .cart-cuota {
-            text-align: center;
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: var(--primary-color);
-            margin: 0 0 4px;
-            padding: 8px 12px;
-            background: linear-gradient(135deg, #E0F7FA, #FFF9E6);
-            border: 1px solid #B2EBF2;
-            border-radius: 12px;
+            text-align: left;
+            margin: 0 0 6px;
         }
-        .cart-cuota-titulo { display: block; margin-bottom: 6px; }
-        .cart-cuota .cuota-plazos { justify-content: center; margin-top: 0; }
+        .cart-cuota .cuota-toggle { width: 100%; justify-content: space-between; }
         .cart-cuota-resumen {
             display: block;
             margin-top: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
             color: var(--text-dark);
         }
         .cart-cuota-nota {
@@ -5496,7 +5510,10 @@
                 </button>
             </div>
             <div class="lightbox-upsell" id="lightboxUpsell" style="display:none;">
-                <h4 class="lightbox-upsell-title">También te puede interesar</h4>
+                <button type="button" class="lightbox-upsell-toggle" id="lightboxUpsellToggle" onclick="toggleUpsellLightbox()" aria-expanded="false" aria-controls="lightboxUpsellTrack">
+                    <span>🎁 También te puede interesar</span>
+                    <span class="chev"><span id="lightboxUpsellToggleTxt">Ver</span> <i class="fas fa-chevron-down" aria-hidden="true"></i></span>
+                </button>
                 <div class="lightbox-upsell-track" id="lightboxUpsellTrack"></div>
             </div>
         </div>
@@ -15212,16 +15229,21 @@
             if (isFinite(guardado) && guardado > 0) plazoCarrito = guardado;
         } catch (e) {}
 
+        // El simulador de cuotas del carrito nace PLEGADO, igual que el de
+        // las tarjetas ("Ver cuotas" / "Ocultar").
+        let cuotaCarritoAbierta = false;
+
         function persistirPlazoCarrito() {
             try { localStorage.setItem('jt_plazo_cuotas', String(plazoCarrito || '')); } catch (e) {}
         }
 
-        // Elige las cuotas desde el carrito: se refleja en el aviso, en el
-        // checkout (si el pago es a crédito) y en el mensaje de WhatsApp.
+        // Elige (o DESELIGE) las cuotas desde el carrito: tocar la cuota
+        // activa la quita. Se refleja en el aviso, en el checkout (si el
+        // pago es a crédito) y en el mensaje de WhatsApp.
         function setPlazoCarrito(n) {
             if (!plazosCredito().includes(n)) return;
-            plazoCarrito = n;
-            plazoCheckout = n;
+            plazoCarrito = (plazoCarrito === n) ? null : n;
+            plazoCheckout = plazoCarrito;
             persistirPlazoCarrito();
             renderCartCuota();
             // Si el formulario de pedido está abierto, refresca el selector
@@ -15232,9 +15254,15 @@
             }
         }
 
-        // Aviso de cuotas del carrito: muestra la cuota elegida o, si el
-        // cliente aún no ha elegido, los plazos disponibles para que lo
-        // haga desde aquí mismo.
+        // Pliega/despliega el simulador de cuotas del carrito.
+        function toggleCuotaCarrito() {
+            cuotaCarritoAbierta = !cuotaCarritoAbierta;
+            renderCartCuota();
+        }
+
+        // Aviso de cuotas del carrito: NACE PLEGADO como en las tarjetas
+        // (aviso compacto + "Ver cuotas"). Desplegado muestra los plazos
+        // con la cuota mensual; tocar la cuota activa la deselecciona.
         function renderCartCuota() {
             const cuotaEl = document.getElementById('cartCuota');
             const summary = getCartSummary();
@@ -15246,17 +15274,33 @@
             }
             const plazos = plazosCredito();
             const elegido = (plazoCarrito && plazos.includes(plazoCarrito)) ? plazoCarrito : null;
+            cuotaEl.hidden = false;
+            if (!cuotaCarritoAbierta) {
+                cuotaEl.innerHTML = `
+                    <button type="button" class="cuota-toggle${elegido ? ' abierta' : ''}" onclick="toggleCuotaCarrito()" aria-expanded="false" aria-controls="cartCuota" style="width:100%; justify-content:space-between; text-align:left;">
+                        <span class="cuota-toggle-text">💳 ${elegido
+                            ? `Pagarás en ${elegido} cuotas de <strong>${cop(cuotaMensual(summary.total, elegido))}</strong> al mes`
+                            : `Paga a cuotas con ${esc(CONFIG.credito.aliados.join(' o '))}: desde <strong>${cop(cuotaMensual(summary.total, plazoPorDefecto()))}</strong> al mes`}</span>
+                        <span class="cuota-toggle-chip">Ver cuotas <i class="fas fa-chevron-down chev" aria-hidden="true"></i></span>
+                    </button>`;
+                return;
+            }
             const botones = plazos.map(n => `
                 <button type="button" class="cuota-plazo${n === elegido ? ' activo' : ''}"
+                        title="${n === elegido ? 'Toca otra vez para quitar la elección' : `Cuota aproximada ${cop(cuotaMensual(summary.total, n))} al mes`}"
                         aria-pressed="${n === elegido}" onclick="setPlazoCarrito(${n})">${n} cuotas</button>`).join('');
-            cuotaEl.hidden = false;
             cuotaEl.innerHTML = `
-                <span class="cart-cuota-titulo">💳 Paga a cuotas con ${esc(CONFIG.credito.aliados.join(' o '))}:</span>
-                <span class="cuota-plazos">${botones}</span>
-                <span class="cart-cuota-resumen">${elegido
-                    ? `Elegiste ${elegido} cuotas de <strong>${cop(cuotaMensual(summary.total, elegido))}</strong> al mes`
-                    : `Elige tus cuotas — desde <strong>${cop(cuotaMensual(summary.total, plazoPorDefecto()))}</strong> al mes`}</span>
-                <span class="cart-cuota-nota">Valor estimado, sujeto a aprobación. Se envía con tu pedido por WhatsApp.</span>`;
+                <button type="button" class="cuota-toggle abierta" onclick="toggleCuotaCarrito()" aria-expanded="true" aria-controls="cartCuota" style="width:100%; justify-content:space-between; text-align:left;">
+                    <span class="cuota-toggle-text">💳 Paga a cuotas con ${esc(CONFIG.credito.aliados.join(' o '))}</span>
+                    <span class="cuota-toggle-chip">Ocultar <i class="fas fa-chevron-down chev" aria-hidden="true"></i></span>
+                </button>
+                <div class="cuota-simulador" style="margin-top:8px;">
+                    <div class="cuota-plazos" role="group" aria-label="Plazo de las cuotas" style="justify-content:center;">${botones}</div>
+                    <div class="cart-cuota-resumen">${elegido
+                        ? `Elegiste ${elegido} cuotas de <strong>${cop(cuotaMensual(summary.total, elegido))}</strong> al mes — toca la cuota marcada para quitar la elección`
+                        : `Elige tus cuotas — desde <strong>${cop(cuotaMensual(summary.total, plazoPorDefecto()))}</strong> al mes`}</div>
+                    <div class="cart-cuota-nota">Valor estimado, sujeto a aprobación del aliado. Se envía con tu pedido por WhatsApp.</div>
+                </div>`;
         }
 
         function renderCreditoPlazos() {
@@ -15264,10 +15308,13 @@
             const resumen = document.getElementById('creditoPlazoResumen');
             if (!box || !creditoActivo()) return;
             const total = getCartSummary().total;
-            // El plazo empieza donde lo dejó el cliente: si ya eligió
-            // cuotas en el carrito, se respeta esa elección aquí también.
+            // El plazo empieza donde lo dejó el cliente: si ya eligió cuotas
+            // (en el carrito o aquí), se respeta esa elección; si no, se
+            // sugiere el plazo más largo marcándolo como SUGERIDO, no como
+            // elección del cliente.
+            const hayElegido = !!(plazoCarrito && plazosCredito().includes(plazoCarrito));
             if (!plazoCheckout || !plazosCredito().includes(plazoCheckout)) {
-                plazoCheckout = (plazoCarrito && plazosCredito().includes(plazoCarrito)) ? plazoCarrito : plazoPorDefecto();
+                plazoCheckout = hayElegido ? plazoCarrito : plazoPorDefecto();
             }
             box.innerHTML = plazosCredito().map(n => `
                 <button type="button" class="cuota-plazo${n === plazoCheckout ? ' activo' : ''}"
@@ -15275,9 +15322,13 @@
                         onclick="setPlazoCheckout(${n})">${n} cuotas</button>
             `).join('');
             if (resumen) {
-                resumen.textContent = creditoDisponiblePara(total)
-                    ? `${cop(cuotaMensual(total, plazoCheckout))} al mes durante ${plazoCheckout} meses`
-                    : 'Confirmamos tu cuota por WhatsApp junto con el pedido';
+                if (!creditoDisponiblePara(total)) {
+                    resumen.textContent = 'Confirmamos tu cuota por WhatsApp junto con el pedido';
+                } else if (hayElegido) {
+                    resumen.textContent = `Elegiste ${plazoCheckout} cuotas: ${cop(cuotaMensual(total, plazoCheckout))} al mes durante ${plazoCheckout} meses`;
+                } else {
+                    resumen.textContent = `Sugerido: ${cop(cuotaMensual(total, plazoCheckout))} al mes durante ${plazoCheckout} meses — toca el plazo que prefieras`;
+                }
             }
         }
 
@@ -15396,12 +15447,11 @@
             img.classList.remove('cambia');
             void img.offsetWidth;
             img.classList.add('cambia');
-            // Foto principal en ALTA RESOLUCION: las miniaturas del catálogo
-            // son de 144px y ampliadas al visor se veían borrosas (las de
-            // "También te puede interesar" se ven bien porque se muestran
-            // pequeñas). El servidor publica la misma foto en /full/ (1080px):
-            // se usa esa y, si falla, se vuelve a la miniatura original.
-            const srcFull = imgFullUrl(src);
+            // La foto aparece AL INSTANTE con la miniatura (que ya está en
+            // caché de las tarjetas) y sube solita a la versión /full/ de
+            // 1080px en cuanto termina de descargar: nunca hay hueco vacío,
+            // imagen anterior ni borrosidad — la principal siempre termina
+            // nitida y grande.
             img.dataset.fbk = '';
             img.onerror = function () {
                 if (this.dataset.fbk === this.src) return;
@@ -15410,12 +15460,21 @@
                 imgOnError(this);
             };
             // La foto aprovecha TODO el espacio del visor (los atributos
-            // width/height del HTML son solo la reserva de espacio inicial):
-            // con width/height auto y los máximos del CSS, la imagen se ve
-            // al tamaño real permitido, siempre nitida y sin estirar.
+            // width/height del HTML son solo la reserva de espacio inicial).
             img.style.width = 'auto';
             img.style.height = 'auto';
-            img.src = srcFull;
+            img.src = src;
+            const cargaFull = new Image();
+            cargaFull.onload = () => {
+                // Solo cambia si el cliente sigue en esta misma foto.
+                if (galeriaImages[galeriaIndex] === src) {
+                    img.classList.remove('cambia');
+                    void img.offsetWidth;
+                    img.classList.add('cambia');
+                    img.src = cargaFull.src;
+                }
+            };
+            cargaFull.src = imgFullUrl(src);
             img.alt = producto ? producto.name : '';
             if (captionEl) captionEl.textContent = producto ? producto.name : '';
             if (counterEl) counterEl.textContent = `${galeriaIndex + 1} / ${galeriaImages.length}`;
@@ -15472,6 +15531,25 @@
 
         // "Tambien te puede interesar": otros productos, priorizando la
         // misma categoria (como el "clientes tambien compraron" de Amazon).
+        // La tira nace PLEGADA (botón "Ver") para que la foto principal
+        // del visor se vea grande; se despliega solo si le interesa al
+        // cliente — igual que el simulador de cuotas de las tarjetas.
+        let upsellLightboxAbierto = false;
+
+        function toggleUpsellLightbox() {
+            upsellLightboxAbierto = !upsellLightboxAbierto;
+            actualizarUpsellLightbox();
+        }
+
+        function actualizarUpsellLightbox() {
+            const cont = document.getElementById('lightboxUpsell');
+            const btn = document.getElementById('lightboxUpsellToggle');
+            const txt = document.getElementById('lightboxUpsellToggleTxt');
+            if (cont) cont.classList.toggle('abierta', upsellLightboxAbierto);
+            if (btn) btn.setAttribute('aria-expanded', String(upsellLightboxAbierto));
+            if (txt) txt.textContent = upsellLightboxAbierto ? 'Ocultar' : 'Ver';
+        }
+
         function renderGalleryUpsell(productId) {
             const box = document.getElementById('lightboxUpsell');
             const track = document.getElementById('lightboxUpsellTrack');
@@ -15514,6 +15592,10 @@
             pintarGaleria();
             renderGalleryThumbs();
             renderGalleryUpsell(productId);
+            // La tira de sugeridos nace PLEGADA en cada apertura: la foto
+            // principal es la protagonista del visor.
+            upsellLightboxAbierto = false;
+            actualizarUpsellLightbox();
             lightbox.classList.add('show');
             document.body.classList.add('body-no-scroll');
             const panel = lightbox.querySelector('.lightbox-panel');
@@ -15789,17 +15871,19 @@
             }
             message += `💳 *Método de Pago:* ${paymentLabels[formData.get('paymentMethod')] || formData.get('paymentMethod')}\n\n`;
 
-            // Con crédito elegido se informa el plazo que el cliente marcó
-            // (en el carrito o aquí en el formulario) y la cuota estimada,
-            // para que quien atiende el pedido gestione el aliado sin adivinar.
+            // Con crédito elegido se informa el plazo que el cliente MARCÓ
+            // (en el carrito o aquí en el formulario) y la cuota estimada;
+            // si no eligió ninguno, se envía el plazo sugerido para que quien
+            // atienda lo confirme con el cliente por WhatsApp.
             if (formData.get('paymentMethod') === 'credito' && creditoActivo()) {
                 const totalCredito = getCartSummary().total;
                 const plazos = plazosCredito();
-                const plazo = (plazoCheckout && plazos.includes(plazoCheckout))
-                    ? plazoCheckout
-                    : ((plazoCarrito && plazos.includes(plazoCarrito)) ? plazoCarrito : plazoPorDefecto());
+                const elegido = (plazoCarrito && plazos.includes(plazoCarrito)) ? plazoCarrito : null;
+                const plazo = elegido || plazoPorDefecto();
                 if (creditoDisponiblePara(totalCredito)) {
-                    message += `🧮 *Cuotas:* ${plazo} cuotas de aprox. ${cop(cuotaMensual(totalCredito, plazo))} al mes (elección del cliente; valor estimado, sujeto a aprobación de ${CONFIG.credito.aliados.join(' o ')})\n\n`;
+                    message += elegido
+                        ? `🧮 *Cuotas:* ${plazo} cuotas de aprox. ${cop(cuotaMensual(totalCredito, plazo))} al mes (elección del cliente; valor estimado, sujeto a aprobación de ${CONFIG.credito.aliados.join(' o ')})\n\n`
+                        : `🧮 *Cuotas:* sugerido ${plazo} cuotas de aprox. ${cop(cuotaMensual(totalCredito, plazo))} al mes — el cliente no eligió plazo, confrórmalo con él (valor estimado, sujeto a aprobación de ${CONFIG.credito.aliados.join(' o ')})\n\n`;
                 } else {
                     message += `🧮 *Cuotas:* A convenir con ${CONFIG.credito.aliados.join(' o ')} por WhatsApp\n\n`;
                 }
