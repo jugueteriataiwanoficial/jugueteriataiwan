@@ -85,10 +85,12 @@
         }
     </script>
 
-    <!-- Analítica de Juguetería Taiwan: pega aquí tus etiquetas cuando las tengas
-         (Meta Pixel, GA4/gtag.js, Clarity). Las funciones track() del sitio ya
-         reportan ViewContent, AddToCart, InitiateCheckout y Lead a cualquier
-         etiqueta que esté activa. -->
+    <!-- Analítica de Juguetería Taiwan: los IDs del Pixel de Meta, Google
+         Analytics 4 y Microsoft Clarity NO se pegan aquí: se escriben en el
+         panel de administración (sección "Analítica y píxeles") y las
+         etiquetas se cargan solas (ver aplicarAnalitica). Las funciones
+         track() del sitio reportan PageView, ViewContent, AddToCart,
+         InitiateCheckout, Search y Lead a las etiquetas activas. -->
 
     <style>
         :root {
@@ -1276,70 +1278,72 @@
         /* Products Carousel - ESTILOS MEJORADOS */
         .products-carousel {
             background: var(--white);
-            padding: 40px 0;
+            /* Mas compacto: las dos filas del carrusel deben verse juntas
+               en una pantalla normal, sin hacer scroll para llegar a la 2. */
+            padding: 22px 0 10px;
             position: relative;
             overflow: hidden;
         }
-        
+
         .carousel-container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
             position: relative;
         }
-        
+
         .carousel-title {
-            font-size: 2rem;
+            font-size: 1.45rem;
             font-weight: 800;
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             background: var(--gradient-text);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-        
+
         .carousel-subtitle {
-            font-size: 1.1rem;
+            font-size: 0.88rem;
             color: var(--text-light);
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 12px;
             max-width: 600px;
             margin-left: auto;
             margin-right: auto;
         }
-        
+
         /* --- CARRUSEL RESPONSIVO ---
            Columnas visibles segun ancho de pantalla, scroll con snap nativo
            (swipe fluido en movil, flechas en escritorio). Sin librerias. */
         .carousel-track {
-            --cols: 1.15;   /* movil: 1 tarjeta + un asomo de la siguiente */
-            --gap: 14px;
+            --cols: 1.6;   /* movil: tarjetas mas pequeñas, se ven las 2 filas */
+            --gap: 12px;
             display: grid;
             grid-auto-flow: column;
             grid-auto-columns: calc((100% - (var(--cols) - 1) * var(--gap)) / var(--cols));
             gap: var(--gap);
-            padding: 10px 0 18px;
+            padding: 6px 0 12px;
             overflow-x: auto;
             overscroll-behavior-x: contain;
             scroll-snap-type: x mandatory;
             scroll-behavior: smooth;
             -webkit-overflow-scrolling: touch;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             scrollbar-width: thin;
             scrollbar-color: var(--primary-color) transparent;
         }
 
-        @media (min-width: 560px)  { .carousel-track { --cols: 2.2; } }
-        @media (min-width: 768px)  { .carousel-track { --cols: 3; --gap: 18px; } }
-        @media (min-width: 1100px) { .carousel-track { --cols: 4; --gap: 20px; } }
+        @media (min-width: 560px)  { .carousel-track { --cols: 2.8; } }
+        @media (min-width: 768px)  { .carousel-track { --cols: 4; --gap: 14px; } }
+        @media (min-width: 1100px) { .carousel-track { --cols: 5; --gap: 16px; } }
 
         /* DOS FILAS POR CATEGORIA: cada fila es un estante propio con su
            etiqueta, sus flechas y sus puntos. La fila 1 lleva la categoria
            con mas diseños del catalogo y la fila 2 la siguiente. */
         .carousel-row {
             position: relative;
-            margin-bottom: 18px;
+            margin-bottom: 10px;
         }
         .carousel-row-header {
             display: flex;
@@ -1400,7 +1404,10 @@
         }
 
         .carousel-image-container {
-            aspect-ratio: 4 / 5;
+            /* Cuadrada y compacta: la foto completa sigue viendose igual
+               (object-fit: contain) pero las dos filas de carrusel caben
+               en una sola pantalla sin scroll. */
+            aspect-ratio: 1 / 1;
             height: auto;
             border-radius: 15px;
             overflow: hidden;
@@ -1974,7 +1981,7 @@
             border-radius: 18px;
             width: 100%;
             max-width: 940px;
-            max-height: 92vh;
+            max-height: 94vh;
             overflow-y: auto;
             /* Si aun asi aparece (pantallas muy bajas), que sea fino y no
                opaque el borde redondeado del panel. */
@@ -2019,10 +2026,9 @@
             gap: 8px;
             width: 64px;
             flex-shrink: 0;
-            /* Antes 460px fijos: con la barra de sugeridos el panel se hacia
-               mas alto que la pantalla, aparecia un scrollbar interno que
-               comia el borde redondeado derecho del panel. */
-            max-height: min(460px, 46vh);
+            /* Alineada con el techo de la foto principal para que la
+               columna de miniaturas no crezca más que la foto. */
+            max-height: min(500px, 52vh);
             overflow-y: auto;
             padding: 2px;
         }
@@ -2075,10 +2081,10 @@
             background: #EAF6F9;
             border-radius: 12px;
             min-height: 320px;
-            /* Mismo techo que las miniaturas para que galeria + caption +
-               sugeridos quepan en el panel SIN scrollbar (el scrollbar
-               interno cortaba el borde redondeado derecho en escritorio). */
-            max-height: min(460px, 46vh);
+            /* Techo calibrado con la tira de sugeridos compacta: la foto
+               principal se ve grande y con nitidez (usa la versión /full/
+               de 1080px) y el panel completo cabe en la pantalla. */
+            max-height: min(500px, 52vh);
             overflow: hidden;
         }
         /* Fondo borroso con la propia foto (mismo truco de las tarjetas):
@@ -2100,7 +2106,7 @@
             position: relative;
             z-index: 1;
             max-width: 100%;
-            max-height: min(460px, 46vh);
+            max-height: min(500px, 52vh);
             object-fit: contain;
             border-radius: 12px;
             cursor: default;
@@ -2173,15 +2179,15 @@
            tarjetas de productos: swipe fluido en movil, scroll suave en
            escritorio y cards siempre completas (foto + nombre + precio). */
         .lightbox-upsell {
-            margin-top: 14px;
-            padding-top: 14px;
+            margin-top: 10px;
+            padding-top: 10px;
             border-top: 1px solid var(--border-color);
         }
         .lightbox-upsell-title {
             font-size: 0.92rem;
             font-weight: 700;
             color: var(--text-dark);
-            margin-bottom: 12px;
+            margin-bottom: 8px;
         }
         .lightbox-upsell-track {
             display: flex;
@@ -2191,7 +2197,7 @@
             scroll-snap-type: x mandatory;
             scroll-behavior: smooth;
             -webkit-overflow-scrolling: touch;
-            padding-bottom: 10px;
+            padding-bottom: 4px;
             scrollbar-width: thin;
             scrollbar-color: var(--primary-color) transparent;
         }
@@ -2223,9 +2229,12 @@
             position: relative;
             display: block;
             width: 100%;
-            aspect-ratio: 4 / 5;
+            /* Cuadrada: las fotos reales del catálogo son cuadradas y así
+               la tira de sugeridos queda compacta (el panel completo —
+               foto grande + sugeridos — cabe en la pantalla). */
+            aspect-ratio: 1 / 1;
             border-radius: 10px;
-            margin-bottom: 6px;
+            margin-bottom: 5px;
             overflow: hidden;
             background: #EAF6F9;
         }
@@ -2248,17 +2257,17 @@
             display: block;
         }
         .lightbox-upsell-item-name {
-            font-size: 0.8rem;
+            font-size: 0.72rem;
             font-weight: 600;
             color: var(--text-dark);
-            line-height: 1.25;
+            line-height: 1.2;
             display: -webkit-box;
-            -webkit-line-clamp: 2;
+            -webkit-line-clamp: 1;
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
         .lightbox-upsell-item-price {
-            font-size: 0.82rem;
+            font-size: 0.78rem;
             font-weight: 700;
             color: var(--primary-color);
             margin-top: 2px;
@@ -2961,6 +2970,23 @@
             margin-bottom: 20px;
             color: var(--primary-color);
         }
+        .footer-section h3 small {
+            display: block;
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: #9CA3AF;
+            margin-top: 2px;
+        }
+        /* Nota del bloque mayorista: aclara que ese catálogo externo maneja
+           precios por volumen, distintos a los precios al detal de esta
+           página, para que nadie se confunda al comparar. */
+        .footer-mayorista-note {
+            font-size: 0.78rem;
+            line-height: 1.5;
+            color: #9CA3AF;
+            margin: -8px 0 12px;
+        }
+        .footer-mayorista-note strong { color: var(--primary-color); }
         .footer-section p {
             line-height: 1.6;
             color: #9CA3AF;
@@ -3523,13 +3549,33 @@
         }
         .card-goal-meter .cuota-nota { margin-top: 6px; }
 
-        /* Cuota estimada bajo el total del carrito y del checkout */
+        /* Cuota estimada bajo el total del carrito y del checkout: con el
+           crédito activo el cliente ELIGE sus cuotas aquí mismo (3/6/12...)
+           y esa elección viaja en el mensaje de WhatsApp del pedido. */
         .cart-cuota {
             text-align: center;
             font-size: 0.8rem;
             font-weight: 600;
             color: var(--primary-color);
             margin: 0 0 4px;
+            padding: 8px 12px;
+            background: linear-gradient(135deg, #E0F7FA, #FFF9E6);
+            border: 1px solid #B2EBF2;
+            border-radius: 12px;
+        }
+        .cart-cuota-titulo { display: block; margin-bottom: 6px; }
+        .cart-cuota .cuota-plazos { justify-content: center; margin-top: 0; }
+        .cart-cuota-resumen {
+            display: block;
+            margin-top: 6px;
+            color: var(--text-dark);
+        }
+        .cart-cuota-nota {
+            display: block;
+            margin-top: 4px;
+            font-size: 0.66rem;
+            font-weight: 500;
+            color: var(--text-light);
         }
         .cod-footer-cuota {
             text-align: center;
@@ -4696,6 +4742,7 @@
             line-height: 1.5;
             margin-bottom: 18px;
         }
+        .admin-help-mini { font-size: 0.74rem; margin: -8px 0 14px; color: var(--text-light); }
         .admin-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -4807,6 +4854,76 @@
         }
         .admin-botones .btn { padding: 12px 18px; font-size: 0.9rem; }
 
+        /* --- Secciones nuevas del panel: identidad, temporada y lista completa --- */
+        .admin-check {
+            flex-direction: row !important;
+            align-items: center;
+            gap: 8px !important;
+            font-size: 0.82rem !important;
+            min-height: 42px;
+        }
+        .admin-check input { width: 18px; height: 18px; accent-color: var(--primary-color); }
+        .admin-separador {
+            border: none;
+            border-top: 1px solid var(--border-color);
+            margin: 20px 0 6px;
+        }
+        .admin-logo-preview {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: -6px 0 14px;
+            font-size: 0.78rem;
+            color: var(--text-light);
+            min-height: 34px;
+        }
+        .admin-logo-preview img {
+            height: 34px;
+            max-width: 150px;
+            object-fit: contain;
+            border-radius: 6px;
+            padding: 2px;
+            background: #fff;
+            border: 1px solid var(--border-color);
+        }
+        .admin-temporada-fila {
+            background: #F0FAF1 !important;
+            border: 1px solid #C8E6C9;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+        .admin-temporada-fila .admin-cat-nombre i { color: #2E7D32; }
+        .admin-todos-acciones { margin-bottom: 10px; }
+        .admin-lista-todos {
+            max-height: 340px;
+            overflow-y: auto;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 6px;
+            margin-bottom: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .admin-lista-grupo {
+            font-size: 0.72rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--primary-color);
+            padding: 8px 8px 2px;
+        }
+        .admin-lista-todos .admin-prod-fila { grid-template-columns: 1fr auto auto auto; }
+        .admin-badge-fijado {
+            font-size: 0.62rem;
+            font-weight: 800;
+            color: #fff;
+            background: var(--gradient-primary);
+            border-radius: 999px;
+            padding: 2px 8px;
+            white-space: nowrap;
+        }
+
         /* --- Login de administración --- */
         .admin-login { max-width: 420px; }
         .admin-login-label {
@@ -4896,7 +5013,7 @@
     <header>
         <div class="shein-topbar">
             <div class="shein-topbar-inner">
-                <a href="#" class="shein-logo" onclick="event.preventDefault(); scrollToTop();" aria-label="Juguetería Taiwan: volver al inicio"><img class="shein-logo-img" src="https://jugueteriataiwan.com/storage/branding/70TI84WCuEegX1pJk5ttvppyKKn2sCze24oHDKoi.png" alt="Logo Juguetería Taiwan" onerror="this.style.display='none'">Juguetería Taiwan</a>
+                <a href="#" class="shein-logo" onclick="event.preventDefault(); scrollToTop();" aria-label="Juguetería Taiwan: volver al inicio"><img class="shein-logo-img" id="logoPrincipal" src="https://jugueteriataiwan.com/storage/branding/70TI84WCuEegX1pJk5ttvppyKKn2sCze24oHDKoi.png" alt="Logo Juguetería Taiwan" onerror="this.style.display='none'"><span class="shein-logo-text" data-nombre>Juguetería Taiwan</span></a>
                 <div class="shein-search-box">
                     <input type="text" id="searchInput" placeholder="Buscar juguetes, categorías, marcas..." onkeyup="searchProducts()">
                     <button type="button" class="shein-search-btn" aria-label="Buscar"><i class="fas fa-search"></i></button>
@@ -4934,7 +5051,7 @@
     <div class="mobile-menu" id="mobileMenu">
         <div class="mobile-menu-header">
             <div class="mobile-menu-logo">
-                <i class="fas fa-store"></i> Juguetería Taiwan
+                <i class="fas fa-store"></i> <span data-nombre>Juguetería Taiwan</span>
             </div>
             <button class="mobile-menu-close" onclick="toggleMobileMenu()">
                 <i class="fas fa-times"></i>
@@ -4958,7 +5075,7 @@
         <div class="container">
             <div class="hero-content">
                 <div class="hero-text">
-                    <div class="subtitle-badge"><i class="fas fa-cubes"></i> +22.000 productos disponibles</div>
+                    <div class="subtitle-badge"><i class="fas fa-cubes"></i> <span data-cantidad>+22.000</span> productos disponibles</div>
                     <h1>Tu mundo de <span class="text-accent">diversión</span> al mejor precio</h1>
                     <!-- Si tienes reseñas verificables (Google/Facebook), ajusta el número
                          y enlaza la fuente. Nunca dejes una calificación inventada. -->
@@ -4977,7 +5094,7 @@
                     <!-- Beneficios reales de la tienda (sustituye al contador de escasez ficticio).
                          Si quieres volver a mostrar escasez, hazlo con stock real desde el backend. -->
                     <div class="hero-benefits">
-                        <span class="hero-benefit"><i class="fas fa-cubes"></i> +22.000 productos en catálogo</span>
+                        <span class="hero-benefit"><i class="fas fa-cubes"></i> <span data-cantidad>+22.000</span> productos en catálogo</span>
                         <span class="hero-benefit" data-neutro='<i class="fas fa-truck"></i> Envíos a toda Colombia'><i class="fas fa-credit-card"></i> Paga a cuotas con Addi o Sistecrédito</span>
                         <span class="hero-benefit"><i class="fas fa-tags"></i> Precios al detal en toda la tienda</span>
                         <span class="hero-benefit"><i class="fas fa-shield-alt"></i> Pago seguro con todos los medios</span>
@@ -4999,21 +5116,21 @@
                 <div class="hero-product-card">
                     <div class="card-gallery">
                         <div class="card-gallery-track">
-                            <div class="card-slide" style="--img:url('https://jugueteriataiwan.com/storage/products/30533/thumb/e1e78f2f-8d84-458a-8f73-afdac0a201e3.webp')" onclick="openImageLightbox('https://jugueteriataiwan.com/storage/products/30533/thumb/e1e78f2f-8d84-458a-8f73-afdac0a201e3.webp', 'PISTA NEON CARRO PILA LUZ CON NUMERO', 'pista-neon-carro-pila-luz-con-numero')">
-                                <img src="https://jugueteriataiwan.com/storage/products/30533/thumb/e1e78f2f-8d84-458a-8f73-afdac0a201e3.webp" alt="Pista Neón Carro con pila y luz, incluye número — Juguetería Taiwan" width="400" height="500" fetchpriority="high" decoding="async" onerror="imgOnError(this)">
+                            <div class="card-slide" id="heroProductoSlide" style="--img:url('https://jugueteriataiwan.com/storage/products/30533/thumb/e1e78f2f-8d84-458a-8f73-afdac0a201e3.webp')" onclick="openImageLightbox('https://jugueteriataiwan.com/storage/products/30533/thumb/e1e78f2f-8d84-458a-8f73-afdac0a201e3.webp', 'PISTA NEON CARRO PILA LUZ CON NUMERO', 'pista-neon-carro-pila-luz-con-numero')">
+                                <img id="heroProductoImg" src="https://jugueteriataiwan.com/storage/products/30533/full/e1e78f2f-8d84-458a-8f73-afdac0a201e3.webp" data-thumb="https://jugueteriataiwan.com/storage/products/30533/thumb/e1e78f2f-8d84-458a-8f73-afdac0a201e3.webp" alt="Pista Neón Carro con pila y luz, incluye número — Juguetería Taiwan" width="400" height="500" fetchpriority="high" decoding="async" onerror="imgOnError(this)">
                             </div>
                         </div>
                     </div>
                     <div class="product-info">
-                        <div class="product-category">JUGUETERÍA</div>
-                        <h3 class="product-title">PISTA NEON CARRO PILA LUZ CON NUMERO</h3>
-                        <div class="product-ref-line"><span>SKU: 2026888805337</span></div>
+                        <div class="product-category" id="heroProductoCat">JUGUETERÍA</div>
+                        <h3 class="product-title" id="heroProductoTitle">PISTA NEON CARRO PILA LUZ CON NUMERO</h3>
+                        <div class="product-ref-line"><span id="heroProductoSku">SKU: 2026888805337</span></div>
                         <p class="product-description">Producto destacado del catálogo. Confirmamos disponibilidad y detalles por WhatsApp.</p>
                         <div class="product-price">
                             <div class="current-price" id="heroPriceRange">$68.800</div>
                             <div class="wholesale-badge" data-neutro='🚚 Envíos a toda Colombia'>💳 Paga a cuotas con Addi o Sistecrédito</div>
                         </div>
-                        <button class="add-to-cart-btn" onclick="scrollToProduct('pista-neon-carro-pila-luz-con-numero')">
+                        <button class="add-to-cart-btn" id="heroProductoBtn" onclick="scrollToProduct('pista-neon-carro-pila-luz-con-numero')">
                             <i class="fas fa-shopping-bag"></i>COMPRAR AHORA
                         </button>
                         <div class="payment-info">
@@ -5183,7 +5300,7 @@
                      clientes, vuelve a este bloque. Cada foto enlaza a la
                      tarjeta del producto (no a un lightbox), para llevar
                      directo a la compra. -->
-                <div class="testimonial-card">
+                <div class="testimonial-card" data-fav-slot="0">
                     <div class="testimonial-image-container square" data-links-to-product="mesa-futbol-de-madera" style="--img:url('https://jugueteriataiwan.com/storage/products/30385/thumb/3b4c8612-2e7b-44d0-9d68-fa32e9efe45e.webp')" onclick="scrollToProduct('mesa-futbol-de-madera')" role="button" tabindex="0" aria-label="Ver Mesa Fútbol de Madera y comprar" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();scrollToProduct('mesa-futbol-de-madera');}">
                         <img src="https://jugueteriataiwan.com/storage/products/30385/thumb/3b4c8612-2e7b-44d0-9d68-fa32e9efe45e.webp" alt="Mesa Fútbol de Madera — Juguetería Taiwan" loading="lazy" onerror="imgOnError(this)">
                     </div>
@@ -5195,7 +5312,7 @@
                     </div>
                 </div>
 
-                <div class="testimonial-card">
+                <div class="testimonial-card" data-fav-slot="1">
                     <div class="testimonial-image-container square" data-links-to-product="pista-neon-carro-pila-luz-con-numero" style="--img:url('https://jugueteriataiwan.com/storage/products/30533/thumb/e1e78f2f-8d84-458a-8f73-afdac0a201e3.webp')" onclick="scrollToProduct('pista-neon-carro-pila-luz-con-numero')" role="button" tabindex="0" aria-label="Ver Pista Neón Carro Pila Luz y comprar" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();scrollToProduct('pista-neon-carro-pila-luz-con-numero');}">
                         <img src="https://jugueteriataiwan.com/storage/products/30533/thumb/e1e78f2f-8d84-458a-8f73-afdac0a201e3.webp" alt="Pista Neón Carro con pila y luz, incluye número" loading="lazy" onerror="imgOnError(this)">
                     </div>
@@ -5207,7 +5324,7 @@
                     </div>
                 </div>
 
-                <div class="testimonial-card">
+                <div class="testimonial-card" data-fav-slot="2">
                     <div class="testimonial-image-container square" data-links-to-product="burbujero-mil-burbujas-pilas-cj-bubble-gun-4-motivos" style="--img:url('https://jugueteriataiwan.com/storage/products/30523/thumb/fe6f444a-ebca-4fea-bc42-198023f51e3a.webp')" onclick="scrollToProduct('burbujero-mil-burbujas-pilas-cj-bubble-gun-4-motivos')" role="button" tabindex="0" aria-label="Ver Burbujero Mil Burbujas y comprar" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();scrollToProduct('burbujero-mil-burbujas-pilas-cj-bubble-gun-4-motivos');}">
                         <img src="https://jugueteriataiwan.com/storage/products/30523/thumb/fe6f444a-ebca-4fea-bc42-198023f51e3a.webp" alt="Burbujero Mil Burbujas con pilas, modelo CJ Bubble Gun" loading="lazy" onerror="imgOnError(this)">
                     </div>
@@ -5258,7 +5375,7 @@
                 </div>
                 <div class="faq-answer">
                     <div class="faq-answer-content">
-                        Para confirmar pedidos y cotizaciones al por mayor escríbenos al <strong>+57 310 698 8465</strong>. Para atención general también estamos en el <strong>+57 313 878 6096</strong>.
+                        Para confirmar pedidos y cotizaciones al por mayor escríbenos al <strong data-wa-pedidos>+57 310 698 8465</strong>. Para atención general también estamos en el <strong data-wa-contacto>+57 313 878 6096</strong>.
                     </div>
                 </div>
             </div>
@@ -5269,7 +5386,7 @@
                 </div>
                 <div class="faq-answer">
                     <div class="faq-answer-content">
-                        Estamos en el <strong>Centro Comercial Taiwan, Local 27, Cra. 9 #13a - 12</strong>. Puedes retirar tu pedido allí o visitarnos para ver los productos en persona.
+                        Estamos en el <strong data-direccion>Centro Comercial Taiwan, Local 27, Cra. 9 #13a - 12</strong>. Puedes retirar tu pedido allí o visitarnos para ver los productos en persona.
                         <a class="faq-maps-link" href="https://www.google.com/maps/dir/?api=1&destination=Centro%20Comercial%20Taiwan%2C%20Cra.%209%20%2313a%20-%2012%2C%20Local%2027%2C%20Colombia" target="_blank" rel="noopener"><i class="fas fa-map-marked-alt"></i> Cómo llegar</a>
                     </div>
                 </div>
@@ -5444,7 +5561,7 @@
                             <label class="delivery-option">
                                 <input type="radio" name="deliveryMethod" value="tienda" onchange="toggleDeliveryMethod()">
                                 <span class="delivery-option-icon"><i class="fas fa-store"></i></span>
-                                <span class="delivery-option-text"><strong>Retiro en tienda</strong><small>CC Taiwan · Local 27</small></span>
+                                <span class="delivery-option-text"><strong>Retiro en tienda</strong><small data-direccion>CC Taiwan · Local 27</small></span>
                             </label>
                         </div>
                     <div id="deliveryAddressFields">
@@ -5510,7 +5627,7 @@
                     </div>
                     <div class="cod-store-info" id="storePickupInfo" style="display:none;">
                         <i class="fas fa-map-marker-alt"></i>
-                        <span>Recoge tu pedido en nuestra tienda física: <strong>Centro Comercial Taiwan, Local 27, Cra. 9 #13a - 12</strong>. Te confirmamos por WhatsApp cuándo queda listo.<br>
+                        <span>Recoge tu pedido en nuestra tienda física: <strong data-direccion>Centro Comercial Taiwan, Local 27, Cra. 9 #13a - 12</strong>. Te confirmamos por WhatsApp cuándo queda listo.<br>
                         <a class="cod-store-maps" href="https://www.google.com/maps/dir/?api=1&destination=Centro%20Comercial%20Taiwan%2C%20Cra.%209%20%2313a%20-%2012%2C%20Local%2027%2C%20Colombia" target="_blank" rel="noopener"><i class="fas fa-map-marked-alt"></i> Cómo llegar</a></span>
                     </div>
                     </div>
@@ -5586,6 +5703,9 @@
         <a class="floating-btn floating-whatsapp" href="https://wa.me/573106988465?text=Hola%2C%20quiero%20informaci%C3%B3n%20sobre%20productos%20de%20Jugueter%C3%ADa%20Taiwan" target="_blank" rel="noopener" title="Escríbenos por WhatsApp" aria-label="Escríbenos por WhatsApp">
             <i class="fab fa-whatsapp"></i>
         </a>
+        <button class="floating-btn floating-share" onclick="compartirCatalogo()" title="Compartir catálogo" aria-label="Compartir el catálogo con amigos">
+            <i class="fas fa-share-alt"></i>
+        </button>
         <button class="floating-btn floating-cart" onclick="toggleCart()" title="Ver Carrito">
             <i class="fas fa-shopping-cart"></i>
             <span class="cart-count" id="floatingCartCount">0</span>
@@ -5606,7 +5726,7 @@
                 <button class="modal-close" onclick="cerrarLoginAdmin()" aria-label="Cerrar">&times;</button>
             </div>
             <div class="modal-body">
-                <p class="admin-help">Esta área es privada. Ingresa tu clave para entrar a cambiar los precios de la tienda.</p>
+                <p class="admin-help">Esta área es privada. Ingresa tu clave para entrar a administrar la tienda: precios, logo, nombre, contacto y cuotas.</p>
                 <label class="admin-login-label">Tu clave
                     <input type="password" id="adminClave" autocomplete="off" placeholder="Escribe tu clave aquí"
                            onkeydown="if(event.key==='Enter'){event.preventDefault(); entrarAdmin();}">
@@ -5620,22 +5740,112 @@
         </div>
     </div>
 
-    <!-- Panel de precios del administrador: se abre con el enlace "Administración"
-         del pie de página (tras ingresar la clave), ?admin=1 o Ctrl+Shift+A -->
+    <!-- Panel del administrador: se abre con el enlace "Administración"
+         del pie de página (tras ingresar la clave), ?admin=1 o Ctrl+Shift+A.
+         Desde aquí se gestiona TODO lo que antes estaba fijo en el archivo:
+         nombre y logo, contacto, cuotas, precios de cada producto y temporada. -->
     <div class="modal" id="adminModal">
-        <div class="modal-content admin-panel" role="dialog" aria-label="Panel de precios del administrador">
+        <div class="modal-content admin-panel" role="dialog" aria-label="Panel de administración de la tienda">
             <div class="modal-header">
-                <h3 class="modal-title"><i class="fas fa-sliders-h"></i> Panel de precios de la tienda</h3>
+                <h3 class="modal-title"><i class="fas fa-sliders-h"></i> Panel de la tienda</h3>
                 <button class="modal-close" onclick="cerrarPanelAdmin()" aria-label="Cerrar panel">&times;</button>
             </div>
             <div class="modal-body">
                 <p class="admin-help">
-                    ✏️ <strong>Aquí decides cuánto ganas con cada venta.</strong><br>
-                    1️⃣ En <strong>"¿Cuánto quieres ganar?"</strong> escribe tu ganancia para toda la tienda.
-                    Ejemplo: <strong>25</strong> = por cada $100 de costo, ganas $25 (un juguete de $10.000 se vende en $12.500).<br>
-                    2️⃣ ¿Una categoría necesita ganar más o menos? Escribe su propio número en la lista.<br>
-                    3️⃣ ¿Un juguete con precio exacto? Búscalo abajo y fíjale el precio.<br>
-                    Cuando termines, pulsa <strong>"Ver cambios ahora"</strong>.
+                    ✏️ <strong>Aquí controlas tu tienda sin tocar el archivo.</strong><br>
+                    1️⃣ <strong>Nombre, logo y contacto</strong> se cambian en la primera sección.<br>
+                    2️⃣ <strong>Precios:</strong> define tu ganancia general, por categoría, de temporada o el precio exacto de cada producto.<br>
+                    Cuando termines, pulsa <strong>"Ver cambios ahora"</strong> y después <strong>"Guardar"</strong>.
+                </p>
+
+                <h4 class="admin-sub">🏪 Nombre y logo de tu tienda <small>(se refleja en todo el sitio al instante)</small></h4>
+                <div class="admin-grid">
+                    <label>Nombre de la tienda
+                        <input type="text" id="adminNombreTienda" maxlength="40" placeholder="Ej. Juguetería Taiwan">
+                    </label>
+                    <label>Logo (pega el enlace de tu logo; vacío = solo texto)
+                        <input type="text" id="adminLogoTienda" placeholder="https://…/mi-logo.png">
+                    </label>
+                </div>
+                <div class="admin-logo-preview" id="adminLogoPreview"></div>
+
+                <h4 class="admin-sub">📞 Contacto y redes</h4>
+                <div class="admin-grid">
+                    <label>WhatsApp de pedidos (10 dígitos)
+                        <input type="tel" id="adminWaPedidos" inputmode="numeric" placeholder="3106988465">
+                    </label>
+                    <label>WhatsApp de atención (10 dígitos)
+                        <input type="tel" id="adminWaContacto" inputmode="numeric" placeholder="3138786096">
+                    </label>
+                    <label>Dirección de la tienda
+                        <input type="text" id="adminDireccion" placeholder="Centro Comercial Taiwan, Local 27, Cra. 9 #13a - 12">
+                    </label>
+                    <label>Instagram (usuario, sin @)
+                        <input type="text" id="adminInstagram" placeholder="jugueteriataiwan">
+                    </label>
+                    <label>TikTok (usuario, sin @)
+                        <input type="text" id="adminTiktok" placeholder="jugueteria.taiwan">
+                    </label>
+                </div>
+
+                <h4 class="admin-sub">💳 Crédito en cuotas (Addi / Sistecrédito)</h4>
+                <div class="admin-grid">
+                    <label class="admin-check"><input type="checkbox" id="adminCreditoActivo"> Mostrar opción de cuotas en la tienda</label>
+                    <label class="admin-check"><input type="checkbox" id="adminSimulador"> Simulador de cuotas en las tarjetas</label>
+                    <label>Aliados (separa con comas)
+                        <input type="text" id="adminAliados" placeholder="Addi, Sistecrédito">
+                    </label>
+                    <label>Plazos en meses (con comas)
+                        <input type="text" id="adminPlazos" placeholder="3, 6, 12">
+                    </label>
+                    <label>Compra mínima para cuotas ($)
+                        <input type="number" id="adminMontoMin" min="0" step="1000" placeholder="0">
+                    </label>
+                </div>
+
+                <h4 class="admin-sub">⚙️ Comportamiento de la tienda</h4>
+                <div class="admin-grid">
+                    <label class="admin-check"><input type="checkbox" id="adminVaciar"> Vaciar el carrito después de enviar el pedido (evita pedidos duplicados)</label>
+                    <label class="admin-check"><input type="checkbox" id="adminSonido"> Sonido al agregar al carrito</label>
+                    <label>Clave de este panel (vacío = no cambiar)
+                        <input type="text" id="adminClaveNueva" autocomplete="off" placeholder="Escribe una clave nueva">
+                    </label>
+                </div>
+
+                <h4 class="admin-sub">📈 Analítica y píxeles <small>(pega SOLO el ID; vacío = esa etiqueta queda apagada)</small></h4>
+                <div class="admin-grid">
+                    <label>Pixel de Meta (número largo)
+                        <input type="text" id="adminPixelMeta" inputmode="numeric" placeholder="Ej. 123456789012345">
+                    </label>
+                    <label>Google Analytics 4 (empieza por G-)
+                        <input type="text" id="adminGa4" placeholder="Ej. G-XXXXXXXXXX">
+                    </label>
+                    <label>Microsoft Clarity (ID del proyecto)
+                        <input type="text" id="adminClarity" placeholder="Ej. abcdefabcd">
+                    </label>
+                </div>
+                <p class="admin-help admin-help-mini">La página reporta automáticamente: PageView, ver producto, agregar al carrito, iniciar pedido, buscar y compartir catálogo. Al guardar los IDs las etiquetas se activan al instante (Clarity termina de aplicar al recargar la página).</p>
+
+                <h4 class="admin-sub">⭐ Productos y textos del inicio</h4>
+                <div class="admin-grid">
+                    <label>Producto destacado del héroe (id del juguete grande)
+                        <input type="text" id="adminProductoDestacado" placeholder="pista-neon-carro-pila-luz-con-numero">
+                    </label>
+                    <label>Favoritos del inicio (ids separados por comas)
+                        <input type="text" id="adminFavoritos" placeholder="mesa-futbol-de-madera, burbujero-capibara, ...">
+                    </label>
+                    <label>Cantidad de productos a promocionar
+                        <input type="text" id="adminCantidadProductos" placeholder="+22.000">
+                    </label>
+                    <label>Dominio de la tienda (sin https://)
+                        <input type="text" id="adminSitioWeb" placeholder="jugueteriataiwan.com">
+                    </label>
+                </div>
+
+                <hr class="admin-separador">
+
+                <p class="admin-help">
+                    💰 <strong>Precios:</strong> el precio que ve el cliente sale de tu costo + tu ganancia. También puedes fijar el precio exacto de cualquier producto.
                 </p>
 
                 <div class="admin-grid">
@@ -5659,19 +5869,35 @@
                 <h4 class="admin-sub">Ganancia por categoría <small>(deja vacío para usar la ganancia general)</small></h4>
                 <div class="admin-cats" id="adminCats"></div>
 
+                <h4 class="admin-sub">🎄 Temporada Oct–Dic <small>(Navidad: productos con buen margen y ticket medio; aparecen en su propia categoría)</small></h4>
+                <div class="admin-cat-fila admin-temporada-fila">
+                    <span class="admin-cat-nombre"><i class="fas fa-tree"></i> Ganancia de temporada <small>(%)</small></span>
+                    <input type="number" min="0" step="1" data-cat="temporada" id="adminMargenTemporada" placeholder="35" title="Ganancia % solo para los productos de temporada">
+                    <span class="admin-cat-preview" id="adminTemporadaPreview"></span>
+                </div>
+                <input type="text" class="admin-buscar" id="adminBuscarTemporada" placeholder="Busca un juguete para agregar a la temporada de Navidad…" oninput="buscarProductoTemporada()">
+                <div class="admin-resultados" id="adminTemporadaResultados"></div>
+                <div class="admin-fijados" id="adminTemporadaLista"></div>
+
                 <h4 class="admin-sub">Precio exacto para un juguete <small>(se vende tal cual, sin ganancia extra)</small></h4>
                 <input type="text" class="admin-buscar" id="adminBuscarProd" placeholder="Escribe el nombre del juguete… ej: excavadora" oninput="buscarProductoAdmin()">
                 <div class="admin-resultados" id="adminResultados"></div>
                 <div class="admin-fijados" id="adminFijados"></div>
 
+                <h4 class="admin-sub">📋 Precio de cada producto <small>(escribe el precio de venta; vacío = se calcula con tu ganancia)</small></h4>
+                <div class="admin-todos-acciones">
+                    <button class="btn btn-secondary" type="button" id="adminTodosBtn" onclick="toggleListaTodosAdmin()"><i class="fas fa-list"></i> Ver la lista completa de productos</button>
+                </div>
+                <div class="admin-lista-todos" id="adminListaTodos" hidden></div>
+
                 <div class="admin-botones">
                     <button class="btn btn-primary" type="button" onclick="aplicarPanelAdmin()"><i class="fas fa-sync-alt"></i> Ver cambios ahora</button>
                     <button class="btn btn-secondary" type="button" onclick="guardarPanelAdmin()"><i class="fas fa-save"></i> Guardar en MI computador</button>
                     <button class="btn btn-secondary" type="button" onclick="copiarConfigAdmin()"><i class="fas fa-users"></i> Guardar para TODOS</button>
-                    <button class="btn btn-secondary" type="button" onclick="restaurarPanelAdmin()"><i class="fas fa-undo"></i> Volver a los precios del archivo</button>
+                    <button class="btn btn-secondary" type="button" onclick="restaurarPanelAdmin()"><i class="fas fa-undo"></i> Volver a los valores del archivo</button>
                     <button class="btn btn-secondary" type="button" onclick="cerrarSesionAdmin()"><i class="fas fa-sign-out-alt"></i> Salir</button>
                 </div>
-                <p class="admin-nota">💡 <strong>Guardar en MI computador:</strong> solo lo verás tú en este navegador. <strong>Guardar para TODOS:</strong> copia los precios para que tu página quede con ellos — pide a tu persona de confianza pegar el texto copiado donde dice <strong>PRECIOS_DEFECTO</strong> en el archivo de la página y publicarla de nuevo.</p>
+                <p class="admin-nota">💡 <strong>Guardar en MI computador:</strong> solo lo verás tú en este navegador. <strong>Guardar para TODOS:</strong> copia la configuración para que tu página quede con ella — pide a tu persona de confianza reemplazar los bloques <strong>PRECIOS_DEFECTO</strong> y <strong>TIENDA_DEFECTO</strong> del archivo de la página por el texto copiado y publicarla de nuevo.</p>
                 <div class="admin-preview" id="adminPreview"></div>
             </div>
         </div>
@@ -5682,36 +5908,45 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section about">
-                    <h3>Juguetería Taiwan</h3>
+                    <h3 data-nombre>Juguetería Taiwan</h3>
                     <p>Tu tienda de confianza en juguetería, didácticos, cubos Rubik, piñatería, tecnología, escolar y mucho más. Compra al detal con envíos a toda Colombia.</p>
-                    <p class="footer-contact-note">🧸 +22.000 productos disponibles</p>
+                    <p class="footer-contact-note">🧸 <span data-cantidad>+22.000</span> productos disponibles</p>
                     <p class="footer-contact-note">🚚 Envíos a toda Colombia</p>
                     <div class="footer-social">
-                        <a href="https://www.instagram.com/jugueteriataiwan" target="_blank" rel="noopener" title="Instagram" aria-label="Instagram de Juguetería Taiwan">
+                        <a id="linkInstagram" href="https://www.instagram.com/jugueteriataiwan" target="_blank" rel="noopener" title="Instagram" aria-label="Instagram de Juguetería Taiwan">
                             <i class="fab fa-instagram"></i>
                         </a>
-                        <a href="https://www.tiktok.com/@jugueteria.taiwan" target="_blank" rel="noopener" title="TikTok" aria-label="TikTok de Juguetería Taiwan">
+                        <a id="linkTiktok" href="https://www.tiktok.com/@jugueteria.taiwan" target="_blank" rel="noopener" title="TikTok" aria-label="TikTok de Juguetería Taiwan">
                             <i class="fab fa-tiktok"></i>
                         </a>
                     </div>
                 </div>
                 <div class="footer-section links">
-                    <h3>Tienda</h3>
+                    <h3>Tienda al detal <small>(esta página)</small></h3>
                     <ul>
-                        <li><a href="https://jugueteriataiwan.com/catalogo" target="_blank" rel="noopener">Catálogo Completo</a></li>
-                        <li><a href="https://jugueteriataiwan.com/categorias" target="_blank" rel="noopener">Categorías</a></li>
-                        <li><a href="https://jugueteriataiwan.com/catalogo?sort=newest" target="_blank" rel="noopener">Nuevos Productos</a></li>
-                        <li><a href="https://jugueteriataiwan.com/carrito" target="_blank" rel="noopener">Carrito</a></li>
+                        <li><a href="#productos" onclick="event.preventDefault(); filterProducts('all');">Todos los productos</a></li>
+                        <li><a href="#categoryShowcase" onclick="event.preventDefault(); scrollToSection('categoryShowcase');">Categorías</a></li>
+                        <li><a href="#productos" onclick="event.preventDefault(); filterProducts('navidad');">🎄 Navidad y Temporada</a></li>
+                        <li><a href="#" onclick="event.preventDefault(); event.stopPropagation(); toggleCart();">Carrito</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section links">
+                    <h3>Mayoristas</h3>
+                    <p class="footer-mayorista-note">Los precios de este catálogo son <strong>solo para compra por volumen</strong> (diferentes a los precios al detal de esta página):</p>
+                    <ul>
+                        <li><a href="https://jugueteriataiwan.com/catalogo" target="_blank" rel="noopener">Catálogo mayorista completo</a></li>
+                        <li><a href="https://jugueteriataiwan.com/categorias" target="_blank" rel="noopener">Categorías mayorista</a></li>
+                        <li><a href="https://jugueteriataiwan.com/catalogo?sort=newest" target="_blank" rel="noopener">Novedades mayorista</a></li>
+                        <li><a href="#" data-wa-cotiza onclick="event.preventDefault(); location.href = waLink('Hola, quiero una cotización al por mayor de varios productos');"><i class="fab fa-whatsapp"></i> Cotización por volumen</a></li>
                     </ul>
                 </div>
                 <div class="footer-section links">
                     <h3>Enlaces Rápidos</h3>
                     <ul>
-                        <li><a href="#productos" onclick="scrollToSection('productos')">Productos</a></li>
-                        <li><a href="#testimonios" onclick="scrollToSection('testimonios')">Favoritos</a></li>
-                        <li><a href="#preguntas" onclick="scrollToSection('preguntas')">Preguntas</a></li>
-                        <li><a href="https://jugueteriataiwan.com/categoria/navidad" target="_blank" rel="noopener">Navidad</a></li>
-                        <li><a href="#" onclick="intentarAbrirAdmin(); return false;" title="Panel de precios (solo administración)"><i class="fas fa-lock"></i> Administración</a></li>
+                        <li><a href="#productos" onclick="event.preventDefault(); scrollToSection('productos');">Productos</a></li>
+                        <li><a href="#testimonios" onclick="event.preventDefault(); scrollToSection('testimonios');">Favoritos</a></li>
+                        <li><a href="#preguntas" onclick="event.preventDefault(); scrollToSection('preguntas');">Preguntas</a></li>
+                        <li><a href="#" onclick="intentarAbrirAdmin(); return false;" title="Panel de administración"><i class="fas fa-lock"></i> Administración</a></li>
                     </ul>
                 </div>
                 <div class="footer-section links">
@@ -5723,19 +5958,19 @@
                 </div>
                 <div class="footer-section social">
                     <h3>Contáctanos</h3>
-                    <a class="footer-whatsapp" data-wa-fijo href="https://wa.me/573138786096?text=Hola%2C%20quiero%20informaci%C3%B3n%20sobre%20productos%20de%20Jugueter%C3%ADa%20Taiwan" target="_blank" rel="noopener">
-                        <i class="fab fa-whatsapp"></i> +57 313 878 6096
+                    <a class="footer-whatsapp" data-wa-fijo id="waFooterFijo" href="https://wa.me/573138786096?text=Hola%2C%20quiero%20informaci%C3%B3n%20sobre%20productos%20de%20Jugueter%C3%ADa%20Taiwan" target="_blank" rel="noopener">
+                        <i class="fab fa-whatsapp"></i> <span data-wa-contacto>+57 313 878 6096</span>
                     </a>
                     <a class="footer-maps" href="https://www.google.com/maps/dir/?api=1&destination=Centro%20Comercial%20Taiwan%2C%20Cra.%209%20%2313a%20-%2012%2C%20Local%2027%2C%20Colombia" target="_blank" rel="noopener">
                         <i class="fas fa-map-marker-alt"></i> Cómo llegar a la tienda
                     </a>
-                    <p class="footer-contact-note"><i class="fas fa-store"></i> Tienda física: Centro Comercial Taiwan, Local 27, Cra. 9 #13a - 12</p>
-                    <p class="footer-contact-note">Pedidos y mayoristas: +57 310 698 8465 (WhatsApp)</p>
-                    <p class="footer-contact-note"><i class="fab fa-instagram"></i> @jugueteriataiwan &nbsp;·&nbsp; <i class="fab fa-tiktok"></i> @jugueteria.taiwan</p>
+                    <p class="footer-contact-note"><i class="fas fa-store"></i> Tienda física: <span data-direccion>Centro Comercial Taiwan, Local 27, Cra. 9 #13a - 12</span></p>
+                    <p class="footer-contact-note">Pedidos y mayoristas: <span data-wa-pedidos>+57 310 698 8465</span> (WhatsApp)</p>
+                    <p class="footer-contact-note"><i class="fab fa-instagram"></i> <span data-handle-instagram>@jugueteriataiwan</span> &nbsp;·&nbsp; <i class="fab fa-tiktok"></i> <span data-handle-tiktok>@jugueteria.taiwan</span></p>
                 </div>
             </div>
             <div class="footer-bottom">
-                &copy; <span id="footerYear">2026</span> Juguetería Taiwan &middot; jugueteriataiwan.com &middot; Hecho con &hearts; en Colombia. Todos los derechos reservados.</div>
+                &copy; <span id="footerYear">2026</span> <span data-nombre>Juguetería Taiwan</span> &middot; <span data-sitio>jugueteriataiwan.com</span> &middot; Hecho con &hearts; en Colombia. Todos los derechos reservados.</div>
         </div>
     </footer>
 
@@ -5786,7 +6021,9 @@
             },
 
             // Clave para abrir el panel de administración (enlace "Administración"
-            // del pie de página, ?admin=1 o Ctrl+Shift+A). CÁMBIALA AQUI.
+            // del pie de página, ?admin=1 o Ctrl+Shift+A). La clave editable vive
+            // en TIENDA_DEFECTO.claveAdmin (y en el propio panel); este valor
+            // queda como respaldo si TIENDA no la trae.
             // Nota: es una barrera de conveniencia del lado del cliente, no
             // seguridad real: quien tenga acceso al archivo puede verla.
             claveAdmin: 'Walter123*',
@@ -5800,8 +6037,204 @@
             vaciarCarritoTrasPedido: true,
 
             // Sonido al agregar al carrito (molesto en escritorio, util en movil)
-            sonidoAlAgregar: true
+            sonidoAlAgregar: true,
+
+            // Identidad visual de la tienda. El panel de administración
+            // ("Administración" en el pie de página) puede cambiar todo esto
+            // sin tocar el archivo: nombre, logo y contacto.
+            empresa: {
+                nombre: 'Juguetería Taiwan',
+                logo: 'https://jugueteriataiwan.com/storage/branding/70TI84WCuEegX1pJk5ttvppyKKn2sCze24oHDKoi.png',
+                whatsappPedidos: '573106988465',   // confirma pedidos y cotiza mayoristas
+                whatsappContacto: '573138786096',  // atención general (fijo del pie)
+                direccion: 'Centro Comercial Taiwan, Local 27, Cra. 9 #13a - 12',
+                instagram: 'jugueteriataiwan',
+                tiktok: 'jugueteria.taiwan'
+            }
         };
+
+        /* ==================================================================
+           AJUSTES DE LA TIENDA EDITABLES DESDE EL PANEL DE ADMINISTRACIÓN
+           ==================================================================
+           Todo lo que antes estaba "hardcodeado" en el archivo (nombre y
+           logo de la tienda, WhatsApp, dirección, redes, crédito en
+           cuotas, comportamiento del carrito y la clave del panel) vive
+           en TIENDA_DEFECTO. El panel de administración lo sobrescribe y
+           lo guarda en este navegador (localStorage); "Guardar para TODOS"
+           copia el bloque para pegarlo aquí y publicarlo.
+           ================================================================== */
+        const TIENDA_DEFECTO = {
+            nombre: 'Juguetería Taiwan',
+            logo: 'https://jugueteriataiwan.com/storage/branding/70TI84WCuEegX1pJk5ttvppyKKn2sCze24oHDKoi.png', // vacío = solo texto, sin logo
+            whatsappPedidos: '573106988465',
+            whatsappContacto: '573138786096',
+            direccion: 'Centro Comercial Taiwan, Local 27, Cra. 9 #13a - 12',
+            instagram: 'jugueteriataiwan',
+            tiktok: 'jugueteria.taiwan',
+            sitioWeb: 'jugueteriataiwan.com',
+
+            // 📈 Analítica: SOLO el ID de cada etiqueta, vacío = no cargar.
+            // El sitio reporta PageView, ViewContent, AddToCart, InitiateCheckout,
+            // Search y Lead a cualquier etiqueta que esté activa (ver track()).
+            pixelMeta: '',      // Pixel de Meta, p. ej. '123456789012345'
+            ga4: '',            // Google Analytics 4, p. ej. 'G-XXXXXXXXXX'
+            clarity: '',        // Microsoft Clarity, p. ej. 'abcd1234ab'
+
+            // Contenido editable del inicio
+            productoDestacado: 'pista-neon-carro-pila-luz-con-numero',   // tarjeta grande del héroe
+            productosFavoritos: 'mesa-futbol-de-madera, pista-neon-carro-pila-luz-con-numero, burbujero-mil-burbujas-pilas-cj-bubble-gun-4-motivos', // sección "Favoritos" (ids separados por comas)
+            cantidadProductos: '+22.000',  // el número que se promociona en el héroe, el pie y al compartir
+
+            // Crédito en cuotas (Addi / Sistecrédito)
+            creditoActivo: true,
+            simuladorEnTarjetas: true,
+            aliados: 'Addi, Sistecrédito',
+            plazos: '3, 6, 12',       // meses, separados por comas
+            tasaMensual: 0,           // 0 = cuota simple (total / plazo)
+            montoMinimo: 0,           // compra mínima para pagar a cuotas
+
+            // Comportamiento
+            vaciarCarritoTrasPedido: true,
+            sonidoAlAgregar: true,
+
+            // Clave del panel de administración
+            claveAdmin: 'Walter123*'
+        };
+
+        const TIENDA_KEY = 'jt_detal_tienda_v1';
+        function cargarTienda() {
+            let guardados = {};
+            try { guardados = JSON.parse(localStorage.getItem(TIENDA_KEY)) || {}; } catch (e) {}
+            const texto = (v, porDefecto) => (typeof v === 'string' && v.trim()) ? v.trim() : porDefecto;
+            const si = (v, porDefecto) => (typeof v === 'boolean') ? v : porDefecto;
+            const numero = (v, porDefecto) => (typeof v === 'number' && isFinite(v) && v >= 0) ? v : porDefecto;
+            return {
+                nombre: texto(guardados.nombre, TIENDA_DEFECTO.nombre),
+                logo: (typeof guardados.logo === 'string') ? guardados.logo.trim() : TIENDA_DEFECTO.logo,
+                whatsappPedidos: texto(guardados.whatsappPedidos, TIENDA_DEFECTO.whatsappPedidos),
+                whatsappContacto: texto(guardados.whatsappContacto, TIENDA_DEFECTO.whatsappContacto),
+                direccion: texto(guardados.direccion, TIENDA_DEFECTO.direccion),
+                instagram: texto(guardados.instagram, TIENDA_DEFECTO.instagram),
+                tiktok: texto(guardados.tiktok, TIENDA_DEFECTO.tiktok),
+                sitioWeb: texto(guardados.sitioWeb, TIENDA_DEFECTO.sitioWeb),
+                pixelMeta: (typeof guardados.pixelMeta === 'string') ? guardados.pixelMeta.trim() : TIENDA_DEFECTO.pixelMeta,
+                ga4: (typeof guardados.ga4 === 'string') ? guardados.ga4.trim() : TIENDA_DEFECTO.ga4,
+                clarity: (typeof guardados.clarity === 'string') ? guardados.clarity.trim() : TIENDA_DEFECTO.clarity,
+                productoDestacado: texto(guardados.productoDestacado, TIENDA_DEFECTO.productoDestacado),
+                productosFavoritos: texto(guardados.productosFavoritos, TIENDA_DEFECTO.productosFavoritos),
+                cantidadProductos: texto(guardados.cantidadProductos, TIENDA_DEFECTO.cantidadProductos),
+                creditoActivo: si(guardados.creditoActivo, TIENDA_DEFECTO.creditoActivo),
+                simuladorEnTarjetas: si(guardados.simuladorEnTarjetas, TIENDA_DEFECTO.simuladorEnTarjetas),
+                aliados: texto(guardados.aliados, TIENDA_DEFECTO.aliados),
+                plazos: texto(guardados.plazos, TIENDA_DEFECTO.plazos),
+                tasaMensual: numero(guardados.tasaMensual, TIENDA_DEFECTO.tasaMensual),
+                montoMinimo: numero(guardados.montoMinimo, TIENDA_DEFECTO.montoMinimo),
+                vaciarCarritoTrasPedido: si(guardados.vaciarCarritoTrasPedido, TIENDA_DEFECTO.vaciarCarritoTrasPedido),
+                sonidoAlAgregar: si(guardados.sonidoAlAgregar, TIENDA_DEFECTO.sonidoAlAgregar),
+                claveAdmin: texto(guardados.claveAdmin, TIENDA_DEFECTO.claveAdmin)
+            };
+        }
+        let TIENDA = cargarTienda();
+
+        // Lista separada por comas -> arreglo limpio
+        function parseLista(texto) {
+            return String(texto || '').split(',').map(s => s.trim()).filter(Boolean);
+        }
+
+        // Aplica los ajustes de la tienda (TIENDA) sobre CONFIG, que es el
+        // objeto que todo el sitio ya consulta. Se llama al arrancar y cada
+        // vez que la administración guarda cambios.
+        function aplicarTiendaSobreConfig() {
+            const plazos = parseLista(TIENDA.plazos).map(Number).filter(n => isFinite(n) && n >= 1 && n <= 60);
+            CONFIG.whatsappPorDefecto = TIENDA.whatsappPedidos;
+            CONFIG.claveAdmin = TIENDA.claveAdmin;
+            CONFIG.vaciarCarritoTrasPedido = TIENDA.vaciarCarritoTrasPedido;
+            CONFIG.sonidoAlAgregar = TIENDA.sonidoAlAgregar;
+            CONFIG.credito.activo = TIENDA.creditoActivo;
+            CONFIG.credito.simuladorEnTarjetas = TIENDA.simuladorEnTarjetas;
+            CONFIG.credito.aliados = parseLista(TIENDA.aliados);
+            CONFIG.credito.plazos = plazos.length ? plazos : [12];
+            CONFIG.credito.tasaMensual = TIENDA.tasaMensual;
+            CONFIG.credito.montoMinimo = TIENDA.montoMinimo;
+            CONFIG.empresa = {
+                nombre: TIENDA.nombre,
+                logo: TIENDA.logo,
+                whatsappPedidos: TIENDA.whatsappPedidos,
+                whatsappContacto: TIENDA.whatsappContacto,
+                direccion: TIENDA.direccion,
+                instagram: TIENDA.instagram,
+                tiktok: TIENDA.tiktok,
+                sitioWeb: TIENDA.sitioWeb,
+                cantidadProductos: TIENDA.cantidadProductos
+            };
+        }
+        aplicarTiendaSobreConfig();
+
+        /* ==================================================================
+           📈 ANALÍTICA SIN CÓDIGO ADICIONAL: Pixel de Meta, GA4 y Clarity
+           ==================================================================
+           Solo se pegan los IDs en el panel de administración (vacío = esa
+           etiqueta no se carga). Las etiquetas se inyectan aquí y las
+           funciones track() del sitio ya reportan PageView, ViewContent,
+           AddToCart, InitiateCheckout, Search y Lead a las que estén activas.
+           ================================================================== */
+        const ANALITICA_CARGADA = { meta: null, ga4: null, clarity: null };
+
+        function aplicarAnalitica() {
+            const idMeta = String(TIENDA.pixelMeta || '').replace(/\s+/g, '');
+            const idGa4 = String(TIENDA.ga4 || '').replace(/\s+/g, '');
+            const idClarity = String(TIENDA.clarity || '').replace(/\s+/g, '');
+
+            // --- Pixel de Meta (Facebook) ---
+            if (idMeta) {
+                if (!window.fbq) {
+                    // Código base oficial: encola los track() hasta que
+                    // cargue fbevents.js (por eso se puede inyectar tarde).
+                    !function (f, b, e, v, n, t, s) {
+                        if (f.fbq) return; n = f.fbq = function () {
+                            n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
+                        };
+                        if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0'; n.queue = [];
+                        t = b.createElement(e); t.async = !0; t.src = v;
+                        s = b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t, s);
+                    }(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
+                }
+                if (ANALITICA_CARGADA.meta !== idMeta) {
+                    ANALITICA_CARGADA.meta = idMeta;
+                    try { fbq('init', idMeta); } catch (e) {}
+                }
+            }
+
+            // --- Google Analytics 4 (gtag.js) ---
+            if (idGa4) {
+                if (!window.gtag) {
+                    const s = document.createElement('script');
+                    s.async = true;
+                    s.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(idGa4);
+                    document.head.appendChild(s);
+                    window.dataLayer = window.dataLayer || [];
+                    window.gtag = function () { window.dataLayer.push(arguments); };
+                    try { gtag('js', new Date()); } catch (e) {}
+                }
+                if (ANALITICA_CARGADA.ga4 !== idGa4) {
+                    ANALITICA_CARGADA.ga4 = idGa4;
+                    try { gtag('config', idGa4); } catch (e) {}
+                }
+            }
+
+            // --- Microsoft Clarity (grabaciones de sesión y mapas de calor) ---
+            // Solo se carga una vez por página; si se cambia el ID en vivo,
+            // aplica al recargar. Igual el anterior: mejor recargar tras guardar.
+            if (idClarity && !ANALITICA_CARGADA.clarity) {
+                ANALITICA_CARGADA.clarity = idClarity;
+                (function (c, l, a, r, i, t, y) {
+                    c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments); };
+                    t = l.createElement(r); t.async = 1; t.src = 'https://www.clarity.ms/tag/' + i;
+                    y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
+                })(window, document, 'clarity', 'script', idClarity);
+            }
+        }
+        aplicarAnalitica();
 
         /* ==================================================================
            PRECIOS AL DETAL — CONFIGURACIÓN DEL ADMINISTRADOR
@@ -5844,7 +6277,38 @@
                 // 'vehiculos': 0.30,
                 // 'colecciones': 0.35,
                 // 'burbujeros': 0.20,
+                // Ganancia de los productos de TEMPORADA (Oct-Dic / Navidad):
+                // se aplica solo a los juguetes de la lista temporadaIds.
+                'temporada': 0.35,
             },
+
+            // 🎄 PRODUCTOS DE TEMPORADA (octubre-diciembre / Navidad):
+            // selección curada de referencias con buen margen y ticket
+            // medio — perfectas para regalo. La administración puede
+            // agregar o quitar productos desde el panel. La clave es el
+            // id del producto (igual que en preciosPersonalizados).
+            temporadaIds: [
+                'peluche-oso-panda-con-corazon-te-amo-21cm',      // 12.300 peluche clásico de regalo
+                'burbujero-capibara',                              // 15.000 tendencia capibara
+                'burbujero-mounstro-pilas-bolsa-2-colores',        // 18.000
+                'domino-10mm-x28-en-estuche',                      // 18.700 juego de mesa
+                'burbujero-mil-burbujas-pilas-cj-bubble-gun-4-motivos', // 16.000 estrella de la tienda
+                'juguete-didactico-avion',                         // 24.000 didáctico
+                'rummikub-clasico-caja-azul-1',                    // 28.000 juego familiar
+                'set-tienda-con-licuadora-y-accesorios-1',         // 30.000 juego de roles
+                'tapete-piano-infantil-marino-pilas-1',            // 38.000 regalo bebé
+                'carro-super-heroe-control-remoto-pilas-2-colores',// 40.000 RC
+                'tambor-didactico-musical-1',                      // 40.000 musical
+                'bus-con-luz-control-remoto-pila-recargable-2',    // 45.000 RC
+                'carro-armable-impulso-x-423pcs',                  // 50.000 armable
+                'juego-de-mesa-domino-8mm-doble-12-caja',           // 50.000 familiar
+                'pista-neon-carro-pila-luz-con-numero',            // 55.000 producto destacado
+                'caja-registradora-con-pilas-luz-ysonido-en-caja',  // 55.000 juego de roles
+                'set-de-herramientas-negra-pilas',                 // 56.000
+                'muneco-goku',                                     // 60.000 colección anime
+                'set-reloj-digital-de-mano-con-audifonos-inalambricos-1', // 64.000
+                'excavadora-control-remoto-pila-recargable-5',      // 70.000 RC premium
+            ],
 
             // Precio final FIJO por producto (ignora márgenes). Clave = id.
             preciosPersonalizados: {
@@ -5859,7 +6323,11 @@
             let guardados = {};
             try { guardados = JSON.parse(localStorage.getItem(PRECIOS_KEY)) || {}; } catch (e) {}
             const numero = (v, porDefecto) => (typeof v === 'number' && isFinite(v) && v >= 0) ? v : porDefecto;
+            // Base: los margenes por categoria del ARCHIVO (incluida la
+            // ganancia de "temporada" de Navidad), sobreescritos por lo que
+            // el administrador haya guardado en este navegador.
             const margenes = {};
+            Object.assign(margenes, PRECIOS_DEFECTO.margenesPorCategoria || {});
             Object.keys(guardados.margenesPorCategoria || {}).forEach(cat => {
                 const m = guardados.margenesPorCategoria[cat];
                 if (typeof m === 'number' && isFinite(m) && m >= 0) margenes[cat] = m;
@@ -5869,17 +6337,30 @@
                 const p = guardados.preciosPersonalizados[id];
                 if (typeof p === 'number' && isFinite(p) && p > 0) fijados[id] = p;
             });
+            // Productos de temporada guardados desde el panel: ids del
+            // catálogo real. Vacío/ausente = usa la lista del archivo.
+            const temporada = Array.isArray(guardados.temporadaIds)
+                ? guardados.temporadaIds.filter(id => typeof id === 'string' && id)
+                : (PRECIOS_DEFECTO.temporadaIds || []).slice();
             return {
                 margenGlobal: numero(guardados.margenGlobal, PRECIOS_DEFECTO.margenGlobal),
                 multiplicadorBase: Math.max(0.01, numero(guardados.multiplicadorBase, PRECIOS_DEFECTO.multiplicadorBase)),
                 redondeo: numero(guardados.redondeo, PRECIOS_DEFECTO.redondeo),
                 margenesPorCategoria: margenes,
+                temporadaIds: temporada,
                 preciosPersonalizados: fijados
             };
         }
         let PRECIOS = cargarPrecios();
 
-        function margenDeCategoria(cat) {
+        function margenDeCategoria(cat, producto) {
+            // Los productos de temporada (Oct-Dic) pueden tener su propia
+            // ganancia ("temporada" en margenesPorCategoria), pensada para
+            // dejar buen margen en las fechas de mayor venta.
+            if (producto && esNavidad(producto)) {
+                const t = PRECIOS.margenesPorCategoria['temporada'];
+                if (typeof t === 'number' && isFinite(t)) return t;
+            }
             const m = PRECIOS.margenesPorCategoria[cat];
             return (typeof m === 'number' && isFinite(m)) ? m : PRECIOS.margenGlobal;
         }
@@ -5894,7 +6375,7 @@
         function precioDetal(p) {
             const fijado = PRECIOS.preciosPersonalizados[p.id];
             if (typeof fijado === 'number' && fijado > 0) return redondearPrecio(fijado);
-            return redondearPrecio(p.price * PRECIOS.multiplicadorBase * (1 + margenDeCategoria(p.category)));
+            return redondearPrecio(p.price * PRECIOS.multiplicadorBase * (1 + margenDeCategoria(p.category, p)));
         }
 
         // Tachado detal (mantiene el % de descuento publicado)
@@ -5904,7 +6385,7 @@
             if (typeof fijado === 'number' && fijado > 0) {
                 return redondearPrecio(fijado * (p.comparePrice / p.price));
             }
-            return redondearPrecio(p.comparePrice * PRECIOS.multiplicadorBase * (1 + margenDeCategoria(p.category)));
+            return redondearPrecio(p.comparePrice * PRECIOS.multiplicadorBase * (1 + margenDeCategoria(p.category, p)));
         }
 
         // Genera el catálogo con precios al detal aplicados (grid, carrusel,
@@ -5979,8 +6460,34 @@
 
         // Construye cualquier enlace de WhatsApp respetando la atribucion
         function waLink(texto) {
+            const nombre = (CONFIG.empresa && CONFIG.empresa.nombre) || 'Juguetería Taiwan';
             return 'https://wa.me/' + Atribucion.numeroWhatsApp() +
-                   '?text=' + encodeURIComponent(texto || 'Hola, quiero informacion sobre productos de Jugueteria Taiwan');
+                   '?text=' + encodeURIComponent(texto || ('Hola, quiero información sobre productos de ' + nombre));
+        }
+
+        // 📤 Botón flotante "Compartir catálogo": usa el compartir nativo del
+        // celular (WhatsApp, SMS...) y, donde no existe, copia el enlace.
+        // Se comparte la URL limpia, sin ?ws= ni UTMs, para no asignar la
+        // venta a la vendedora equivocada cuando alguien más lo reenvía.
+        function compartirCatalogo() {
+            const nombre = (CONFIG.empresa && CONFIG.empresa.nombre) || 'Juguetería Taiwan';
+            const cantidad = TIENDA.cantidadProductos || '+22.000';
+            let url;
+            try { url = window.location.origin + window.location.pathname; }
+            catch (e) { url = window.location.href; }
+            const texto = `Mira el catálogo de juguetes de ${nombre}: ${cantidad} productos con envíos a toda Colombia`;
+            track('Lead', { content_name: 'Compartir catálogo' });
+            if (navigator.share) {
+                navigator.share({ title: nombre, text: texto, url }).catch(function () {});
+            } else if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(texto + ' ' + url).then(function () {
+                    showNotification('¡Enlace copiado! Compártelo donde quieras');
+                }).catch(function () {
+                    window.prompt('Copia este enlace del catálogo:', texto + ' ' + url);
+                });
+            } else {
+                window.prompt('Copia este enlace del catálogo:', texto + ' ' + url);
+            }
         }
 
         /* ------------------------------------------------------------------
@@ -6046,11 +6553,13 @@
         function categoryLabel(cat) { return (CATEGORY_META[cat] && CATEGORY_META[cat].label) || cat || 'Otros'; }
         function categoryIcon(cat) { return (CATEGORY_META[cat] && CATEGORY_META[cat].icon) || 'fa-cube'; }
 
-        // Diseños de temporada navideña: el catálogo real no trae una
-        // categoría "Navidad", así que se detecta por nombre, descripción
-        // o estampado (NAVIDEÑA, GRINCH, PAPÁ NOEL, RENO, SANTA, MERRY...).
+        // Diseños de temporada navideña (oct-dic): se detectan por nombre,
+        // descripción o estampado (NAVIDEÑA, GRINCH, PAPÁ NOEL, RENO,
+        // SANTA, MERRY...) Y por la lista curada de la administración
+        // (PRECIOS.temporadaIds: productos con buen margen y ticket medio).
         const RE_NAVIDAD = /navide|navidad|christma|merry|grinch|pap[áa] noel|\breno\b|\bsanta\b/i;
         function esNavidad(product) {
+            if ((PRECIOS.temporadaIds || []).includes(product.id)) return true;
             const texto = [product.name, product.description, product.estampado, ...(product.estampados || [])].join(' ');
             return RE_NAVIDAD.test(texto);
         }
@@ -12549,17 +13058,102 @@
             }
 
             actualizarPrecioHero();
+            actualizarHeroDestacado();
+            renderFavoritos();
             loadProducts();
             initProductsCarousel();
             updateCartUI();
             updateCartCount();
         }
 
-        // Precio de la tarjeta destacada del hero (siempre sincronizado)
+        // Precio de la tarjeta destacada del hero (siempre sincronizado).
+        // El producto destacado ya no está fijo: lo elige la administración
+        // en TIENDA.productoDestacado.
         function actualizarPrecioHero() {
             const el = document.getElementById('heroPriceRange');
-            const p = products.find(x => x.id === 'pista-neon-carro-pila-luz-con-numero');
+            const p = products.find(x => x.id === TIENDA.productoDestacado);
             if (el && p) el.textContent = cop(p.price);
+        }
+
+        // Tarjeta grande del héroe: foto, nombre, categoría, SKU, precio y
+        // botones salen del producto configurado (antes todo estaba fijo en
+        // el HTML). Se llama al arrancar y al recalcular precios.
+        function actualizarHeroDestacado() {
+            const p = products.find(x => x.id === TIENDA.productoDestacado);
+            if (!p) return;
+            const slide = document.getElementById('heroProductoSlide');
+            const img = document.getElementById('heroProductoImg');
+            const cat = document.getElementById('heroProductoCat');
+            const title = document.getElementById('heroProductoTitle');
+            const sku = document.getElementById('heroProductoSku');
+            const btn = document.getElementById('heroProductoBtn');
+            if (slide) {
+                slide.style.setProperty('--img', `url("${p.image}")`);
+                slide.onclick = () => openImageLightbox(p.image, p.name, p.id);
+            }
+            if (img) {
+                img.dataset.thumb = p.image;
+                img.onerror = imgOnError; // respaldo full -> thumb -> placeholder
+                img.src = imgFullUrl(p.image);
+                img.alt = p.name + ' — ' + TIENDA.nombre;
+            }
+            if (cat) cat.innerHTML = `<i class="fas ${categoryIcon(p.category)}"></i> ${esc(categoryLabel(p.category)).toUpperCase()}`;
+            if (title) title.textContent = p.name;
+            if (sku) sku.textContent = 'SKU: ' + (p.sku || '—');
+            if (btn) {
+                btn.onclick = () => scrollToProduct(p.id);
+                btn.setAttribute('aria-label', 'Comprar ' + p.name);
+            }
+            actualizarPrecioHero();
+        }
+
+        // Sección "Favoritos del inicio": cada tarjeta se rellena en vivo con
+        // el producto configurado (foto, nombre, precio y enlace). Antes los
+        // precios estaban escritos fijos y quedaban viejos al cambiar la
+        // ganancia; ahora siempre muestran el precio vigente.
+        function renderFavoritos() {
+            const ids = parseLista(TIENDA.productosFavoritos);
+            const tarjetas = Array.from(document.querySelectorAll('[data-fav-slot]'));
+            tarjetas.forEach(card => {
+                const slot = parseInt(card.dataset.favSlot, 10);
+                const p = ids.length ? products.find(x => x.id === ids[slot]) : null;
+                if (!p) { card.style.display = 'none'; return; }
+                card.style.display = '';
+                const cont = card.querySelector('.testimonial-image-container');
+                const img = card.querySelector('img');
+                const texto = card.querySelector('.testimonial-text');
+                const precio = card.querySelector('.testimonial-author');
+                const meta = card.querySelector('.testimonial-location');
+                const cta = card.querySelector('.testimonial-cta');
+                if (cont) {
+                    cont.style.setProperty('--img', `url("${p.image}")`);
+                    cont.setAttribute('data-links-to-product', p.id);
+                    cont.setAttribute('role', 'button');
+                    cont.setAttribute('tabindex', '0');
+                    cont.setAttribute('aria-label', 'Ver ' + p.name + ' y comprar');
+                    cont.onclick = () => scrollToProduct(p.id);
+                    cont.onkeydown = e => {
+                        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); scrollToProduct(p.id); }
+                    };
+                }
+                if (img) {
+                    img.src = p.image;
+                    img.alt = p.name + ' — ' + TIENDA.nombre;
+                }
+                if (texto) texto.textContent = p.name + '.';
+                if (precio) {
+                    const precios = flattenSizeOptions(p).map(o => o.price);
+                    const desde = Math.min(...precios);
+                    precio.textContent = p.comparePrice > desde
+                        ? `${cop(desde)} · Antes ${cop(p.comparePrice)}`
+                        : cop(desde);
+                }
+                if (meta) meta.textContent = `${categoryLabel(p.category)} · SKU: ${p.sku || '—'}`;
+                if (cta) {
+                    cta.onclick = () => scrollToProduct(p.id);
+                    cta.setAttribute('aria-label', 'Ver ' + p.name + ' y comprar');
+                }
+            });
         }
 
         /* ==================================================================
@@ -12622,7 +13216,7 @@
                 if (err) err.hidden = true;
                 cerrarLoginAdmin();
                 abrirPanelAdmin();
-                showNotification('¡Bienvenido! Aquí puedes cambiar los precios');
+                showNotification('¡Bienvenido! Aquí puedes cambiar precios, logo, nombre y más');
             } else {
                 if (err) {
                     err.hidden = false;
@@ -12650,6 +13244,184 @@
             document.getElementById('adminModal').classList.remove('show');
         }
 
+        /* ------------------------------------------------------------------
+           IDENTIDAD Y AJUSTES DE LA TIENDA (nombre, logo, contacto, crédito)
+           Se leen del panel, se aplican sobre CONFIG al momento y se guardan
+           en TIENDA (localStorage). "Guardar para TODOS" copia el bloque
+           TIENDA_DEFECTO para publicarlo en el archivo.
+           ------------------------------------------------------------------ */
+        function fmtTelefono(numeros) {
+            const d = String(numeros || '').replace(/\D/g, '');
+            if (d.length < 10) return numeros || '';
+            const n = d.startsWith('57') ? d.slice(2) : d;
+            return '+57 ' + n.replace(/(\d{3})(\d{3})(\d{4})/, '$1 $2 $3');
+        }
+
+        function pintarPanelTienda() {
+            const val = (id, v) => { const el = document.getElementById(id); if (el) el.value = v; };
+            val('adminNombreTienda', TIENDA.nombre);
+            val('adminLogoTienda', TIENDA.logo);
+            const waPedidos = String(TIENDA.whatsappPedidos || '').replace(/^57/, '');
+            const waContacto = String(TIENDA.whatsappContacto || '').replace(/^57/, '');
+            val('adminWaPedidos', waPedidos);
+            val('adminWaContacto', waContacto);
+            val('adminDireccion', TIENDA.direccion);
+            val('adminInstagram', TIENDA.instagram);
+            val('adminTiktok', TIENDA.tiktok);
+            val('adminSitioWeb', TIENDA.sitioWeb);
+            val('adminPixelMeta', TIENDA.pixelMeta);
+            val('adminGa4', TIENDA.ga4);
+            val('adminClarity', TIENDA.clarity);
+            val('adminProductoDestacado', TIENDA.productoDestacado);
+            val('adminFavoritos', TIENDA.productosFavoritos);
+            val('adminCantidadProductos', TIENDA.cantidadProductos);
+            val('adminAliados', TIENDA.aliados);
+            val('adminPlazos', TIENDA.plazos);
+            val('adminMontoMin', TIENDA.montoMinimo);
+            val('adminClaveNueva', '');
+            const check = (id, v) => { const el = document.getElementById(id); if (el) el.checked = !!v; };
+            check('adminCreditoActivo', TIENDA.creditoActivo);
+            check('adminSimulador', TIENDA.simuladorEnTarjetas);
+            check('adminVaciar', TIENDA.vaciarCarritoTrasPedido);
+            check('adminSonido', TIENDA.sonidoAlAgregar);
+            // Vista previa del logo
+            const prev = document.getElementById('adminLogoPreview');
+            if (prev) {
+                prev.innerHTML = TIENDA.logo
+                    ? `<img src="${esc(TIENDA.logo)}" alt="Vista previa del logo" onerror="this.remove()"> Así se verá tu logo en el encabezado`
+                    : 'Sin logo: en el encabezado se verá solo el nombre de la tienda';
+            }
+        }
+
+        function normTelefono(txt) {
+            const d = String(txt || '').replace(/\D/g, '');
+            if (!d) return '';
+            if (d.length === 10) return '57' + d;       // 3106988465 -> 573106988465
+            if (d.length === 12 && d.startsWith('57')) return d;
+            return d;
+        }
+
+        function leerPanelTienda() {
+            const val = id => (document.getElementById(id) ? document.getElementById(id).value : '').trim();
+            const check = id => !!(document.getElementById(id) && document.getElementById(id).checked);
+            TIENDA.nombre = val('adminNombreTienda') || TIENDA_DEFECTO.nombre;
+            TIENDA.logo = val('adminLogoTienda');
+            TIENDA.whatsappPedidos = normTelefono(val('adminWaPedidos')) || TIENDA_DEFECTO.whatsappPedidos;
+            TIENDA.whatsappContacto = normTelefono(val('adminWaContacto')) || TIENDA_DEFECTO.whatsappContacto;
+            TIENDA.direccion = val('adminDireccion') || TIENDA_DEFECTO.direccion;
+            TIENDA.instagram = (val('adminInstagram') || TIENDA_DEFECTO.instagram).replace(/^@/, '');
+            TIENDA.tiktok = (val('adminTiktok') || TIENDA_DEFECTO.tiktok).replace(/^@/, '');
+            TIENDA.sitioWeb = (val('adminSitioWeb') || TIENDA_DEFECTO.sitioWeb).replace(/^https?:\/\//, '').replace(/\/$/, '');
+            TIENDA.pixelMeta = val('adminPixelMeta');
+            TIENDA.ga4 = val('adminGa4');
+            TIENDA.clarity = val('adminClarity');
+            TIENDA.productoDestacado = val('adminProductoDestacado') || TIENDA_DEFECTO.productoDestacado;
+            TIENDA.productosFavoritos = val('adminFavoritos') || TIENDA_DEFECTO.productosFavoritos;
+            TIENDA.cantidadProductos = val('adminCantidadProductos') || TIENDA_DEFECTO.cantidadProductos;
+            TIENDA.creditoActivo = check('adminCreditoActivo');
+            TIENDA.simuladorEnTarjetas = check('adminSimulador');
+            TIENDA.aliados = val('adminAliados') || TIENDA_DEFECTO.aliados;
+            TIENDA.plazos = val('adminPlazos') || TIENDA_DEFECTO.plazos;
+            TIENDA.montoMinimo = Math.max(0, parseFloat(val('adminMontoMin')) || 0);
+            TIENDA.vaciarCarritoTrasPedido = check('adminVaciar');
+            TIENDA.sonidoAlAgregar = check('adminSonido');
+            const claveNueva = val('adminClaveNueva');
+            if (claveNueva) TIENDA.claveAdmin = claveNueva;
+            aplicarTiendaSobreConfig();
+        }
+
+        // Aplica la identidad (nombre, logo, contacto, redes) al DOM en vivo.
+        function aplicarIdentidad() {
+            const emp = CONFIG.empresa || {};
+            const nombre = emp.nombre || 'Juguetería Taiwan';
+            document.querySelectorAll('[data-nombre]').forEach(el => { el.textContent = nombre; });
+            document.title = nombre + ' — Juguetes al detal · Envíos a toda Colombia';
+            // Logo del encabezado
+            const logoImg = document.getElementById('logoPrincipal');
+            if (logoImg) {
+                if (emp.logo) {
+                    logoImg.style.display = '';
+                    logoImg.src = emp.logo;
+                    logoImg.alt = 'Logo ' + nombre;
+                } else {
+                    logoImg.style.display = 'none';
+                }
+            }
+            // WhatsApp de atención (fijo) del pie de página
+            const saludo = 'Hola, quiero información sobre productos de ' + nombre;
+            const fijo = document.getElementById('waFooterFijo');
+            if (fijo) fijo.href = 'https://wa.me/' + (emp.whatsappContacto || '573138786096') + '?text=' + encodeURIComponent(saludo);
+            document.querySelectorAll('[data-wa-contacto]').forEach(el => { el.textContent = fmtTelefono(emp.whatsappContacto); });
+            document.querySelectorAll('[data-wa-pedidos]').forEach(el => { el.textContent = fmtTelefono(emp.whatsappPedidos); });
+            document.querySelectorAll('[data-direccion]').forEach(el => { el.textContent = emp.direccion || el.textContent; });
+            // "Cómo llegar" de Google Maps se recalcula con la dirección
+            // configurada (antes las 4 rutas estaban escritas fijas en el HTML).
+            const mapsUrl = () => 'https://www.google.com/maps/dir/?api=1&destination=' + encodeURIComponent((emp.direccion || 'Centro Comercial Taiwan') + ', Colombia');
+            document.querySelectorAll('.footer-maps, .mobile-menu-maps, .cod-store-maps, .faq-maps-link').forEach(a => { a.href = mapsUrl(); });
+            // Redes sociales
+            const ig = document.getElementById('linkInstagram');
+            if (ig) { ig.href = 'https://www.instagram.com/' + (emp.instagram || 'jugueteriataiwan'); }
+            const tt = document.getElementById('linkTiktok');
+            if (tt) { tt.href = 'https://www.tiktok.com/@' + (emp.tiktok || 'jugueteria.taiwan'); }
+            document.querySelectorAll('[data-handle-instagram]').forEach(el => { el.textContent = '@' + (emp.instagram || 'jugueteriataiwan'); });
+            document.querySelectorAll('[data-handle-tiktok]').forEach(el => { el.textContent = '@' + (emp.tiktok || 'jugueteria.taiwan'); });
+            // Cantidad de productos promocionada y dominio (antes "+22.000"
+            // y "jugueteriataiwan.com" estaban fijos en el héroe y el pie).
+            document.querySelectorAll('[data-cantidad]').forEach(el => { el.textContent = TIENDA.cantidadProductos; });
+            document.querySelectorAll('[data-sitio]').forEach(el => { el.textContent = TIENDA.sitioWeb; });
+            // Datos estructurados (SEO) sincronizados con la configuración
+            sincronizarJsonLd(mapsUrl);
+            // El resto de enlaces de WhatsApp respetan la vendedora (?ws=),
+            // con el WhatsApp de pedidos como número por defecto.
+            reescanearEnlacesWhatsApp();
+            renderMobileMenu();
+        }
+
+        // Mantiene los bloques de datos estructurados del <head> (negocio y
+        // FAQ) alineados con lo configurado en el panel: teléfono, logo,
+        // dirección, redes y mapa. Google los lee al rastrear la página.
+        function sincronizarJsonLd(mapsUrl) {
+            const emp = CONFIG.empresa || {};
+            document.querySelectorAll('script[type="application/ld+json"]').forEach(s => {
+                try {
+                    const data = JSON.parse(s.textContent);
+                    if (data && data['@type'] === 'ToyStore') {
+                        data.name = emp.nombre || data.name;
+                        if (emp.logo) data.logo = emp.logo;
+                        data.telephone = '+' + TIENDA.whatsappPedidos;
+                        data.url = 'https://' + (TIENDA.sitioWeb || 'jugueteriataiwan.com');
+                        if (data.address) data.address.streetAddress = TIENDA.direccion;
+                        if (typeof mapsUrl === 'function') data.hasMap = mapsUrl().replace('/dir/', '/search/').replace('destination=', 'query=');
+                        data.sameAs = [
+                            'https://www.instagram.com/' + (emp.instagram || 'jugueteriataiwan'),
+                            'https://www.tiktok.com/@' + (emp.tiktok || 'jugueteria.taiwan')
+                        ];
+                        s.textContent = JSON.stringify(data);
+                    } else if (data && data['@type'] === 'FAQPage') {
+                        // El FAQ en formato para buscadores lleva los mismos
+                        // números y dirección que la página visible.
+                        let txt = s.textContent;
+                        [['+57 310 698 8465', fmtTelefono(TIENDA.whatsappPedidos)],
+                         ['+57 313 878 6096', fmtTelefono(TIENDA.whatsappContacto)],
+                         [TIENDA_DEFECTO.direccion, TIENDA.direccion]].forEach(par => {
+                            if (par[0] && par[1] && par[0] !== par[1]) txt = txt.split(par[0]).join(par[1]);
+                        });
+                        s.textContent = txt;
+                    }
+                } catch (e) { /* un bloque mal formado no debe romper la página */ }
+            });
+        }
+
+        function reescanearEnlacesWhatsApp() {
+            document.querySelectorAll('a[href*="wa.me/"]:not([data-wa-fijo])').forEach(a => {
+                try {
+                    const texto = decodeURIComponent((a.href.split('text=')[1] || ''));
+                    a.href = waLink(texto || undefined);
+                    a.setAttribute('rel', 'noopener');
+                } catch (e) {}
+            });
+        }
+
         // Valores globales leídos del panel
         function globalesDesdePanel() {
             const mg = parseFloat(document.getElementById('adminMargenGlobal').value);
@@ -12662,10 +13434,12 @@
             };
         }
 
-        // Márgenes por categoría leídos del panel (input vacío = usa global)
+        // Márgenes por categoría leídos del panel (input vacío = usa global).
+        // Incluye el margen de "temporada" (Navidad Oct-Dic), que vive en su
+        // propia fila fuera del listado de categorías.
         function margenesDesdePanel() {
             const out = {};
-            document.querySelectorAll('#adminCats input[data-cat]').forEach(inp => {
+            document.querySelectorAll('#adminModal input[data-cat]').forEach(inp => {
                 const v = parseFloat(inp.value);
                 if (!isNaN(v)) out[inp.dataset.cat] = Math.max(0, v) / 100;
             });
@@ -12718,8 +13492,10 @@
                     </div>`;
             }).join('');
 
+            pintarTemporadaAdmin();
             pintarFijadosAdmin();
             pintarPreviewAdmin();
+            pintarPanelTienda();
         }
 
         // Lista de precios fijos activos (con input editable y botón quitar)
@@ -12744,11 +13520,13 @@
         function pintarPreviewAdmin() {
             const el = document.getElementById('adminPreview');
             const ejemplo = redondearPrecio(10000 * PRECIOS.multiplicadorBase * (1 + PRECIOS.margenGlobal));
-            const nCats = Object.keys(PRECIOS.margenesPorCategoria).length;
+            const nCats = Object.keys(PRECIOS.margenesPorCategoria).filter(c => c !== 'temporada').length;
+            const nTemporada = (PRECIOS.temporadaIds || []).length;
             const nFijados = Object.keys(PRECIOS.preciosPersonalizados).length;
             el.innerHTML = 'Ejemplo: un juguete de costo ' + cop(10000) +
                 ' se venderá en <strong>' + cop(ejemplo) + '</strong>' +
                 ' · ' + nCats + (nCats === 1 ? ' categoría con ganancia propia' : ' categorías con ganancia propia') +
+                ' · 🎄 ' + nTemporada + ' en temporada' +
                 ' · ' + nFijados + (nFijados === 1 ? ' juguete con precio exacto.' : ' juguetes con precio exacto.');
         }
 
@@ -12794,34 +13572,181 @@
             aplicarPanelAdmin();
         }
 
+        /* ------------------------------------------------------------------
+           🎄 TEMPORADA OCT-DIC (Navidad): lista curada de productos con buen
+           margen y ticket medio. La administración agrega o quita referencias;
+           el margen de temporada vive en "margenesPorCategoria.temporada".
+           ------------------------------------------------------------------ */
+        function productosTemporada() {
+            return (PRECIOS.temporadaIds || []).map(id => CATALOGO_BASE.find(p => p.id === id)).filter(Boolean);
+        }
+
+        function pintarTemporadaAdmin() {
+            // Margen de temporada (la fila es HTML fijo: solo se actualiza su valor)
+            const inp = document.getElementById('adminMargenTemporada');
+            const m = PRECIOS.margenesPorCategoria['temporada'];
+            if (inp) inp.value = (typeof m === 'number') ? Math.round(m * 1000) / 10 : '';
+            const prevEl = document.getElementById('adminTemporadaPreview');
+            const lista = productosTemporada();
+            if (prevEl) {
+                prevEl.innerHTML = lista.length
+                    ? `${lista.length} producto${lista.length === 1 ? '' : 's'} · ej: de costo ${cop(Math.min(...lista.map(p => p.price)))} a venta <strong>${cop(Math.min(...lista.map(p => precioDetal(p))))}</strong>`
+                    : 'sin productos todavía: agrega juguetes abajo';
+            }
+            // Lista con botón quitar
+            const cont = document.getElementById('adminTemporadaLista');
+            if (!cont) return;
+            cont.innerHTML = lista.map(p => `
+                <div class="admin-prod-fila">
+                    <span class="admin-prod-nombre" title="${esc(p.name)}">${esc(p.name)}</span>
+                    <span class="admin-prod-base">costo ${cop(p.price)}</span>
+                    <span class="admin-prod-final">temporada: ${cop(precioDetal(p))}</span>
+                    <button type="button" class="admin-btn-quitar" onclick="quitarTemporadaAdmin('${escJs(p.id)}')">Quitar</button>
+                </div>`).join('');
+        }
+
+        function buscarProductoTemporada() {
+            const q = document.getElementById('adminBuscarTemporada').value.trim().toLowerCase();
+            const cont = document.getElementById('adminTemporadaResultados');
+            if (q.length < 2) { cont.innerHTML = ''; return; }
+            const base = CATALOGO_BASE.filter(p =>
+                !(PRECIOS.temporadaIds || []).includes(p.id) &&
+                (p.name.toLowerCase().includes(q) || String(p.sku || '').toLowerCase().includes(q) || p.id.includes(q))
+            ).slice(0, 6);
+            if (!base.length) {
+                cont.innerHTML = '<div class="admin-preview">No encontramos juguetes con "' + esc(q) + '". Prueba con otra palabra.</div>';
+                return;
+            }
+            cont.innerHTML = base.map(p => `
+                <div class="admin-prod-fila">
+                    <span class="admin-prod-nombre" title="${esc(p.name)}">${esc(p.name)}</span>
+                    <span class="admin-prod-base">costo ${cop(p.price)}</span>
+                    <span class="admin-prod-final">hoy: ${cop(precioDetal(p))}</span>
+                    <button type="button" class="admin-btn-fijar" onclick="agregarTemporadaAdmin('${escJs(p.id)}')">＋ Temporada</button>
+                </div>`).join('');
+        }
+
+        function agregarTemporadaAdmin(id) {
+            if (!(PRECIOS.temporadaIds || []).includes(id)) {
+                PRECIOS.temporadaIds = PRECIOS.temporadaIds || [];
+                PRECIOS.temporadaIds.push(id);
+            }
+            aplicarPanelAdmin();
+            const buscador = document.getElementById('adminBuscarTemporada');
+            if (buscador) buscador.value = '';
+            const res = document.getElementById('adminTemporadaResultados');
+            if (res) res.innerHTML = '';
+        }
+
+        function quitarTemporadaAdmin(id) {
+            PRECIOS.temporadaIds = (PRECIOS.temporadaIds || []).filter(x => x !== id);
+            aplicarPanelAdmin();
+        }
+
+        /* ------------------------------------------------------------------
+           📋 PRECIO DE CADA PRODUCTO: la lista completa del catálogo con su
+           costo, el precio que se cobra hoy y un campo para fijar el precio
+           de venta exacto de cada referencia (vacío = usa la ganancia).
+           ------------------------------------------------------------------ */
+        let listaTodosVisible = false;
+        function toggleListaTodosAdmin() {
+            listaTodosVisible = !listaTodosVisible;
+            const cont = document.getElementById('adminListaTodos');
+            const btn = document.getElementById('adminTodosBtn');
+            if (!cont) return;
+            cont.hidden = !listaTodosVisible;
+            if (btn) btn.innerHTML = listaTodosVisible
+                ? '<i class="fas fa-eye-slash"></i> Ocultar la lista'
+                : '<i class="fas fa-list"></i> Ver la lista completa de productos';
+            if (listaTodosVisible) pintarListaTodosAdmin();
+        }
+
+        function pintarListaTodosAdmin() {
+            const cont = document.getElementById('adminListaTodos');
+            if (!cont) return;
+            const grupos = {};
+            CATALOGO_BASE.forEach(p => {
+                (grupos[p.category] = grupos[p.category] || []).push(p);
+            });
+            const fila = p => {
+                const fijado = PRECIOS.preciosPersonalizados[p.id];
+                return `
+                    <div class="admin-prod-fila" id="filatodos-${esc(p.id)}">
+                        <span class="admin-prod-nombre" title="${esc(p.name)}">${esc(p.name)}</span>
+                        <span class="admin-prod-base">costo ${cop(p.price)}</span>
+                        <input type="number" min="1" step="100" value="${fijado || ''}" placeholder="${cop(precioDetal(p))}"
+                               title="Precio de venta. Vacío = automático (${cop(precioDetal(p))})"
+                               onchange="setPrecioProductoAdmin('${escJs(p.id)}', this.value)">
+                        ${fijado ? '<span class="admin-badge-fijado">precio fijo</span>' : '<span class="admin-prod-final"></span>'}
+                    </div>`;
+            };
+            cont.innerHTML = Object.keys(grupos).sort().map(cat => {
+                const lista = grupos[cat].slice().sort((a, b) => a.price - b.price);
+                return `<div class="admin-lista-grupo">${esc(categoryLabel(cat))} (${lista.length})</div>` + lista.map(fila).join('');
+            }).join('');
+        }
+
+        // Cambia el precio de un producto desde la lista completa: valor
+        // numérico = precio fijo de venta; vacío = vuelve al cálculo automático.
+        function setPrecioProductoAdmin(id, valor) {
+            const v = parseFloat(valor);
+            if (!isNaN(v) && v > 0) {
+                PRECIOS.preciosPersonalizados[id] = v;
+            } else {
+                delete PRECIOS.preciosPersonalizados[id];
+            }
+            recalcularPrecios();
+            pintarFijadosAdmin();
+            pintarPreviewAdmin();
+            if (listaTodosVisible) pintarListaTodosAdmin();
+        }
+
         function aplicarPanelAdmin() {
             leerPanelEnPrecios();
+            leerPanelTienda();
+            aplicarAnalitica();
+            aplicarIdentidad();
+            aplicarEstadoCredito();
             recalcularPrecios();
             pintarPanelAdmin();
-            showNotification('¡Listo! Los precios nuevos ya se ven en toda la página');
+            showNotification('¡Listo! Los cambios ya se ven en toda la página');
         }
 
         function guardarPanelAdmin() {
             leerPanelEnPrecios();
+            leerPanelTienda();
             try {
                 localStorage.setItem(PRECIOS_KEY, JSON.stringify(PRECIOS));
+                localStorage.setItem(TIENDA_KEY, JSON.stringify(TIENDA));
             } catch (e) {}
+            aplicarAnalitica();
+            aplicarIdentidad();
+            aplicarEstadoCredito();
             recalcularPrecios();
             pintarPanelAdmin();
             showNotification('Guardado en este computador (solo tú los verás)');
         }
 
         function restaurarPanelAdmin() {
-            try { localStorage.removeItem(PRECIOS_KEY); } catch (e) {}
+            try {
+                localStorage.removeItem(PRECIOS_KEY);
+                localStorage.removeItem(TIENDA_KEY);
+            } catch (e) {}
             PRECIOS = cargarPrecios();
+            TIENDA = cargarTienda();
+            aplicarTiendaSobreConfig();
+            aplicarIdentidad();
+            aplicarEstadoCredito();
             recalcularPrecios();
             pintarPanelAdmin();
-            showNotification('Volvimos a los precios guardados en el archivo');
+            showNotification('Volvimos a los valores guardados en el archivo');
         }
 
-        // Código listo para reemplazar el bloque PRECIOS_DEFECTO del archivo
+        // Código listo para reemplazar los bloques PRECIOS_DEFECTO y
+        // TIENDA_DEFECTO del archivo ("Guardar para TODOS").
         function codigoConfigAdmin() {
             const cats = Object.keys(PRECIOS.margenesPorCategoria);
+            const temporada = PRECIOS.temporadaIds || [];
             const fijados = Object.keys(PRECIOS.preciosPersonalizados);
             const L = [];
             L.push('        const PRECIOS_DEFECTO = {');
@@ -12835,6 +13760,7 @@
             L.push('            redondeo: ' + PRECIOS.redondeo + ',');
             L.push('');
             L.push('            // Margen por categoría (0.30 = +30%). Vacío = usa el margen global.');
+            L.push('            // "temporada" es la ganancia de los productos de Navidad (Oct-Dic).');
             L.push('            margenesPorCategoria: {');
             if (cats.length) {
                 cats.forEach((c, i) => L.push("                '" + c + "': " + PRECIOS.margenesPorCategoria[c] + (i < cats.length - 1 ? ',' : '')));
@@ -12842,6 +13768,15 @@
                 L.push('                // (ninguna categoría con margen propio ahora mismo)');
             }
             L.push('            },');
+            L.push('');
+            L.push('            // 🎄 Productos de temporada Oct-Dic (Navidad), por id.');
+            L.push('            temporadaIds: [');
+            if (temporada.length) {
+                temporada.forEach((id, i) => L.push("                '" + id + "'" + (i < temporada.length - 1 ? ',' : '')));
+            } else {
+                L.push('                // (ninguno ahora mismo)');
+            }
+            L.push('            ],');
             L.push('');
             L.push('            // Precio final FIJO por producto (ignora márgenes). Clave = id.');
             L.push('            preciosPersonalizados: {');
@@ -12852,18 +13787,47 @@
             }
             L.push('            }');
             L.push('        };');
+            L.push('');
+            L.push('        const TIENDA_DEFECTO = {');
+            L.push('            nombre: ' + JSON.stringify(TIENDA.nombre) + ',');
+            L.push('            logo: ' + JSON.stringify(TIENDA.logo) + ',');
+            L.push('            whatsappPedidos: ' + JSON.stringify(TIENDA.whatsappPedidos) + ',');
+            L.push('            whatsappContacto: ' + JSON.stringify(TIENDA.whatsappContacto) + ',');
+            L.push('            direccion: ' + JSON.stringify(TIENDA.direccion) + ',');
+            L.push('            instagram: ' + JSON.stringify(TIENDA.instagram) + ',');
+            L.push('            tiktok: ' + JSON.stringify(TIENDA.tiktok) + ',');
+            L.push('            sitioWeb: ' + JSON.stringify(TIENDA.sitioWeb) + ',');
+            L.push('');
+            L.push("            // 📈 Analítica: SOLO el ID de cada etiqueta (vacío = apagada)");
+            L.push('            pixelMeta: ' + JSON.stringify(TIENDA.pixelMeta) + ',');
+            L.push('            ga4: ' + JSON.stringify(TIENDA.ga4) + ',');
+            L.push('            clarity: ' + JSON.stringify(TIENDA.clarity) + ',');
+            L.push('');
+            L.push('            productoDestacado: ' + JSON.stringify(TIENDA.productoDestacado) + ',');
+            L.push('            productosFavoritos: ' + JSON.stringify(TIENDA.productosFavoritos) + ',');
+            L.push('            cantidadProductos: ' + JSON.stringify(TIENDA.cantidadProductos) + ',');
+            L.push('            creditoActivo: ' + (TIENDA.creditoActivo ? 'true' : 'false') + ',');
+            L.push('            simuladorEnTarjetas: ' + (TIENDA.simuladorEnTarjetas ? 'true' : 'false') + ',');
+            L.push('            aliados: ' + JSON.stringify(TIENDA.aliados) + ',');
+            L.push('            plazos: ' + JSON.stringify(TIENDA.plazos) + ',');
+            L.push('            tasaMensual: ' + TIENDA.tasaMensual + ',');
+            L.push('            montoMinimo: ' + TIENDA.montoMinimo + ',');
+            L.push('            vaciarCarritoTrasPedido: ' + (TIENDA.vaciarCarritoTrasPedido ? 'true' : 'false') + ',');
+            L.push('            sonidoAlAgregar: ' + (TIENDA.sonidoAlAgregar ? 'true' : 'false') + ',');
+            L.push('            claveAdmin: ' + JSON.stringify(TIENDA.claveAdmin));
+            L.push('        };');
             return L.join('\n');
         }
 
         function copiarConfigAdmin() {
             const codigo = codigoConfigAdmin();
-            const listo = () => showNotification('¡Copiado! Pega el texto donde dice PRECIOS_DEFECTO en el archivo index_detal.html');
+            const listo = () => showNotification('¡Copiado! Reemplaza los bloques PRECIOS_DEFECTO y TIENDA_DEFECTO del archivo index.html por este texto');
             if (navigator.clipboard && navigator.clipboard.writeText) {
                 navigator.clipboard.writeText(codigo).then(listo).catch(function () {
-                    window.prompt('Copia este texto y pégalo donde dice PRECIOS_DEFECTO en el archivo index_detal.html:', codigo);
+                    window.prompt('Copia este texto y reemplaza los bloques PRECIOS_DEFECTO y TIENDA_DEFECTO del archivo index.html:', codigo);
                 });
             } else {
-                window.prompt('Copia este texto y pégalo donde dice PRECIOS_DEFECTO en el archivo index_detal.html:', codigo);
+                window.prompt('Copia este texto y reemplaza los bloques PRECIOS_DEFECTO y TIENDA_DEFECTO del archivo index.html:', codigo);
             }
         }
 
@@ -12876,7 +13840,16 @@
         // ya se reemplazó y permite el respaldo de la siguiente foto que
         // falle (galería, carrusel y lightbox reciclan la misma <img>).
         function imgOnError(el) {
-            if (!el || el.dataset.fbkFrom === el.src) return;
+            if (!el) return;
+            // Si la foto en alta resolución (/full/) falla, se reintenta
+            // primero con su miniatura (data-thumb) antes del placeholder.
+            const thumb = el.getAttribute('data-thumb');
+            if (thumb && el.src !== thumb) {
+                el.dataset.fbkFrom = el.src;
+                el.src = thumb;
+                return;
+            }
+            if (el.dataset.fbkFrom === el.src) return;
             el.dataset.fbkFrom = el.src;
             el.src = PLACEHOLDER_IMG;
             // Los marcos con fondo difuminado (--img) también muestran la
@@ -12891,9 +13864,19 @@
             const validas = imgs.filter(Boolean);
             return validas.length ? validas : [PLACEHOLDER_IMG];
         }
+
+        // Versión en ALTA RESOLUCIÓN de una foto del catálogo: el servidor
+        // publica cada imagen en /thumb/ (144px, para miniaturas) y en
+        // /full/ (1080px). El visor de fotos usa /full/ para que la imagen
+        // principal no se vea borrosa; cualquier otra URL se devuelve igual.
+        function imgFullUrl(src) {
+            return String(src || '').replace('/thumb/', '/full/');
+        }
         // Initialize page
         document.addEventListener('DOMContentLoaded', function() {
+            aplicarIdentidad();      // nombre, logo, WhatsApp y redes (configurables)
             aplicarEstadoCredito();
+            track('PageView');       // línea base para Meta y GA4 (antes no se disparaba)
             loadProducts();
             updateCartUI();
             updateCartCount();
@@ -12901,6 +13884,8 @@
             iniciarAutoplayCarrusel();
             iniciarDerivaCategorias();
             actualizarPrecioHero();
+            actualizarHeroDestacado();
+            renderFavoritos();
 
             // Panel de precios del administrador: enlace "Administración" del
             // pie de página, ?admin=1 o Ctrl+Shift+A. Todos piden clave.
@@ -13010,15 +13995,6 @@
             // A\u00f1o del footer siempre actualizado
             const yearEl = document.getElementById('footerYear');
             if (yearEl) yearEl.textContent = new Date().getFullYear();
-
-            // Todos los enlaces de WhatsApp respetan la vendedora atribuida (?ws=)
-            document.querySelectorAll('a[href*="wa.me/"]:not([data-wa-fijo])').forEach(a => {
-                try {
-                    const texto = decodeURIComponent((a.href.split('text=')[1] || ''));
-                    a.href = waLink(texto || undefined);
-                    a.setAttribute('rel', 'noopener');
-                } catch (e) {}
-            });
 
             // Datos estructurados de producto (rich results con precio y stock)
             try {
@@ -13222,14 +14198,15 @@
                     <span class="category-bubble-price">desde ${cop(desdeGlobal)}</span>
                 </button>`;
 
-            // Categoria de temporada: los productos navidenos viven en varias
-            // categorias y se detectan por nombre. La burbuja solo aparece si
-            // el catalogo trae productos de temporada.
+            // Categoria de temporada (Oct-Dic / Navidad): los productos
+            // navideños viven en varias categorías y la selección de
+            // temporada la cura la administración (buen margen y ticket
+            // medio). La burbuja solo aparece si hay productos de temporada.
             const navidenos = products.filter(p => esNavidad(p));
             const navidad = navidenos.length ? `
-                <button type="button" class="category-bubble navidad${currentFilter === 'navidad' ? ' active' : ''}" data-category="navidad" onclick="filterProducts('navidad')" aria-label="Ver productos de Navidad">
+                <button type="button" class="category-bubble navidad${currentFilter === 'navidad' ? ' active' : ''}" data-category="navidad" onclick="filterProducts('navidad')" aria-label="Ver productos de Navidad y temporada">
                     <span class="category-bubble-img" style="background-image:url('${esc(navidenos[0].image)}')"></span>
-                    <span class="category-bubble-label">🎄 Navidad</span>
+                    <span class="category-bubble-label">🎄 Navidad y Temporada</span>
                     <span class="category-bubble-price">desde ${cop(Math.min(...navidenos.map(p => Math.min(...flattenSizeOptions(p).map(o => o.price)))))}</span>
                 </button>` : '';
 
@@ -13256,8 +14233,12 @@
             const catLink = c => `
                 <button type="button" class="shein-subnav-link${currentFilter === c ? ' active' : ''}" onclick="filterProducts('${escJs(c)}')">${esc(categoryLabel(c))}</button>`;
 
+            const navLink = products.some(p => esNavidad(p)) ? `
+                <button type="button" class="shein-subnav-link${currentFilter === 'navidad' ? ' active' : ''}" onclick="filterProducts('navidad')">🎄 Navidad y Temporada</button>` : '';
+
             track.innerHTML = `
                 <button type="button" class="shein-subnav-link" onclick="scrollToSection('categoryShowcase')">Categorías <i class="fas fa-chevron-down"></i></button>
+                ${navLink}
                 ${topCats.map(catLink).join('')}
                 <button type="button" class="shein-subnav-link" onclick="scrollToSection('testimonios')">Favoritos</button>
                 <button type="button" class="shein-subnav-link" onclick="scrollToSection('preguntas')">Preguntas</button>`;
@@ -13280,23 +14261,26 @@
             products.forEach(p => { counts[p.category] = (counts[p.category] || 0) + 1; });
             const cats = Object.keys(counts).sort((a, b) => counts[b] - counts[a]);
             const item = (icono, etiqueta, accion, activa) => `
-                <li><a href="#productos" class="${activa ? 'active' : ''}" onclick="${accion}"><i class="fas ${icono}"></i>${esc(etiqueta)}</a></li>`;
+                <li><a href="#productos" class="${activa ? 'active' : ''}" onclick="event.preventDefault(); ${accion}"><i class="fas ${icono}"></i>${esc(etiqueta)}</a></li>`;
             // Ubicacion de la tienda fisica destacada al tope del menu: es el
             // dato que mas buscan quienes llegan desde anuncios al por mayor.
             const tienda = `
                 <li>
                     <a class="mobile-menu-tienda" href="https://www.google.com/maps/dir/?api=1&destination=Centro%20Comercial%20Taiwan%2C%20Cra.%209%20%2313a%20-%2012%2C%20Local%2027%2C%20Colombia" target="_blank" rel="noopener">
                         <i class="fas fa-store"></i>
-                        <span>Tienda física — CC Taiwan<small>Cra. 9 #13a - 12, Local 27 · Ver cómo llegar</small></span>
+                        <span>Tienda física — CC Taiwan<small data-direccion>Cra. 9 #13a - 12, Local 27 · Ver cómo llegar</small></span>
                     </a>
                 </li>`;
             list.innerHTML =
                 tienda +
-                item('fa-th-large', 'Todos los productos', "filterProducts('all'); toggleMobileMenu();", currentFilter === 'all') +
+                item('fa-th-large', 'Todos los productos', "toggleMobileMenu(); filterProducts('all');", currentFilter === 'all') +
+                (products.some(p => esNavidad(p))
+                    ? item('fa-tree', 'Navidad y Temporada', "toggleMobileMenu(); filterProducts('navidad');", currentFilter === 'navidad')
+                    : '') +
                 cats.map(c => item(categoryIcon(c), `${categoryLabel(c)} (${counts[c]})`,
-                    `filterProducts('${escJs(c)}'); toggleMobileMenu();`, currentFilter === c)).join('') +
-                item('fa-comments', 'Favoritos', "scrollToSection('testimonios'); toggleMobileMenu();") +
-                item('fa-question-circle', 'Preguntas', "scrollToSection('preguntas'); toggleMobileMenu();");
+                    `toggleMobileMenu(); filterProducts('${escJs(c)}');`, currentFilter === c)).join('') +
+                item('fa-comments', 'Favoritos', "toggleMobileMenu(); scrollToSection('testimonios');") +
+                item('fa-question-circle', 'Preguntas', "toggleMobileMenu(); scrollToSection('preguntas');");
         }
 
         function scrollSheinSubnav(dir) {
@@ -13985,15 +14969,9 @@
             const summary = getCartSummary();
             cartTotal.innerHTML = `<div>${cop(summary.total)}</div>`;
 
-            // Ventaja de pago a crédito bajo el total del carrito
-            const cuotaEl = document.getElementById('cartCuota');
-            if (cuotaEl) {
-                const textoCuota = creditoDisponiblePara(summary.total)
-                    ? `💳 También puedes pagar a cuotas: ${textoDesdeCuota(summary.total)} con ${CONFIG.credito.aliados.join(' o ')}`
-                    : '';
-                cuotaEl.hidden = !textoCuota;
-                cuotaEl.textContent = textoCuota;
-            }
+            // Ventaja de pago a crédito bajo el total del carrito: el
+            // cliente ve la cuota que eligió o elige los plazos aquí mismo.
+            renderCartCuota();
 
             // Render cart items
             cartItems.innerHTML = cart.map((item, index) => {
@@ -14224,13 +15202,72 @@
         // pedido junto con la cuota estimada.
         let plazoCheckout = null;
 
+        // Plazo de cuotas elegido desde el CARRITO: el aviso de Addi /
+        // Sistecrédito bajo el total ahora deja elegir las cuotas ahí mismo.
+        // La elección se recuerda en este navegador y viaja en el mensaje
+        // de WhatsApp del pedido (también si se confirma desde el checkout).
+        let plazoCarrito = null;
+        try {
+            const guardado = parseInt(localStorage.getItem('jt_plazo_cuotas'), 10);
+            if (isFinite(guardado) && guardado > 0) plazoCarrito = guardado;
+        } catch (e) {}
+
+        function persistirPlazoCarrito() {
+            try { localStorage.setItem('jt_plazo_cuotas', String(plazoCarrito || '')); } catch (e) {}
+        }
+
+        // Elige las cuotas desde el carrito: se refleja en el aviso, en el
+        // checkout (si el pago es a crédito) y en el mensaje de WhatsApp.
+        function setPlazoCarrito(n) {
+            if (!plazosCredito().includes(n)) return;
+            plazoCarrito = n;
+            plazoCheckout = n;
+            persistirPlazoCarrito();
+            renderCartCuota();
+            // Si el formulario de pedido está abierto, refresca el selector
+            // y el resumen para que ambos muestren la misma elección.
+            if (document.getElementById('orderModal') && document.getElementById('orderModal').classList.contains('show')) {
+                renderCreditoPlazos();
+                renderOrderSummary();
+            }
+        }
+
+        // Aviso de cuotas del carrito: muestra la cuota elegida o, si el
+        // cliente aún no ha elegido, los plazos disponibles para que lo
+        // haga desde aquí mismo.
+        function renderCartCuota() {
+            const cuotaEl = document.getElementById('cartCuota');
+            const summary = getCartSummary();
+            if (!cuotaEl) return;
+            if (!creditoActivo() || !creditoDisponiblePara(summary.total)) {
+                cuotaEl.hidden = true;
+                cuotaEl.innerHTML = '';
+                return;
+            }
+            const plazos = plazosCredito();
+            const elegido = (plazoCarrito && plazos.includes(plazoCarrito)) ? plazoCarrito : null;
+            const botones = plazos.map(n => `
+                <button type="button" class="cuota-plazo${n === elegido ? ' activo' : ''}"
+                        aria-pressed="${n === elegido}" onclick="setPlazoCarrito(${n})">${n} cuotas</button>`).join('');
+            cuotaEl.hidden = false;
+            cuotaEl.innerHTML = `
+                <span class="cart-cuota-titulo">💳 Paga a cuotas con ${esc(CONFIG.credito.aliados.join(' o '))}:</span>
+                <span class="cuota-plazos">${botones}</span>
+                <span class="cart-cuota-resumen">${elegido
+                    ? `Elegiste ${elegido} cuotas de <strong>${cop(cuotaMensual(summary.total, elegido))}</strong> al mes`
+                    : `Elige tus cuotas — desde <strong>${cop(cuotaMensual(summary.total, plazoPorDefecto()))}</strong> al mes`}</span>
+                <span class="cart-cuota-nota">Valor estimado, sujeto a aprobación. Se envía con tu pedido por WhatsApp.</span>`;
+        }
+
         function renderCreditoPlazos() {
             const box = document.getElementById('creditoPlazoOpciones');
             const resumen = document.getElementById('creditoPlazoResumen');
             if (!box || !creditoActivo()) return;
             const total = getCartSummary().total;
+            // El plazo empieza donde lo dejó el cliente: si ya eligió
+            // cuotas en el carrito, se respeta esa elección aquí también.
             if (!plazoCheckout || !plazosCredito().includes(plazoCheckout)) {
-                plazoCheckout = plazoPorDefecto();
+                plazoCheckout = (plazoCarrito && plazosCredito().includes(plazoCarrito)) ? plazoCarrito : plazoPorDefecto();
             }
             box.innerHTML = plazosCredito().map(n => `
                 <button type="button" class="cuota-plazo${n === plazoCheckout ? ' activo' : ''}"
@@ -14246,6 +15283,10 @@
 
         function setPlazoCheckout(plazo) {
             plazoCheckout = plazo;
+            // La elección en el checkout también se recuerda: si el cliente
+            // vuelve al carrito verá estas cuotas marcadas.
+            plazoCarrito = plazo;
+            persistirPlazoCarrito();
             renderCreditoPlazos();
         }
 
@@ -14281,9 +15322,9 @@
                     }).join('')}
                     <div class="order-summary-line"><span>Subtotal</span><span>${cop(summary.total)}</span></div>
                     <div class="order-summary-line"><span>Envío</span><span>Se cotiza según tu ciudad y se confirma por WhatsApp 🙂</span></div>
-                    <div class="order-summary-line"><span>Entrega</span><span>${esTienda ? 'Retiro en tienda (CC Taiwan L-27)' : 'Se confirma por WhatsApp'}</span></div>
+                    <div class="order-summary-line"><span>Entrega</span><span>${esTienda ? 'Retiro en tienda (' + ((CONFIG.empresa && CONFIG.empresa.direccion) || 'CC Taiwan L-27') + ')' : 'Se confirma por WhatsApp'}</span></div>
                     <div class="order-summary-line total"><span>Total</span><span>${cop(summary.total)}</span></div>
-                    ${creditoDisponiblePara(summary.total) ? `<div class="order-summary-line cuota-resumen"><span>💳 También puedes pagar a cuotas con ${esc(CONFIG.credito.aliados.join(' o '))}</span><span>${textoDesdeCuota(summary.total)}</span></div>` : ''}
+                    ${creditoDisponiblePara(summary.total) ? `<div class="order-summary-line cuota-resumen"><span>💳 Paga a cuotas con ${esc(CONFIG.credito.aliados.join(' o '))}</span><span>${(plazoCarrito && plazosCredito().includes(plazoCarrito)) ? `${cop(cuotaMensual(summary.total, plazoCarrito))}/mes × ${plazoCarrito} (elegidas)` : textoDesdeCuota(summary.total)}</span></div>` : ''}
                 `;
 
                 // Bundles dentro del checkout: 3 sugeridos por ticket (bajo,
@@ -14320,7 +15361,9 @@
             const footerCuota = document.getElementById('codFooterCuota');
             if (footerCuota) {
                 const textoFooterCuota = creditoDisponiblePara(summary.total)
-                    ? `💳 También puedes pagar a cuotas: ${textoDesdeCuota(summary.total)} con ${CONFIG.credito.aliados.join(' o ')} · Valor estimado`
+                    ? `💳 Paga a cuotas: ${(plazoCarrito && plazosCredito().includes(plazoCarrito))
+                        ? `${cop(cuotaMensual(summary.total, plazoCarrito))}/mes × ${plazoCarrito} meses (tu elección)`
+                        : textoDesdeCuota(summary.total)} con ${CONFIG.credito.aliados.join(' o ')} · Valor estimado`
                     : '';
                 footerCuota.hidden = !textoFooterCuota;
                 footerCuota.textContent = textoFooterCuota;
@@ -14353,7 +15396,26 @@
             img.classList.remove('cambia');
             void img.offsetWidth;
             img.classList.add('cambia');
-            img.src = src;
+            // Foto principal en ALTA RESOLUCION: las miniaturas del catálogo
+            // son de 144px y ampliadas al visor se veían borrosas (las de
+            // "También te puede interesar" se ven bien porque se muestran
+            // pequeñas). El servidor publica la misma foto en /full/ (1080px):
+            // se usa esa y, si falla, se vuelve a la miniatura original.
+            const srcFull = imgFullUrl(src);
+            img.dataset.fbk = '';
+            img.onerror = function () {
+                if (this.dataset.fbk === this.src) return;
+                this.dataset.fbk = this.src;
+                if (this.src !== src) { this.src = src; return; }
+                imgOnError(this);
+            };
+            // La foto aprovecha TODO el espacio del visor (los atributos
+            // width/height del HTML son solo la reserva de espacio inicial):
+            // con width/height auto y los máximos del CSS, la imagen se ve
+            // al tamaño real permitido, siempre nitida y sin estirar.
+            img.style.width = 'auto';
+            img.style.height = 'auto';
+            img.src = srcFull;
             img.alt = producto ? producto.name : '';
             if (captionEl) captionEl.textContent = producto ? producto.name : '';
             if (counterEl) counterEl.textContent = `${galeriaIndex + 1} / ${galeriaImages.length}`;
@@ -14709,14 +15771,15 @@
             }
 
             // Build order message
-            let message = `🧸 *NUEVO PEDIDO — JUGUETERÍA TAIWAN*\n\n`;
+            const nombreTienda = (CONFIG.empresa && CONFIG.empresa.nombre) || 'Juguetería Taiwan';
+            let message = `🧸 *NUEVO PEDIDO — ${nombreTienda.toUpperCase()}*\n\n`;
             message += `👤 *Cliente:* ${formData.get('customerFullName')}\n`;
             message += `📱 *Teléfono/WhatsApp:* +57 ${telefono}\n`;
             if (formData.get('customerEmail')) {
                 message += `📧 *Email:* ${formData.get('customerEmail')}\n`;
             }
             if (deliveryMethod === 'tienda') {
-                message += `🏬 *Entrega:* Retiro en tienda (CC Taiwan, Local 27, Cra. 9 #13a - 12)\n`;
+                message += `🏬 *Entrega:* Retiro en tienda (${(CONFIG.empresa && CONFIG.empresa.direccion) || 'CC Taiwan, Local 27, Cra. 9 #13a - 12'})\n`;
             } else {
                 message += `🚚 *Entrega:* A domicilio\n`;
                 message += `📍 *Departamento:* ${formData.get('customerDepartment')}\n`;
@@ -14726,13 +15789,17 @@
             }
             message += `💳 *Método de Pago:* ${paymentLabels[formData.get('paymentMethod')] || formData.get('paymentMethod')}\n\n`;
 
-            // Con crédito elegido se informa el plazo y la cuota estimada,
+            // Con crédito elegido se informa el plazo que el cliente marcó
+            // (en el carrito o aquí en el formulario) y la cuota estimada,
             // para que quien atiende el pedido gestione el aliado sin adivinar.
             if (formData.get('paymentMethod') === 'credito' && creditoActivo()) {
                 const totalCredito = getCartSummary().total;
-                const plazo = (plazoCheckout && plazosCredito().includes(plazoCheckout)) ? plazoCheckout : plazoPorDefecto();
+                const plazos = plazosCredito();
+                const plazo = (plazoCheckout && plazos.includes(plazoCheckout))
+                    ? plazoCheckout
+                    : ((plazoCarrito && plazos.includes(plazoCarrito)) ? plazoCarrito : plazoPorDefecto());
                 if (creditoDisponiblePara(totalCredito)) {
-                    message += `🧮 *Cuotas:* ${plazo} cuotas de aprox. ${cop(cuotaMensual(totalCredito, plazo))} al mes (valor estimado, sujeto a aprobación de ${CONFIG.credito.aliados.join(' o ')})\n\n`;
+                    message += `🧮 *Cuotas:* ${plazo} cuotas de aprox. ${cop(cuotaMensual(totalCredito, plazo))} al mes (elección del cliente; valor estimado, sujeto a aprobación de ${CONFIG.credito.aliados.join(' o ')})\n\n`;
                 } else {
                     message += `🧮 *Cuotas:* A convenir con ${CONFIG.credito.aliados.join(' o ')} por WhatsApp\n\n`;
                 }
@@ -14806,12 +15873,18 @@
         function searchProducts() {
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
             const searchResults = document.getElementById('searchResults');
-            
+
             if (searchTerm.length < 2) {
                 searchResults.style.display = 'none';
                 return;
             }
-            
+
+            // Evento de búsqueda para Meta (Search) y GA4 (search), con un
+            // pequeño filtro para no dispararlo con cada letra.
+            const t = (window.__searchDebounce);
+            clearTimeout(t);
+            window.__searchDebounce = setTimeout(() => track('Search', { search_string: searchTerm }), 900);
+
             const filteredProducts = products.filter(product => {
                 const enEstampados = (product.estampados || [product.estampado] || []).some(e => (e || '').toLowerCase().includes(searchTerm));
                 return product.name.toLowerCase().includes(searchTerm) ||
@@ -14915,10 +15988,11 @@
 
         // Share website
         function shareWebsite() {
+            const cantidad = TIENDA.cantidadProductos || '+22.000';
             if (navigator.share) {
                 navigator.share({
                      title: 'Juguetería Taiwan — Juguetes al Detal',
-                    text: 'Descubre los juguetes de Juguetería Taiwan: +22.000 productos con envíos a toda Colombia',
+                    text: `Descubre los juguetes de Juguetería Taiwan: ${cantidad} productos con envíos a toda Colombia`,
                     url: window.location.href
                 });
             } else {
