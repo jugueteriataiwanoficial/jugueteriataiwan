@@ -2091,10 +2091,13 @@
             justify-content: center;
             background: #EAF6F9;
             border-radius: 12px;
-            min-height: 340px;
-            /* Techo de la foto principal: 2/3 de pantalla en escritorio
-               (la versión /full/ de 1080px la llena con nitidez). */
-            --alto-foto: min(720px, 66vh);
+            min-height: 300px;
+            /* Techo de la foto principal: se adapta a CADA pantalla dejando
+               reservado el espacio del caption, el botón y la fila
+               "También te puede interesar" — así la sección de sugeridos
+               NUNCA queda oculta: todo se ve en una sola pantalla, sin
+               scroll dentro del panel. La foto usa /full/ (1080px+). */
+            --alto-foto: min(640px, calc(94vh - 280px));
             max-height: var(--alto-foto);
             overflow: hidden;
         }
@@ -2160,22 +2163,32 @@
 
         /* --- Info + CTA --- */
         .lightbox-info {
-            text-align: center;
-            margin-top: 18px;
+            /* Caption y botón EN LA MISMA LÍNEA: ahorra el espacio vertical
+               que necesita la fila "También te puede interesar" para verse
+               completa sin hacer scroll dentro del panel. */
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-top: 10px;
         }
         .lightbox-caption {
             color: var(--text-dark);
             font-weight: 700;
-            font-size: 1.1rem;
-            margin-bottom: 12px;
+            font-size: 1rem;
+            min-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
         .lightbox-cta {
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
-            margin: 0 auto;
-            padding: 13px 26px;
+            flex-shrink: 0;
+            margin: 0;
+            padding: 10px 20px;
             border: none;
             border-radius: 999px;
             background: var(--gradient-primary);
@@ -2194,25 +2207,25 @@
            tarjetas de productos: swipe fluido en movil, scroll suave en
            escritorio y cards siempre completas (foto + nombre + precio). */
         .lightbox-upsell {
-            margin-top: 10px;
-            padding-top: 10px;
+            margin-top: 8px;
+            padding-top: 8px;
             border-top: 1px solid var(--border-color);
         }
         .lightbox-upsell-title {
-            font-size: 0.92rem;
+            font-size: 0.85rem;
             font-weight: 700;
             color: var(--text-dark);
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
         .lightbox-upsell-track {
             display: flex;
-            gap: 12px;
+            gap: 10px;
             overflow-x: auto;
             overscroll-behavior-x: contain;
             scroll-snap-type: x mandatory;
             scroll-behavior: smooth;
             -webkit-overflow-scrolling: touch;
-            padding-bottom: 4px;
+            padding-bottom: 3px;
             scrollbar-width: thin;
             scrollbar-color: var(--primary-color) transparent;
         }
@@ -2223,7 +2236,9 @@
             border-radius: 10px;
         }
         .lightbox-upsell-item {
-            flex: 0 0 118px;
+            /* Compactos para que la fila completa quepa junto con la foto
+               grande en una sola pantalla, sin scroll interno del panel. */
+            flex: 0 0 96px;
             scroll-snap-align: start;
             cursor: pointer;
             text-align: left;
@@ -2248,8 +2263,8 @@
                la tira de sugeridos queda compacta (el panel completo —
                foto grande + sugeridos — cabe en la pantalla). */
             aspect-ratio: 1 / 1;
-            border-radius: 10px;
-            margin-bottom: 5px;
+            border-radius: 8px;
+            margin-bottom: 4px;
             overflow: hidden;
             background: #EAF6F9;
         }
@@ -2272,20 +2287,20 @@
             display: block;
         }
         .lightbox-upsell-item-name {
-            font-size: 0.72rem;
+            font-size: 0.68rem;
             font-weight: 600;
             color: var(--text-dark);
-            line-height: 1.2;
+            line-height: 1.15;
             display: -webkit-box;
             -webkit-line-clamp: 1;
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
         .lightbox-upsell-item-price {
-            font-size: 0.78rem;
+            font-size: 0.74rem;
             font-weight: 700;
             color: var(--primary-color);
-            margin-top: 2px;
+            margin-top: 1px;
             white-space: nowrap;
         }
 
@@ -2304,12 +2319,12 @@
             }
             .lightbox-thumb { width: 52px; height: 52px; }
             /* Foto principal protagonista también en móvil: casi media
-               pantalla para que el producto se vea grande y completo. */
-            .lightbox-main { --alto-foto: 46vh; min-height: 240px; }
-            .lightbox-cta { padding: 12px 22px; font-size: 0.9rem; }
-            /* Cards de sugeridos completos en movil: entran ~2.5 visibles */
-            .lightbox-upsell { margin-top: 12px; padding-top: 10px; }
-            .lightbox-upsell-item { flex: 0 0 124px; }
+               pantalla, dejando sitio abajo para los sugeridos. */
+            .lightbox-main { --alto-foto: 46vh; min-height: 220px; }
+            .lightbox-cta { padding: 9px 16px; font-size: 0.82rem; }
+            /* Sugeridos compactos en movil: entran más por pantalla */
+            .lightbox-upsell { margin-top: 10px; padding-top: 8px; }
+            .lightbox-upsell-item { flex: 0 0 92px; }
         }
 
         @media (max-width: 380px) {
