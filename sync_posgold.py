@@ -604,8 +604,22 @@ def generar_bloque_js(env, seleccion, cantidad):
         L.append("                    ]}")
         L.append("                ]")
         L.append("            },")
-    L.append("        ];")
-    return "\n".join(L)
+        L.append("        ];")
+        # Carrusel "Los imperdibles": los 16 productos con mayor UTILIDAD
+        # (plata absoluta que deja cada venta). Viajan SOLO los ids en ese
+        # orden — costos y utilidades exactas viven en el reporte local y
+        # jamas se publican. El frente arma la fila con los que esten en el
+        # catalogo (initTopUtilidadCarousel).
+        top_utilidad = sorted(seleccion, key=lambda p: -(p.get("utilidad") or 0))[:16]
+        L.append("")
+        L.append("        // Carrusel 'Los imperdibles': IDs ordenados por utilidad")
+        L.append("        // (plata que deja cada venta). Lo decide el cron con los costos")
+        L.append("        // reales; esos costos nunca viajan al sitio publico.")
+        L.append("        const TOP_UTILIDAD_IDS = [")
+        for p in top_utilidad:
+            L.append(f"            {js_texto(p['slug'])},")
+        L.append("        ];")
+        return "\n".join(L)
 
 
 def validar_js_nodo(bloque_js):
