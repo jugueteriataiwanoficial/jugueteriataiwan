@@ -1,0 +1,38 @@
+# ==================================================================
+# REGLA DE ORO: en el repo SOLO se publica lo que la tienda necesita.
+# Todo lo demás (credenciales, excels con costos, propuestas, QA,
+# transcripciones) queda FUERA del repositorio de GitHub.
+# ==================================================================
+
+# --- Credenciales y secretos: JAMAS publicar ---
+.env
+.env.*
+*.pem
+*.key
+
+# --- Datos de negocio sensibles (costos, margenes, propuestas) ---
+*.xlsx
+*.xls
+*.csv
+*.pdf
+*.pptx
+
+# --- Transcripciones, informacion privada y notas (NINGUN txt al repo) ---
+*.txt
+gen_presentacion.py
+gen_presentacion_vtex.py
+
+# --- Versiones de referencia del index (solo index.html se publica) ---
+index_plantilla.html
+index_original.html
+index_detal.html
+
+# --- Investigacion, QA y temporales ---
+.firecrawl/
+QA_screenshots/
+reportes/
+*.tmp
+
+# --- Python ---
+__pycache__/
+*.pyc

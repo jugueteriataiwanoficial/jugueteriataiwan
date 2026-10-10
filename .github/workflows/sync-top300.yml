@@ -1,0 +1,83 @@
+# ==================================================================
+# SYNC TOP 300 POSGOLD -> index.html — 100% en GitHub Actions.
+# Ya NO depende de ningun PC local: corre en la nube de GitHub.
+#
+# Horario: todos los dias a las 06:00 y 18:00 hora Colombia (UTC-5).
+# Tambien se puede lanzar manualmente (workflow_dispatch) desde la
+# pestana Actions del repo: "sync-top300" -> Run workflow.
+#
+# Los COSTOS viajan cifrados dentro del repo (costos.posgold.enc,
+# AES-256 + PBKDF2): el repo es publico pero el Excel de costos nunca
+# se sube en claro. Para actualizarlos: exportar el inventario de
+# POSGold y correr localmente `python actualizar_costos.py --commit`.
+#
+# Secrets requeridos (Settings -> Secrets and variables -> Actions):
+#   POSGOLD_TOKEN_USER  usuario del token JWT de POSGold
+#   POSGOLD_TOKEN_PASS  password del token JWT de POSGold
+#   COSTOS_KEY          llave AES con la que se cifro costos.posgold.enc
+# ==================================================================
+name: sync-top300
+
+on:
+  schedule:
+    - cron: "0 11,23 * * *"   # 06:00 y 18:00 hora Colombia (UTC-5)
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-top300
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # historial completo: push seguro desde el runner
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"   # valida la sintaxis JS del index generado
+
+      - name: Instalar openpyxl
+        run: pip install openpyxl
+
+      - name: Descifrar costos de POSGold
+        run: |
+          openssl enc -d -aes-256-cbc -pbkdf2 -iter 200000 \
+            -in costos.posgold.enc -out PRODUCTOS_cloud.xlsx \
+            -pass env:COSTOS_KEY
+          echo "costos descifrados: $(stat -c%s PRODUCTOS_cloud.xlsx) bytes"
+        env:
+          COSTOS_KEY: ${{ secrets.COSTOS_KEY }}
+
+      - name: Crear .env desde secrets
+        run: |
+          printf 'POSGOLD_BASE=https://jugueteriataiwan.goldpos.com.co\n' >> .env
+          printf 'POSGOLD_TOKEN_USER=%s\n' "$POSGOLD_TOKEN_USER" >> .env
+          printf 'POSGOLD_TOKEN_PASS=%s\n' "$POSGOLD_TOKEN_PASS" >> .env
+          printf 'POSGOLD_EMPRESAID=1\nPOSGOLD_USUARIOID=1\nPOSGOLD_BODEGAID=2\n' >> .env
+          printf 'WEB_TIENDA=https://jugueteriataiwan.com\n' >> .env
+          printf 'TOP300_CANTIDAD=300\nRANKING=margen_costo\nCOSTO_CAMPO=costopromedio\n' >> .env
+          printf 'INCLUIR_DESTACADOS=true\n' >> .env
+          printf 'DESTACADOS_IDS=pista-neon-carro-pila-luz-con-numero,mesa-futbol-de-madera,burbujero-mil-burbujas-pilas-cj-bubble-gun-4-motivos\n' >> .env
+          printf 'COMPARE_FALLBACK_XIVA=true\n' >> .env
+        env:
+          POSGOLD_TOKEN_USER: ${{ secrets.POSGOLD_TOKEN_USER }}
+          POSGOLD_TOKEN_PASS: ${{ secrets.POSGOLD_TOKEN_PASS }}
+
+      - name: Ejecutar sincronizacion y publicar
+        run: python sync_posgold.py --publicar
+        env:
+          GIT_AUTHOR_NAME: sync-posgold
+          GIT_AUTHOR_EMAIL: actions@github.com
+          GIT_COMMITTER_NAME: sync-posgold
+          GIT_COMMITTER_EMAIL: actions@github.com
