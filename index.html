@@ -90,13 +90,15 @@
 
     <!-- Guard temprano de imágenes: los <img onerror="imgOnError(this)"> del
          HTML pueden dispararse ANTES de que el script principal (al final
-         del body) cargue — por ejemplo la foto del lightbox nace con src=""
-         y su onerror salta de inmediato. Esta versión mínima evita el
-         ReferenceError; la versión completa del script principal la
-         reemplaza en cuanto ejecuta. -->
+         del body) cargue. Esta versión mínima evita el ReferenceError y NO
+         hace nada más: la versión completa del script principal la
+         reemplaza en cuanto ejecuta. (Antes ocultaba el elemento con
+         visibility:hidden — y en WebKit/Safari la foto del lightbox nacía
+         con src="" que dispara error al parsear: quedaba oculta PARA
+         SIEMPRE en iPhone y Mac, aunque cargara bien.) -->
     <script>
         function imgOnError(el) {
-            try { el.style.visibility = 'hidden'; } catch (e) {}
+            /* no-op: el script principal trae la version completa */
         }
     </script>
 
@@ -5669,7 +5671,7 @@
                     <button class="lightbox-nav prev" onclick="lightboxStep(-1)" aria-label="Imagen anterior">
                         <i class="fas fa-chevron-left"></i>
                     </button>
-                    <img id="lightboxImage" src="" alt="" width="400" height="500" onerror="imgOnError(this)">
+                    <img id="lightboxImage" alt="" width="400" height="500" onerror="imgOnError(this)">
                     <button class="lightbox-nav next" onclick="lightboxStep(1)" aria-label="Imagen siguiente">
                         <i class="fas fa-chevron-right"></i>
                     </button>
@@ -7671,6 +7673,9 @@
         // falle (galería, carrusel y lightbox reciclan la misma <img>).
         function imgOnError(el) {
             if (!el) return;
+            // Si una version antigua del guard temprano oculto el elemento
+            // (el stub hacia visibility:hidden), se restaura primero.
+            el.style.visibility = '';
             // Si la foto en alta resolución (/full/) falla, se reintenta
             // primero con su miniatura (data-thumb) antes del placeholder.
             const thumb = el.getAttribute('data-thumb');
@@ -9334,6 +9339,7 @@
             img.style.opacity = '0';
             if (mainEl) mainEl.classList.add('cargando');
             const revelar = () => {
+                img.style.visibility = '';   // repara el ocultamiento del stub antiguo (Safari)
                 img.style.opacity = '1';
                 if (mainEl) mainEl.classList.remove('cargando');
                 img.classList.remove('cambia');
@@ -9354,6 +9360,13 @@
             // la foto invisible para siempre. Si la imagen ya está en caché
             // (complete al instante), se revela directamente.
             if (img.complete && img.naturalWidth > 0) revelar();
+            // Respaldo extra: si la imagen ya se decodifico pero el evento
+            // 'load' aun no ha disparado (WebKit a veces lo entrega tarde,
+            // sobre todo con el grid cargando imagenes en paralelo), se
+            // revela igual a los 400ms. La foto NUNCA queda invisible.
+            setTimeout(() => {
+                if (esActual() && img.naturalWidth > 0 && img.style.opacity !== '1') revelar();
+            }, 400);
             const cargaFull = new Image();
             // Referencia externa al Image de precarga: sin ella el recolector
             // de basura podía eliminarlo A MITAD DE LA DESCARGA (el ciclo
