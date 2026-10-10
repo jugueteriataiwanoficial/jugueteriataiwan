@@ -2098,28 +2098,30 @@
 
         .lightbox-main {
             position: relative;
-            flex: 1;
-            min-width: 0;
             display: flex;
             align-items: center;
             justify-content: center;
             background: #EAF6F9;
             border-radius: 12px;
-            min-height: 300px;
+            overflow: hidden;
             /* Techo de la foto principal: se adapta a CADA pantalla dejando
                reservado el espacio del caption, el botón y la fila
                "También te puede interesar" — así la sección de sugeridos
                NUNCA queda oculta: todo se ve en una sola pantalla, sin
                scroll dentro del panel. La foto usa /full/ (1080px+). */
             --alto-foto: min(640px, calc(94vh - 315px));
-            max-height: var(--alto-foto);
-            /* Marco CUADRADO ajustado a la foto (el catálogo es de fotos
-               cuadradas): la foto llena el marco y el difuminado queda
-               solo como un halo sutil — antes el marco era anchísimo y las
-               bandas difuminadas a los lados hacían que "todo se viera
-               borroso". */
-            max-width: var(--alto-foto);
-            overflow: hidden;
+            /* Marco de tamano EXPLICITO y cuadrado. Antes el ancho venia de
+               flex:1 + max-width y la foto usaba width:auto/100%: ese calculo
+               dependia del tamano intrinseco de la imagen y de como cada
+               navegador resuelve porcentajes dentro de items flex cuyo
+               tamano es contenido-dependiente (Safari de escritorio lo
+               resuelve distinto a Chrome y puede colapsar a cero). Con
+               width/height explicitos la foto SIEMPRE tiene donde pintarse,
+               en cualquier navegador, pantalla y antes de descargar. */
+            width: min(var(--alto-foto), 100%);
+            height: var(--alto-foto);
+            min-height: 220px;
+            flex: 0 1 auto;
         }
         /* Fondo borroso con la propia foto (mismo truco de las tarjetas):
             con el marco cuadrado queda como un halo sutil alrededor de la
@@ -2163,13 +2165,12 @@
         .lightbox-main img {
             position: relative;
             z-index: 1;
-            /* width 100% + object-fit: el marco reserva SIEMPRE el espacio
-               y la foto se pinta dentro cuando llegue, sin depender del
-               tamano intrinseco ni del aspect-ratio derivado de los
-               atributos (Safari de iOS < 15.4 no lo deriva y en pantallas
-               moviles el calculo con width:auto podia colapsar a cero). */
+            /* width/height 100% contra un marco de tamano EXPLICITO: la
+               foto se pinta dentro en cuanto carga, sin depender del
+               tamano intrinseco ni del aspect-ratio (Safari antiguo no lo
+               deriva de los atributos width/height del HTML). */
             width: 100%;
-            height: var(--alto-foto);
+            height: 100%;
             object-fit: contain;
             border-radius: 12px;
             cursor: default;
@@ -5092,12 +5093,56 @@
             line-height: 1.5;
         }
         .admin-nota strong { color: var(--text-dark); }
+        /* PANEL EN MOVIL: responsive SIN ocultar nada. Antes este bloque
+           escondia con display:none el costo y el precio final de cada
+           producto y la vista previa de cada categoria; ahora las filas
+           se reorganizan en dos lineas (nombre + control arriba, precios
+           completos abajo) y todo queda visible y tocable. */
         @media (max-width: 640px) {
-            .admin-cat-fila { grid-template-columns: 1fr 70px; }
-            .admin-cat-fila .admin-cat-preview { display: none; }
-            .admin-prod-fila { grid-template-columns: 1fr auto; }
-            .admin-prod-fila .admin-prod-base, .admin-prod-fila .admin-prod-final { display: none; }
-            .admin-prod-fila input { width: 100%; }
+            .admin-panel .modal-header { padding: 14px 16px; }
+            .admin-panel .modal-title { font-size: 1.15rem; }
+            .admin-panel .modal-body { padding: 14px; }
+            .admin-help { padding: 10px 12px; font-size: 0.78rem; }
+            .admin-grid { grid-template-columns: 1fr; gap: 10px; }
+            /* Filas de categoria (y la de temporada): nombre e input en la
+               primera linea; la vista previa del precio pasa abajo completa. */
+            .admin-cat-fila {
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                gap: 6px 10px;
+            }
+            .admin-cat-fila .admin-cat-nombre { flex: 1 1 calc(100% - 116px); min-width: 0; }
+            .admin-cat-fila input { width: 96px; }
+            .admin-cat-fila .admin-cat-preview {
+                flex: 1 1 100%;
+                white-space: normal;
+                overflow: visible;
+                font-size: 0.76rem;
+            }
+            /* Filas de producto (resultados, fijados, temporada y lista
+               completa): nombre arriba con el input; costo, precio final,
+               badge y botones se acomodan abajo SIN ocultarse. */
+            .admin-prod-fila {
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                gap: 6px 10px;
+            }
+            .admin-prod-fila .admin-prod-nombre {
+                flex: 1 1 calc(100% - 134px);
+                min-width: 0;
+                white-space: normal;
+                overflow: visible;
+                line-height: 1.3;
+            }
+            .admin-prod-fila input { width: 110px; }
+            .admin-prod-fila .admin-prod-base,
+            .admin-prod-fila .admin-prod-final,
+            .admin-prod-fila .admin-badge-fijado { flex: 0 1 auto; font-size: 0.76rem; }
+            .admin-prod-fila button { flex: 0 0 auto; }
+            /* Botones del pie: grandes y de a dos por linea para tocar bien */
+            .admin-botones .btn { flex: 1 1 calc(50% - 5px); font-size: 0.85rem; padding: 11px 12px; }
         }
 
     </style>
@@ -5322,8 +5367,8 @@
                     <div class="sort-select-wrap">
                         <label for="sortSelect" class="sort-select-label">Ordenar:</label>
                         <select id="sortSelect" onchange="setSortOrder(this.value)" aria-label="Ordenar productos">
-                            <option value="precio-asc">Precio: menor a mayor</option>
                             <option value="precio-desc">Precio: mayor a menor</option>
+                            <option value="precio-asc">Precio: menor a mayor</option>
                             <option value="categoria">Por categoría</option>
                         </select>
                     </div>
@@ -6504,7 +6549,7 @@
         let cart = JSON.parse(localStorage.getItem('taiwanCart')) || [];
         let sizeQuantities = {};
         let currentFilter = 'all';
-        let currentSort = 'precio-asc';
+        let currentSort = 'precio-desc';
         let timerInterval;
 
         // Variables para el contador regresivo del carrito
