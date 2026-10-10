@@ -20,10 +20,11 @@ name: sync-top300
 
 on:
   schedule:
-    - cron: "0 11,23 * * *"   # 06:00 y 18:00 hora Colombia (UTC-5)
-    - cron: "0 12,0 * * *"    # reintento: 07:00 y 19:00 (autocura si la
-                              # web mayorista tiene caida/mantenimiento
-                              # en la franja de la corrida principal)
+    # Horario de la tienda: labores 07:30-19:00 (Colombia). Las corridas
+    # quedan 15 minutos antes de abrir y 15 despues de cerrar, con un
+    # reintento una hora despues de cada una (autocura si algo falla).
+    # UTC = Colombia + 5.
+    - cron: "15 12,13,0,1 * * *"  # 07:15, 08:15, 19:15 y 20:15 Colombia
   workflow_dispatch:
 
 permissions:

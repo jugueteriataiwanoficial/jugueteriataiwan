@@ -2163,13 +2163,13 @@
         .lightbox-main img {
             position: relative;
             z-index: 1;
-            width: auto;
-            /* La foto ocupa SIEMPRE el tamaño del visor, nunca su tamaño
-               natural de miniatura (esas son de 144px y ampliadas se ven
-               borrosas: por eso el visor muestra la versión /full/ de
-               1080px y la miniatura solo es respaldo si aquella falla). */
+            /* width 100% + object-fit: el marco reserva SIEMPRE el espacio
+               y la foto se pinta dentro cuando llegue, sin depender del
+               tamano intrinseco ni del aspect-ratio derivado de los
+               atributos (Safari de iOS < 15.4 no lo deriva y en pantallas
+               moviles el calculo con width:auto podia colapsar a cero). */
+            width: 100%;
             height: var(--alto-foto);
-            max-width: 100%;
             object-fit: contain;
             border-radius: 12px;
             cursor: default;
@@ -14215,28 +14215,27 @@
             const captionEl = document.getElementById('lightboxCaption');
             const counterEl = document.getElementById('lightboxCounter');
             const ctaEl = document.getElementById('lightboxCta');
-            const src = galeriaImages[galeriaIndex];
-            if (!img || !src) return;
+            const src = galeriaImages[galeriaIndex] || PLACEHOLDER_IMG;
+            if (!img) return;
             const producto = products.find(p => p.id === galeriaProductId);
             const mainEl = document.querySelector('.lightbox-main');
             const esActual = () => galeriaImages[galeriaIndex] === src;
 
-            // NÍTIDO PRIMERO: la imagen principal JAMÁS se muestra borrosa.
-            // Las miniaturas del catálogo son de 144px y ampliadas al marco
-            // del visor se veían borrosas — por eso el visor muestra directo
-            // la versión /full/ (1080px) de la foto. Mientras descarga se ve
-            // el marco con el difuminado y un pequeño spinner; la miniatura
-            // solo aparece como RESPALDO (si /full/ falla o tarda más de
-            // 2.5 segundos en una conexión lenta) y, si /full/ llega después,
-            // la foto sube sola a la versión nítida.
+            // MINIATURA INMEDIATA: la tarjeta del catálogo ya descargó esta
+            // misma URL (está en la caché del navegador), así que la foto se
+            // ve AL INSTANTE en cualquier teléfono o conexión. La versión
+            // nítida /full/ (1080px) la reemplaza en cuanto llega; si /full/
+            // no existe, la miniatura se queda (mejor suave que un cuadro
+            // en blanco). Antes se esperaba con el cuadro vacío hasta 2.5
+            // segundos y en móviles con iOS antiguo o red lenta ese hueco
+            // podía quedarse sin foto para siempre.
             img.dataset.fbk = '';
-            img.dataset.fase = 'esperando';
+            img.dataset.fase = 'thumb';
             img.classList.remove('cambia');
             img.style.opacity = '0';
-            img.removeAttribute('src');
             if (mainEl) mainEl.classList.add('cargando');
             img.onload = function () {
-                // La foto (sea /full/ o el respaldo) ya cargó: se revela
+                // La foto (miniatura o nítida) ya cargó: se revela
                 // con el fundido y se quita el spinner.
                 this.style.opacity = '1';
                 if (mainEl) mainEl.classList.remove('cargando');
@@ -14250,27 +14249,17 @@
                 if (this.src !== src) { this.dataset.fase = 'thumb'; this.src = src; return; }
                 imgOnError(this);
             };
+            img.src = src;
             const cargaFull = new Image();
             cargaFull.onload = () => {
-                // Llegó la versión nítida (aunque ya se estuviera viendo el
-                // respaldo de miniatura): se sube la foto a /full/.
+                // Llegó la versión nítida: se sube la foto a /full/.
                 if (esActual()) { img.dataset.fase = 'full'; img.src = cargaFull.src; }
             };
             cargaFull.onerror = () => {
-                // /full/ no existe para esta foto: se muestra la miniatura.
-                if (esActual() && img.dataset.fase !== 'full') { img.dataset.fase = 'thumb'; img.src = src; }
+                // /full/ no existe para esta foto: se queda la miniatura.
+                if (esActual() && img.dataset.fase !== 'full') { img.dataset.fase = 'thumb'; }
             };
             cargaFull.src = imgFullUrl(src);
-            // Conexión lenta: tras 2.5s se muestra la miniatura mientras
-            // /full/ termina de llegar (mejor borrosa un momento que nada);
-            // cuando la nítida descargue, sube sola.
-            clearTimeout(window.__tFbLightbox);
-            window.__tFbLightbox = setTimeout(() => {
-                if (esActual() && img.dataset.fase === 'esperando') {
-                    img.dataset.fase = 'thumb';
-                    img.src = src;
-                }
-            }, 2500);
             img.alt = producto ? producto.name : '';
             if (captionEl) captionEl.textContent = producto ? producto.name : '';
             if (counterEl) counterEl.textContent = `${galeriaIndex + 1} / ${galeriaImages.length}`;
