@@ -9327,23 +9327,20 @@
             // ve AL INSTANTE en cualquier teléfono o conexión. La versión
             // nítida /full/ (1080px) la reemplaza en cuanto llega; si /full/
             // no existe, la miniatura se queda (mejor suave que un cuadro
-            // en blanco). Antes se esperaba con el cuadro vacío hasta 2.5
-            // segundos y en móviles con iOS antiguo o red lenta ese hueco
-            // podía quedarse sin foto para siempre.
+            // en blanco).
             img.dataset.fbk = '';
             img.dataset.fase = 'thumb';
             img.classList.remove('cambia');
             img.style.opacity = '0';
             if (mainEl) mainEl.classList.add('cargando');
-            img.onload = function () {
-                // La foto (miniatura o nítida) ya cargó: se revela
-                // con el fundido y se quita el spinner.
-                this.style.opacity = '1';
+            const revelar = () => {
+                img.style.opacity = '1';
                 if (mainEl) mainEl.classList.remove('cargando');
-                this.classList.remove('cambia');
-                void this.offsetWidth;
-                this.classList.add('cambia');
+                img.classList.remove('cambia');
+                void img.offsetWidth;
+                img.classList.add('cambia');
             };
+            img.onload = revelar;
             img.onerror = function () {
                 if (this.dataset.fbk === this.src) return;
                 this.dataset.fbk = this.src;
@@ -9351,10 +9348,26 @@
                 imgOnError(this);
             };
             img.src = src;
+            // Safari (iPhone y Mac) NO redispara 'load' cuando se reasigna
+            // el MISMO src de una imagen ya completa: sin este guard, la
+            // segunda apertura del mismo producto quedaba en opacity 0 con
+            // la foto invisible para siempre. Si la imagen ya está en caché
+            // (complete al instante), se revela directamente.
+            if (img.complete && img.naturalWidth > 0) revelar();
             const cargaFull = new Image();
+            // Referencia externa al Image de precarga: sin ella el recolector
+            // de basura podía eliminarlo A MITAD DE LA DESCARGA (el ciclo
+            // cargaFull→closure no tiene ancla al heap) y el navegador
+            // cancelaba la petición: el lightbox quedaba en miniatura para
+            // siempre aunque /full/ existiera.
+            window.__jtPrecargaFull = cargaFull;
             cargaFull.onload = () => {
                 // Llegó la versión nítida: se sube la foto a /full/.
-                if (esActual()) { img.dataset.fase = 'full'; img.src = cargaFull.src; }
+                if (esActual()) {
+                    img.dataset.fase = 'full';
+                    img.src = cargaFull.src;
+                    if (img.complete && img.naturalWidth > 0) revelar();
+                }
             };
             cargaFull.onerror = () => {
                 // /full/ no existe para esta foto: se queda la miniatura.
