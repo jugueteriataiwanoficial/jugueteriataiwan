@@ -12218,7 +12218,7 @@
             // fabrica se conservan las versiones nítidas del repo
             // (assets/), que son las que los mensajeros muestran bien;
             // solo se reemplazan cuando Valeria configura otro logo.
-            if (emp.logo && emp.logo !== TIENDA_DEFECTO.empresa.logo) {
+            if (emp.logo && emp.logo !== TIENDA_DEFECTO.logo) {
                 document.querySelectorAll('meta[property="og:image"], meta[name="twitter:image"]')
                     .forEach(m => m.setAttribute('content', emp.logo));
                 document.querySelectorAll('link[rel="icon"], link[rel="shortcut icon"], link[rel="apple-touch-icon"]')
