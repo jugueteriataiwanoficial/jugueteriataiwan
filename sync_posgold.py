@@ -198,23 +198,26 @@ def http_texto(url, headers=None, timeout=90, metodo="GET", datos=None, reintent
 
 
 def imagen_responde(url):
-    """HEAD con respaldo GET-Range: confirma que la foto existe en la web."""
+    """HEAD con respaldo GET-Range: confirma que la foto existe en la web.
+    Devuelve (ok, codigo_http). Codigo 0 = error de red o timeout."""
     req = urllib.request.Request(url, method="HEAD", headers={"User-Agent": UA})
     try:
         with urllib.request.urlopen(req, timeout=25, context=CTX) as r:
-            return r.status == 200
+            return r.status == 200, r.status
     except urllib.error.HTTPError as e:
         if e.code in (403, 405, 501):  # servidor sin HEAD -> GET parcial
             req = urllib.request.Request(url, method="GET",
                                         headers={"User-Agent": UA, "Range": "bytes=0-1"})
             try:
                 with urllib.request.urlopen(req, timeout=25, context=CTX) as r:
-                    return r.status in (200, 206)
+                    return r.status in (200, 206), r.status
+            except urllib.error.HTTPError as e2:
+                return False, e2.code
             except Exception:
-                return False
-        return False
+                return False, 0
+        return False, e.code
     except Exception:
-        return False
+        return False, 0
 
 
 # ------------------------------------------------------------------
@@ -488,7 +491,8 @@ def pagina_producto_web(env, slug):
             imagen = f"{env['WEB_TIENDA']}/storage/products/{pid_f}/thumb/{archivo}"
         else:
             thumb = f"{env['WEB_TIENDA']}/storage/products/{pid_f}/thumb/{archivo}"
-            imagen = thumb if imagen_responde(thumb) else \
+            ok_thumb, _ = imagen_responde(thumb)
+            imagen = thumb if ok_thumb else \
                 f"{env['WEB_TIENDA']}/storage/products/{pid_f}/full/{archivo}"
     return (sku.group(1).strip() if sku else None), imagen, nombre_pag
 
@@ -842,11 +846,47 @@ def main():
     seleccion = []
     slugs_usados = {}
 
+    # Cortacircuitos: si la web mayorista cae o bloquea al runner, TODAS
+    # las verificaciones de foto fallan seguidas. Antes el script se
+    # arrastraba por horas (re-resolucion producto por producto con
+    # reintentos) hasta que el timeout del workflow lo mataba. Ahora:
+    # 25 fallos seguidos = aborto limpio en minutos con diagnostico.
+    verificacion = {"fallos_seguidos": 0, "motivos": {}, "muestras": []}
+    FALLOS_ABORTAR = 25
+
+    def nota_fallo(motivo, muestra=None):
+        verificacion["fallos_seguidos"] += 1
+        verificacion["motivos"][motivo] = verificacion["motivos"].get(motivo, 0) + 1
+        if muestra and len(verificacion["muestras"]) < 6:
+            verificacion["muestras"].append(muestra)
+
+    def abortar_si_web_caida(contexto):
+        if verificacion["fallos_seguidos"] < FALLOS_ABORTAR:
+            return
+        log("")
+        log(f"ABORTADO ({contexto}): {verificacion['fallos_seguidos']} intentos "
+            f"SEGUIDOS sin poder verificar o encontrar fotos.")
+        log("La web mayorista no esta respondiendo desde este entorno")
+        log("(sitio caido, en mantenimiento o bloqueando la IP del runner).")
+        resumen = ", ".join(f"{m} x{n}" for m, n in
+                            sorted(verificacion["motivos"].items(), key=lambda kv: -kv[1]))
+        log("Motivos: " + resumen)
+        for m in verificacion["muestras"][:6]:
+            log("  muestra: " + m)
+        log("El index NO se toco: la tienda sigue con la ultima version publicada.")
+        log("Reintentar manualmente desde la pestana Actions o esperar la")
+        log("siguiente corrida programada.")
+        escribir_reporte(analisis)
+        sys.exit(1)
+
     def resolver_y_verificar(fila, forzar=False, slug_fijo=None):
         """Resuelve foto+slug y verifica que la foto responda.
         Solo hace IO: no toca seleccion. Devuelve (slug, imagen, origen)
         o (None, None, motivo)."""
         try:
+            # cortacircuitos ya disparado: no iniciar trabajo web nuevo
+            if verificacion["fallos_seguidos"] >= FALLOS_ABORTAR and not slug_fijo:
+                return None, None, "omitido (web caida)"
             if slug_fijo:
                 ent = cache.setdefault("por_codigo", {}).get(fila["codigo"]) or {}
                 if ent.get("imagen") and not forzar:
@@ -856,17 +896,21 @@ def main():
                     imagen, origen = (res_img if res_img else (None, None))
                 if not imagen:
                     return None, None, "foto sin pagina en la web"
-                if not args.sin_verificar_fotos and not imagen_responde(imagen):
-                    return None, None, "foto rota (404)"
+                if not args.sin_verificar_fotos:
+                    ok_img, st = imagen_responde(imagen)
+                    if not ok_img:
+                        return None, None, f"foto rota (HTTP {st})"
                 return slug_fijo, imagen, origen
             res = resolver_por_codigo(env, cache, fila, usar_web=usar_web, forzar=forzar)
             if not res:
                 return None, None, "foto sin pagina en la web"
             slug, imagen, origen = res
-            if not args.sin_verificar_fotos and not imagen_responde(imagen):
-                if not forzar and usar_web:
-                    return resolver_y_verificar(fila, forzar=True)
-                return None, None, "foto rota (404)"
+            if not args.sin_verificar_fotos:
+                ok_img, st = imagen_responde(imagen)
+                if not ok_img:
+                    if not forzar and usar_web and verificacion["fallos_seguidos"] < FALLOS_ABORTAR:
+                        return resolver_y_verificar(fila, forzar=True)
+                    return None, None, f"foto rota (HTTP {st})"
             return slug, imagen, origen
         except Exception as e:
             return None, None, "error de red: " + type(e).__name__
@@ -902,6 +946,7 @@ def main():
                 continue
             slug, imagen, motivo = resolver_y_verificar(fila_dest, slug_fijo=slug_dest)
             if slug:
+                verificacion["fallos_seguidos"] = 0
                 fila_dest.update({"estado": "ENTRA", "motivo": "", "slug": slug,
                                   "imagen": imagen, "origen_imagen": motivo, "destacado": True})
                 if slug not in slugs_usados:
@@ -909,6 +954,8 @@ def main():
                     seleccion.append(fila_dest)
                     log(f"  destacado dentro: {fila_dest['nombre'][:40]}")
             else:
+                nota_fallo(motivo, f"{motivo} | {fila_dest['nombre'][:36]}")
+                abortar_si_web_caida("destacados")
                 log(f"  destacado fuera: {slug_dest} ({imagen or motivo})")
         guardar_cache(cache)
 
@@ -924,13 +971,20 @@ def main():
             i += 40
             if not lote:
                 continue
-            resultados = list(pool.map(lambda f: (f,) + resolver_y_verificar(f), lote))
-            for fila, slug, imagen, extra in resultados:
+            # submit + consumo en orden: los fallos se cuentan en vivo y
+            # el cortacircuitos puede abortar a mitad del lote
+            futuros = [pool.submit(resolver_y_verificar, f) for f in lote]
+            for fila, fut in zip(lote, futuros):
+                slug, imagen, extra = fut.result()
                 if len(seleccion) >= cantidad:
                     break
                 if not slug:
                     fila.update({"estado": "OCULTO", "motivo": extra or "foto sin pagina en la web"})
+                    nota_fallo(extra or "foto sin pagina en la web",
+                               f"{extra} | {fila['nombre'][:36]}")
+                    abortar_si_web_caida(f"lote {i // 40}")
                     continue
+                verificacion["fallos_seguidos"] = 0
                 if slug in slugs_usados:
                     fila.update({"estado": "OCULTO", "motivo": "id duplicado (misma pagina web)"})
                     continue

@@ -21,6 +21,9 @@ name: sync-top300
 on:
   schedule:
     - cron: "0 11,23 * * *"   # 06:00 y 18:00 hora Colombia (UTC-5)
+    - cron: "0 12,0 * * *"    # reintento: 07:00 y 19:00 (autocura si la
+                              # web mayorista tiene caida/mantenimiento
+                              # en la franja de la corrida principal)
   workflow_dispatch:
 
 permissions:
