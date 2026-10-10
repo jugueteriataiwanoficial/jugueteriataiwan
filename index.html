@@ -10,12 +10,15 @@
     <meta property="og:title" content="Juguetería Taiwan — Juguetes al Detal en Colombia">
     <meta property="og:description" content="Juguetería, didácticos, cubos Rubik, piñatería, tecnología, escolar y hogar. Compra al detal online con envíos a toda Colombia.">
     <!-- Imagen que se ve al COMPARTIR el enlace (WhatsApp, Facebook,
-         Telegram...): el logo de la tienda. Se actualiza en vivo con el
-         logo configurado en el panel de administración (aplicarIdentidad). -->
-    <meta property="og:image" content="https://jugueteriataiwan.com/storage/branding/70TI84WCuEegX1pJk5ttvppyKKn2sCze24oHDKoi.png">
+         Telegram...): logo de la tienda en 512x512, servido desde el
+         propio repo — los mensajeros descartan imagenes menores a
+         ~200px y el logo original es de 150px. Si en el panel de
+         administracion se configura otro logo, aplicarIdentidad
+         actualiza estos tags en vivo. -->
+    <meta property="og:image" content="https://jugueteriataiwanoficial.github.io/jugueteriataiwan/assets/og-compartir.png">
     <meta property="og:image:type" content="image/png">
-    <meta property="og:image:width" content="150">
-    <meta property="og:image:height" content="150">
+    <meta property="og:image:width" content="512">
+    <meta property="og:image:height" content="512">
     <meta property="og:image:alt" content="Logo de Juguetería Taiwan">
     <meta property="og:url" content="https://jugueteriataiwan.com">
     <meta property="og:type" content="website">
@@ -24,14 +27,16 @@
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="Juguetería Taiwan — Juguetes al Detal en Colombia">
     <meta name="twitter:description" content="Juguetería, didácticos, cubos Rubik, piñatería y más. Compra al detal con envíos a toda Colombia.">
-    <meta name="twitter:image" content="https://jugueteriataiwan.com/storage/branding/70TI84WCuEegX1pJk5ttvppyKKn2sCze24oHDKoi.png">
+    <meta name="twitter:image" content="https://jugueteriataiwanoficial.github.io/jugueteriataiwan/assets/og-compartir.png">
     <meta name="theme-color" content="#00bcd4">
     <meta name="robots" content="index, follow, max-image-preview:large">
-    <!-- Favicon: el logo de Juguetería Taiwan (también se actualiza en
-         vivo con el logo del panel de administración). -->
-    <link rel="icon" type="image/png" href="https://jugueteriataiwan.com/storage/branding/70TI84WCuEegX1pJk5ttvppyKKn2sCze24oHDKoi.png">
-    <link rel="shortcut icon" type="image/png" href="https://jugueteriataiwan.com/storage/branding/70TI84WCuEegX1pJk5ttvppyKKn2sCze24oHDKoi.png">
-    <link rel="apple-touch-icon" href="https://jugueteriataiwan.com/storage/branding/70TI84WCuEegX1pJk5ttvppyKKn2sCze24oHDKoi.png">
+    <!-- Favicon: el logo de Juguetería Taiwan, servido desde el propio
+         repo (rapido y de tamaño justo; se actualiza en vivo con el
+         logo del panel de administración). -->
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="assets/og-compartir.png">
+    <link rel="shortcut icon" type="image/png" href="assets/favicon-32.png">
+    <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="preload" as="image" href="https://jugueteriataiwan.com/storage/products/30533/thumb/e1e78f2f-8d84-458a-8f73-afdac0a201e3.webp" fetchpriority="high">
@@ -12163,6 +12168,18 @@
                 } else {
                     logoImg.style.display = 'none';
                 }
+            }
+            // Al COMPARTIR el catálogo (WhatsApp, Facebook...) y en la
+            // pestaña del navegador se ve el logo configurado: og:image,
+            // twitter:image y favicon se sincronizan. Con el logo de
+            // fabrica se conservan las versiones nítidas del repo
+            // (assets/), que son las que los mensajeros muestran bien;
+            // solo se reemplazan cuando Valeria configura otro logo.
+            if (emp.logo && emp.logo !== TIENDA_DEFECTO.empresa.logo) {
+                document.querySelectorAll('meta[property="og:image"], meta[name="twitter:image"]')
+                    .forEach(m => m.setAttribute('content', emp.logo));
+                document.querySelectorAll('link[rel="icon"], link[rel="shortcut icon"], link[rel="apple-touch-icon"]')
+                    .forEach(l => l.setAttribute('href', emp.logo));
             }
             // WhatsApp de atención (fijo) del pie de página
             const saludo = 'Hola, quiero información sobre productos de ' + nombre;
