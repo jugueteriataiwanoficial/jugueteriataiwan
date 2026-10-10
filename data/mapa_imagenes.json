@@ -1,5 +1,5 @@
 {
- "actualizado": "2026-10-10T01:54:58",
+ "actualizado": "2026-10-10T16:40:41",
  "por_codigo": {
   "6922982299125": {
    "slug": "animales-pq-en-bolsa-1",
@@ -3697,7 +3697,8 @@
    "imagen": "https://jugueteriataiwan.com/storage/products/23658/thumb/2cbc00af-acfb-47aa-9a63-ac5d5118cc0e.webp"
   },
   "01432": {
-   "imagen": "https://jugueteriataiwan.com/storage/products/23949/thumb/a0f9c29c-1f75-42b3-8803-541b9adde4fb.webp"
+   "imagen": "https://jugueteriataiwan.com/storage/products/23949/thumb/a0f9c29c-1f75-42b3-8803-541b9adde4fb.webp",
+   "slug": "cartas-de-futbol-super-star-x50-cartas"
   },
   "03089": {
    "imagen": "https://jugueteriataiwan.com/storage/products/24891/thumb/c0050b98-9c08-4f96-a24f-93f9996e0d75.webp",
@@ -6692,6 +6693,10 @@
    "slug": "desestresante-cubo",
    "imagen": "https://jugueteriataiwan.com/storage/products/29032/thumb/bdf4af81-5012-42da-a38c-3605c4214e16.webp",
    "nombre": "DESESTRESANTE CUBO"
+  },
+  "7702232655241": {
+   "slug": null,
+   "imagen": null
   }
  }
 }
