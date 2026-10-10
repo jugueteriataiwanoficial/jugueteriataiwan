@@ -39,6 +39,7 @@ import glob
 import io
 import json
 import os
+import random
 import re
 import shutil
 import ssl
@@ -56,6 +57,7 @@ import urllib.request
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 INDEX = os.path.join(BASE_DIR, "index.html")
+CATALOGO_PATH = os.path.join(BASE_DIR, "catalogo.js")
 DIR_DATA = os.path.join(BASE_DIR, "data")
 DIR_REPORTES = os.path.join(BASE_DIR, "reportes")
 CACHE_IMAGENES = os.path.join(DIR_DATA, "mapa_imagenes.json")
@@ -372,16 +374,15 @@ def guardar_cache(cache):
         json.dump(cache, f, ensure_ascii=False, indent=1)
 
 
-def sembrar_cache_desde_index(cache):
-    """Lee el bloque TOP300/CATALOGO_BASE actual del index.html y guarda
-    codigo -> {slug, imagen}: es la mejor semilla porque ya paso QA."""
-    if not os.path.exists(INDEX):
+def sembrar_cache_desde_catalogo(cache):
+    """Lee el catalogo.js actual y guarda codigo -> {slug, imagen}: es la
+    mejor semilla porque ya paso QA en corridas anteriores."""
+    if not os.path.exists(CATALOGO_PATH):
         return 0
-    with open(INDEX, encoding="utf-8") as f:
-        html = f.read()
-    m = re.search(re.escape(MARCA_INICIO) + r"([\s\S]*?)" + re.escape(MARCA_FIN), html)
-    bloque = m.group(1) if m else html[html.find("const CATALOGO_BASE"):html.find("const IMAGENES_ROTAS")]
-    if not bloque:
+    with open(CATALOGO_PATH, encoding="utf-8") as f:
+        contenido = f.read()
+    bloque = contenido[contenido.find("const CATALOGO_BASE"):contenido.find("const TOP_UTILIDAD_IDS")]
+    if "const CATALOGO_BASE" not in contenido or not bloque:
         return 0
     por_codigo = cache.setdefault("por_codigo", {})
     nuevos = 0
@@ -572,39 +573,43 @@ def js_texto(valor):
     return json.dumps(valor, ensure_ascii=False)
 
 
-def generar_bloque_js(env, seleccion, cantidad):
+def generar_catalogo_js(env, seleccion, cantidad):
+    """Contenido completo de catalogo.js (archivo independiente, indentacion
+    desde columna 0). El index.html lo carga con <script src=catalogo.js>:
+    el navegador lo cachea aparte y el index se mantiene liviano aunque el
+    inventario completo entre al catalogo."""
     fecha = dt.datetime.now().strftime("%Y-%m-%d %H:%M")
     L = []
-    L.append("")
-    L.append("        // ==================================================================")
-    L.append(f"        // TOP {cantidad} DESDE POSGOLD — generado automaticamente el {fecha}")
-    L.append("        // por sync_posgold.py (cron). Son los productos mas rentables que")
-    L.append("        // cumplen la regla de la tienda: existencias en bodega + foto real.")
-    L.append("        // El producto que deja de cumplir se oculta solo en la proxima")
-    L.append("        // corrida. NO editar a mano: este bloque se regenera completo.")
-    L.append("        // ==================================================================")
-    L.append("        const CATALOGO_BASE = [")
+    L.append("// ==================================================================")
+    L.append(f"// CATALOGO DE JUGUETERIA TAIWAN — generado automaticamente el {fecha}")
+    L.append("// por sync_posgold.py (cron). Todo el inventario elegible de")
+    L.append("// POSGold que cumple la regla de la tienda: activo + existencias")
+    L.append("// en bodega + foto real. El producto que deja de cumplir se")
+    L.append("// oculta solo en la proxima corrida. NO editar a mano: este")
+    L.append("// archivo se regenera completo en cada sincronizacion.")
+    L.append("// ==================================================================")
+    L.append("const CATALOGO_BASE = [")
     for p in seleccion:
         precio = p["precio"]
         compare = p["compare"]
-        L.append("            {")
-        L.append(f"                id: {js_texto(p['slug'])},")
-        L.append(f"                name: {js_texto(p['nombre'])},")
-        L.append(f"                description: {js_texto('SKU: ' + p['codigo'])},")
-        L.append(f"                image: {js_texto(p['imagen'])},")
-        L.append(f"                images: [{js_texto(p['imagen'])}],")
-        L.append(f"                category: {js_texto(p['categoria_web'])},")
-        L.append(f"                sku: {js_texto(p['codigo'])},")
-        L.append(f"                url: {js_texto(env['WEB_TIENDA'] + '/producto/' + p['slug'])},")
-        L.append(f"                price: {precio},")
-        L.append(f"                comparePrice: {compare},")
-        L.append("                sizeGroups: [")
-        L.append("                    { key: 'unidad', label: 'Unidades', options: [")
-        L.append(f"                        {{ id: 'unidad', label: 'Unidad', price: {precio} }}")
-        L.append("                    ]}")
-        L.append("                ]")
-        L.append("            },")
-    L.append("        ];")
+        L.append("    {")
+        L.append(f"        id: {js_texto(p['slug'])},")
+        L.append(f"        name: {js_texto(p['nombre'])},")
+        L.append(f"        description: {js_texto('SKU: ' + p['codigo'])},")
+        L.append(f"        image: {js_texto(p['imagen'])},")
+        L.append(f"        images: [{js_texto(p['imagen'])}],")
+        L.append(f"        category: {js_texto(p['categoria_web'])},")
+        L.append(f"        sku: {js_texto(p['codigo'])},")
+        L.append(f"        url: {js_texto(env['WEB_TIENDA'] + '/producto/' + p['slug'])},")
+        L.append(f"        price: {precio},")
+        L.append(f"        comparePrice: {compare},")
+        L.append("        sizeGroups: [")
+        L.append("            { key: 'unidad', label: 'Unidades', options: [")
+        L.append(f"                {{ id: 'unidad', label: 'Unidad', price: {precio} }}")
+        L.append("            ]}")
+        L.append("        ]")
+        L.append("    },")
+    L.append("];")
     # Carrusel "Los imperdibles": los 16 productos con mayor UTILIDAD
     # (plata absoluta que deja cada venta). Viajan SOLO los ids en ese
     # orden — costos y utilidades exactas viven en el reporte local y
@@ -612,13 +617,13 @@ def generar_bloque_js(env, seleccion, cantidad):
     # catalogo (initTopUtilidadCarousel).
     top_utilidad = sorted(seleccion, key=lambda p: -(p.get("utilidad") or 0))[:16]
     L.append("")
-    L.append("        // Carrusel 'Los imperdibles': IDs ordenados por utilidad")
-    L.append("        // (plata que deja cada venta). Lo decide el cron con los costos")
-    L.append("        // reales; esos costos nunca viajan al sitio publico.")
-    L.append("        const TOP_UTILIDAD_IDS = [")
+    L.append("// Carrusel 'Los imperdibles': IDs ordenados por utilidad")
+    L.append("// (plata que deja cada venta). Lo decide el cron con los costos")
+    L.append("// reales; esos costos nunca viajan al sitio publico.")
+    L.append("const TOP_UTILIDAD_IDS = [")
     for p in top_utilidad:
-        L.append(f"            {js_texto(p['slug'])},")
-    L.append("        ];")
+        L.append(f"    {js_texto(p['slug'])},")
+    L.append("];")
     return "\n".join(L)
 
 
@@ -640,43 +645,21 @@ def validar_js_nodo(bloque_js):
     return True
 
 
-def inyectar_en_index(bloque_js, hacer_backup=True):
-    with open(INDEX, encoding="utf-8", newline="") as f:
-        html = f.read()
-    rx = re.compile(re.escape(MARCA_INICIO) + r"[\s\S]*?" + re.escape(MARCA_FIN))
-    if not rx.search(html):
-        # Fallback: envolver el CATALOGO_BASE legado con los marcadores
-        m = re.search(r"^([ \t]*)const CATALOGO_BASE = \[$", html, re.M)
-        if not m:
-            log("ERROR: el index.html no tiene los marcadores TOP300 ni CATALOGO_BASE.")
-            sys.exit(1)
-        inicio = m.start()
-        m2 = re.search(r"^([ \t]*)\];[ \t]*$", html[m.end():], re.M)
-        if not m2:
-            log("ERROR: no se encontro el cierre del CATALOGO_BASE.")
-            sys.exit(1)
-        fin = m.end() + m2.end()
-        sangria = m.group(1)
-        html = (html[:inicio] + sangria + MARCA_INICIO + "\n" + html[inicio:fin] +
-                "\n" + sangria + MARCA_FIN + html[fin:])
-    if hacer_backup:
-        os.makedirs(DIR_REPORTES, exist_ok=True)
-        stamp = dt.datetime.now().strftime("%Y%m%d_%H%M%S")
-        shutil.copy2(INDEX, os.path.join(DIR_REPORTES, f"index_backup_{stamp}.html"))
-        backups = sorted(glob.glob(os.path.join(DIR_REPORTES, "index_backup_*.html")))
-        for viejo in backups[:-5]:
-            try:
-                os.remove(viejo)
-            except OSError:
-                pass
-    reemplazo = MARCA_INICIO + bloque_js + "\n        " + MARCA_FIN
-    html_nuevo = rx.sub(lambda _: reemplazo, html, count=1)
-    if html_nuevo == html:
-        log("ERROR: no se pudo reemplazar el bloque TOP300.")
-        sys.exit(1)
-    with open(INDEX, "w", encoding="utf-8", newline="") as f:
-        f.write(html_nuevo)
+def escribir_catalogo(contenido):
+    """Escribe catalogo.js (el catálogo vive en archivo propio: el navegador
+    lo cachea aparte y el index.html se mantiene liviano). El historial de
+    git es el respaldo: cualquier version anterior es recuperable."""
+    with open(CATALOGO_PATH, "w", encoding="utf-8", newline="\n") as f:
+        f.write(contenido + "\n")
     return True
+
+
+def index_referencia_catalogo():
+    """El index debe cargar catalogo.js ANTES del script principal."""
+    if not os.path.exists(INDEX):
+        return False
+    with open(INDEX, encoding="utf-8") as f:
+        return 'src="catalogo.js"' in f.read() or "src='catalogo.js'" in f.read()
 
 
 # ------------------------------------------------------------------
@@ -715,10 +698,12 @@ def publicar_git(env, cantidad):
         log("       Conecta el repo (git init + remote add + push) y repite.")
         return False
     stamp = dt.datetime.now().strftime("%Y-%m-%d %H:%M")
+    len_x = f"{cantidad:,}"
     for cmd in (
         ["git", "add", "index.html"],
+        ["git", "add", "catalogo.js"],
         ["git", "add", "data/mapa_imagenes.json"],
-        ["git", "commit", "-m", f"sync: top {cantidad} de POSGold ({stamp})"],
+        ["git", "commit", "-m", f"sync: catalogo de POSGold ({len_x} productos, {stamp})"],
     ):
         r = subprocess.run(cmd, cwd=BASE_DIR, capture_output=True, text=True)
         if r.returncode != 0 and "commit" not in cmd[1]:
@@ -785,9 +770,9 @@ def main():
     # --- cache de imagenes ---
     log("\n[3/6] Cache de fotos y slugs...")
     cache = cargar_cache()
-    n1 = sembrar_cache_desde_index(cache)
+    n1 = sembrar_cache_desde_catalogo(cache)
     n2 = sembrar_cache_desde_dropi(cache)
-    log(f"      sembrado desde index: {n1} | desde DROPI: {n2} | cache total: {len(cache['por_codigo'])}")
+    log(f"      sembrado desde catalogo.js: {n1} | desde DROPI: {n2} | cache total: {len(cache['por_codigo'])}")
 
     # --- analisis y filtros ---
     log("\n[4/6] Filtros y rentabilidad...")
@@ -887,16 +872,23 @@ def main():
         log("Motivos: " + resumen)
         for m in verificacion["muestras"][:6]:
             log("  muestra: " + m)
-        log("El index NO se toco: la tienda sigue con la ultima version publicada.")
+        log("El catalogo NO se toco: la tienda sigue con la ultima version publicada.")
         log("Reintentar manualmente desde la pestana Actions o esperar la")
         log("siguiente corrida programada.")
         escribir_reporte(analisis)
         sys.exit(1)
 
-    def resolver_y_verificar(fila, forzar=False, slug_fijo=None):
+    def resolver_y_verificar(fila, forzar=False, slug_fijo=None, verificar_cache=True):
         """Resuelve foto+slug y verifica que la foto responda.
         Solo hace IO: no toca seleccion. Devuelve (slug, imagen, origen)
-        o (None, None, motivo)."""
+        o (None, None, motivo).
+
+        verificar_cache: con el inventario completo ya no se hace HEAD a
+        TODAS las fotos en TODAS las corridas (serian miles de peticiones
+        diarias al propio sitio). Las fotos recien resueltas de la web se
+        verifican SIEMPRE; las que vienen de cache solo cuando el producto
+        cae en la muestra aleatoria del dia (VERIFICACION_MUESTRA en .env)
+        — cada foto queda re-verificada al menos cada ~2 dias."""
         try:
             # cortacircuitos ya disparado: no iniciar trabajo web nuevo
             if verificacion["fallos_seguidos"] >= FALLOS_ABORTAR and not slug_fijo:
@@ -919,7 +911,8 @@ def main():
             if not res:
                 return None, None, "foto sin pagina en la web"
             slug, imagen, origen = res
-            if not args.sin_verificar_fotos:
+            es_cache = origen == "cache"
+            if not args.sin_verificar_fotos and (not es_cache or verificar_cache):
                 ok_img, st = imagen_responde(imagen)
                 if not ok_img:
                     if not forzar and usar_web and verificacion["fallos_seguidos"] < FALLOS_ABORTAR:
@@ -973,6 +966,16 @@ def main():
                 log(f"  destacado fuera: {slug_dest} ({imagen or motivo})")
         guardar_cache(cache)
 
+    # Muestra del dia: que posiciones del ranking se verifican con HEAD
+    # aunque vengan de cache (VERIFICACION_MUESTRA en .env; 0 = todas).
+    tamano_muestra = int(env.get("VERIFICACION_MUESTRA", "250"))
+    if tamano_muestra <= 0 or tamano_muestra >= len(candidatos):
+        muestra_pos = set(range(len(candidatos)))
+    else:
+        muestra_pos = set(random.sample(range(len(candidatos)), tamano_muestra))
+    log(f"      verificacion de fotos cacheadas: {len(muestra_pos)} de "
+        f"{len(candidatos)} candidatos (muestra aleatoria)")
+
     # resto por rentabilidad, en lotes con hilos (el orden del ranking se
     # respeta: los resultados se consumen en el mismo orden en que salieron).
     # El cache se guarda tras cada lote: si la corrida se interrumpe, el
@@ -981,14 +984,16 @@ def main():
     import concurrent.futures as cf
     with cf.ThreadPoolExecutor(max_workers=12) as pool:
         while len(seleccion) < cantidad and i < len(candidatos):
-            lote = [f for f in candidatos[i:i + 40] if f.get("estado") == "CANDIDATO"]
+            lote = [(pos, f) for pos, f in enumerate(candidatos[i:i + 40], start=i)
+                    if f.get("estado") == "CANDIDATO"]
             i += 40
             if not lote:
                 continue
             # submit + consumo en orden: los fallos se cuentan en vivo y
             # el cortacircuitos puede abortar a mitad del lote
-            futuros = [pool.submit(resolver_y_verificar, f) for f in lote]
-            for fila, fut in zip(lote, futuros):
+            futuros = [pool.submit(resolver_y_verificar, f, False, None, pos in muestra_pos)
+                       for pos, f in lote]
+            for (pos, fila), fut in zip(lote, futuros):
                 slug, imagen, extra = fut.result()
                 if len(seleccion) >= cantidad:
                     break
@@ -1038,22 +1043,26 @@ def main():
             f"(productos ocultos por foto/pagina web). Revisa el reporte.")
 
     # --- generacion y escritura ---
-    log("\n[6/6] Generando bloque JS...")
+    log("\n[6/6] Generando catalogo.js...")
     if not seleccion:
-        log("ERROR: ningun producto seleccionado; NO se toca el index.")
+        log("ERROR: ningun producto seleccionado; NO se toca el catalogo.")
         escribir_reporte(analisis)
         sys.exit(1)
-    bloque = generar_bloque_js(env, seleccion, len(seleccion))
-    if not validar_js_nodo(bloque):
+    contenido = generar_catalogo_js(env, seleccion, len(seleccion))
+    if not validar_js_nodo(contenido):
         escribir_reporte(analisis)
         sys.exit(1)
 
     if args.dry_run:
-        log("DRY-RUN: el index NO se modifica. Primer producto del bloque:")
-        log("\n".join(bloque.splitlines()[:26]))
+        log("DRY-RUN: catalogo.js NO se modifica. Primer producto:")
+        log("\n".join(contenido.splitlines()[:22]))
     else:
-        inyectar_en_index(bloque)
-        log("      index.html actualizado (bloque TOP reemplazado)")
+        escribir_catalogo(contenido)
+        log(f"      catalogo.js actualizado: {len(seleccion)} productos "
+            f"({os.path.getsize(CATALOGO_PATH):,} bytes)")
+        if not index_referencia_catalogo():
+            log("      AVISO: index.html no carga catalogo.js — agregale "
+                '<script src="catalogo.js"></script> antes del script principal.')
         if args.publicar:
             if publicar_git(env, len(seleccion)):
                 log("      publicado en GitHub (Pages republica solo)")
