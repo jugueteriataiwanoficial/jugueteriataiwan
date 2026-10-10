@@ -36,3 +36,6 @@ reportes/
 # --- Python ---
 __pycache__/
 *.pyc
+
+# Suite QA/E2E local (contiene la clave del panel en el escenario de admin)
+qa_e2e.py

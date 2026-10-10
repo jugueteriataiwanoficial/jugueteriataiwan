@@ -5025,6 +5025,8 @@
             padding: 8px 8px 2px;
         }
         .admin-lista-todos .admin-prod-fila { grid-template-columns: 1fr auto auto auto; }
+        .admin-lista-pie { text-align: center; padding: 10px 0 4px; }
+        .admin-lista-pie span { font-size: 0.75rem; color: var(--text-light); }
         .admin-badge-fijado {
             font-size: 0.62rem;
             font-weight: 800;
@@ -7432,6 +7434,14 @@
            de venta exacto de cada referencia (vacío = usa la ganancia).
            ------------------------------------------------------------------ */
         let listaTodosVisible = false;
+        // Paginacion interna de la lista completa: con el catalogo completo
+        // (1.600+) renderizar todas las filas de golpe congela el panel,
+        // sobre todo en el telefono. Se muestran bloques de 100 y "Mostrar
+        // mas" agrega el siguiente sin re-renderizar lo ya visible.
+        const LISTA_TODOS_CHUNK = 100;
+        let listaTodosIdx = LISTA_TODOS_CHUNK;
+        let listaTodosPlan = null;
+
         function toggleListaTodosAdmin() {
             listaTodosVisible = !listaTodosVisible;
             const cont = document.getElementById('adminListaTodos');
@@ -7441,7 +7451,10 @@
             if (btn) btn.innerHTML = listaTodosVisible
                 ? '<i class="fas fa-eye-slash"></i> Ocultar la lista'
                 : '<i class="fas fa-list"></i> Ver la lista completa de productos';
-            if (listaTodosVisible) pintarListaTodosAdmin();
+            if (listaTodosVisible) {
+                listaTodosIdx = LISTA_TODOS_CHUNK;
+                pintarListaTodosAdmin();
+            }
         }
 
         function pintarListaTodosAdmin() {
@@ -7463,10 +7476,44 @@
                         ${fijado ? '<span class="admin-badge-fijado">precio fijo</span>' : '<span class="admin-prod-final"></span>'}
                     </div>`;
             };
-            cont.innerHTML = Object.keys(grupos).sort().map(cat => {
+            // Lista plana: encabezado de grupo + sus filas (grupo alfabetico,
+            // precio ascendente dentro de cada grupo). La paginacion recorre
+            // esta lista por indice, asi los encabezados salen en orden.
+            const plana = [];
+            Object.keys(grupos).sort().forEach(cat => {
                 const lista = grupos[cat].slice().sort((a, b) => a.price - b.price);
-                return `<div class="admin-lista-grupo">${esc(categoryLabel(cat))} (${lista.length})</div>` + lista.map(fila).join('');
-            }).join('');
+                plana.push(`<div class="admin-lista-grupo">${esc(categoryLabel(cat))} (${lista.length})</div>`);
+                lista.forEach(p => plana.push(fila(p)));
+            });
+            listaTodosPlan = plana;
+            cont.innerHTML = '<div id="adminListaFilas"></div><div class="admin-lista-pie" id="adminListaPie"></div>';
+            const filasEl = document.getElementById('adminListaFilas');
+            filasEl.innerHTML = plana.slice(0, Math.min(listaTodosIdx, plana.length)).join('');
+            actualizarPieListaTodos();
+        }
+
+        function actualizarPieListaTodos() {
+            const pie = document.getElementById('adminListaPie');
+            if (!pie || !listaTodosPlan) return;
+            const hasta = Math.min(listaTodosIdx, listaTodosPlan.length);
+            const total = CATALOGO_BASE.length;
+            pie.innerHTML = hasta < listaTodosPlan.length
+                ? `<button class="btn btn-secondary" type="button" onclick="masListaTodosAdmin()">
+                       <i class="fas fa-chevron-down"></i> Mostrar más (${hasta} de ${total})
+                   </button>`
+                : `<span>Fin de la lista: ${total} productos</span>`;
+        }
+
+        function masListaTodosAdmin() {
+            const filasEl = document.getElementById('adminListaFilas');
+            if (!filasEl || !listaTodosPlan) return;
+            const desde = Math.min(listaTodosIdx, listaTodosPlan.length);
+            listaTodosIdx += LISTA_TODOS_CHUNK;
+            const hasta = Math.min(listaTodosIdx, listaTodosPlan.length);
+            filasEl.insertAdjacentHTML('beforeend', listaTodosPlan.slice(desde, hasta).join(''));
+            actualizarPieListaTodos();
+            const pie = document.getElementById('adminListaPie');
+            if (pie) pie.scrollIntoView({ block: 'nearest' });
         }
 
         // Cambia el precio de un producto desde la lista completa: valor
