@@ -9360,13 +9360,17 @@
             // la foto invisible para siempre. Si la imagen ya está en caché
             // (complete al instante), se revela directamente.
             if (img.complete && img.naturalWidth > 0) revelar();
-            // Respaldo extra: si la imagen ya se decodifico pero el evento
-            // 'load' aun no ha disparado (WebKit a veces lo entrega tarde,
-            // sobre todo con el grid cargando imagenes en paralelo), se
-            // revela igual a los 400ms. La foto NUNCA queda invisible.
-            setTimeout(() => {
-                if (esActual() && img.naturalWidth > 0 && img.style.opacity !== '1') revelar();
-            }, 400);
+            // WATCHDOG: WebKit a veces PIERDE el evento 'load' de un src
+            // recien asignado (miniatura fria, o el swap a /full/ mientras
+            // decodifica). En vez de depender del evento, se vigila la foto:
+            // en cuanto este decodificada (naturalWidth > 0) se revela,
+            // venga de la miniatura o de la version nítida. Maximo ~6s.
+            let vigias = 0;
+            const vigia = setInterval(() => {
+                if (!esActual()) { clearInterval(vigia); return; }
+                if (img.naturalWidth > 0) { revelar(); clearInterval(vigia); }
+                if (++vigias > 20) clearInterval(vigia);
+            }, 300);
             const cargaFull = new Image();
             // Referencia externa al Image de precarga: sin ella el recolector
             // de basura podía eliminarlo A MITAD DE LA DESCARGA (el ciclo
