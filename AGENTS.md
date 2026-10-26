@@ -220,6 +220,52 @@ es rechazado, el cron movió el remoto: `git pull --rebase origin main` y de nue
   viven en Dropi o bajan de 50 unidades hay que pausarlos a mano en
   el panel de Dropi.
 
+  **Estado del canal (26-10-2026) — carga lista, subida pendiente**:
+  `DROPI/carga-masiva-productos-con-variables.xlsx` quedó completa y
+  verificada (dry-run verde: 1.144 filas, 0 entran/0 salen, todas las
+  URLs de imagen vivas): todas con Precio 5 rentable, 50+ unidades,
+  copy de campaña y pie. Los copys cerraron al 100 % (1.144 SKUs en
+  `data/descripciones_dropi.json`, lote final del 25-10) y el 26-10 se
+  volcaron al Excel con `gen_dropi.py`. **Decisión confirmada: 140
+  filas suben PRIVADO=SI** (ocultas del marketplace, activables después
+  desde el panel de Dropi): 83 de COLECCIÓN/licencias (Funko, anime:
+  espeja la categoría `colecciones` que la vitrina mantiene oculta),
+  34 de deduplicación por nombre (de cada grupo repetido queda UNO
+  público) y 23 de curación discrecional de la dueña. `gen_dropi.py`
+  PRESERVA esa marca por SKU y jamás la pone: los SKUs nuevos entran
+  siempre públicos; lo ya publicado en Dropi (10 productos de agosto,
+  PRIVADO=NO) no cambia con la carga — ocultarlo allá es manual.
+  Convenciones de la carpeta: respaldo `.respaldo-YYYY-MM-DD.xlsx`
+  antes de escribir a mano (hay 23-10 y 26-10) y `QA_*.xlsx` =
+  muestras de revisión de la dueña (las del 24-10: 24 privados; el
+  "previo-privados" es copia idéntica de respaldo).
+
+  **Modelo operativo — dos opciones en el panel de Dropi**: "Carga
+  masiva" (crear) y "Actualizar" (lo publicado). Altas = Excel
+  INCREMENTAL tras re-exportar (solo lo no publicado: lo que
+  `gen_dropi.py` ya genera); actualizaciones = archivo con los ya
+  publicados y su Precio 5/stock frescos por "Actualizar"; bajas =
+  pausar a mano (Dropi no borra). Nota de curación: al volverse el
+  Excel incremental, la marca PRIVADO de los ya publicados deja de
+  vivir en el archivo de trabajo (queda en Dropi y en los respaldos);
+  si un SKU publicado se borra allá y re-entra al catálogo, re-
+  entraría PÚBLICO — marcarlo de nuevo o persistir la curación
+  (abajo). Pendiente, en orden: (1) subir la primera carga por el
+  panel (sin API pública de carga; la sesión de observación de
+  app.dropi.co quedó en `reportes/observacion_dropi/`), (2) tras
+  subir, re-exportar `products_*.xlsx` a `DROPI/` y correr
+  `gen_dropi.py` para que la conciliación absorba lo publicado,
+  (3) probar "Actualizar" con 2-3 SKUs antes de conectarla al
+  pipeline: si sobrescribe TODAS las columnas puede pisar PRIVADO
+  (voltearía los 140 a públicos) y si hace upsert quizá una sola
+  opción baste, (4) con esa prueba, agregar a `gen_dropi.py` un modo
+  `--actualizar` (publicados con Precio 5/stock frescos,
+  preservando PRIVADO; idealmente migrando la curación a un
+  `data/curacion_dropi.json` por SKU que sobreviva a las
+  regeneraciones, como las descripciones), (5) pausar a mano en
+  Dropi lo que salga del catálogo, pierda el Precio 5 o la
+  rentabilidad, o baje de 50 unidades.
+
 ## Gotchas conocidos
 
 - Playwright sobre `file://` no registra Resource Timing de imágenes ni descarga

@@ -22,6 +22,7 @@ catálogo se sincroniza solo, 4 veces al día, desde el sistema POSGold de la ti
 | `sync_posgold.py` | Sincronizador: POSGold → filtros de la tienda → miniaturas → `catalogo.js` |
 | `.github/workflows/sync-top300.yml` | Cron en GitHub Actions (07:15, 08:15, 19:15 y 20:15, hora Colombia) |
 | `hub/` | **Hub (mini-VTEX)**: catálogo maestro con costos + adaptadores de canal (Mercado Libre activo). Ver [`hub/README.md`](hub/README.md) y [`docs/plan_hub.md`](docs/plan_hub.md) |
+| `gen_dropi.py` + `gen_descripciones.py` | Canal **Dropi** para dropshippers: regeneran la carga masiva espejo del catálogo al Precio 5 y sus copys de campaña (en `data/descripciones_dropi.json`). Ver la sección "Dropi" abajo |
 | `costos.posgold.enc` | Excel de costos de POSGold **cifrado** (AES-256-CBC + PBKDF2) — el repo es público y los costos jamás viajan en claro |
 | `assets/` (favicon, og) | Iconos de la marca |
 
@@ -163,6 +164,26 @@ siempre mandan y nunca se pisan). Si Dropi ya tiene un producto
 publicado, la carga masiva no lo duplica; lo que sale del catálogo hay
 que pausarlo a mano en el panel de Dropi.
 
+**Estado (26-10-2026) — lista para subir.** La carga está completa y
+verificada: **1.144 productos**, todos con Precio 5 rentable, imagen
+viva, 50+ unidades, copy de campaña y pie (los copys cerraron al
+100 % y están volcados al Excel). **140 suben PRIVADO=SI** — ocultos
+del marketplace, activables después desde el panel de Dropi — por
+curación de la tienda: las figuras de colección y licencias (la misma
+categoría que la vitrina mantiene oculta), un solo ejemplar público
+por cada grupo de nombres repetidos y una selección propia de la
+dueña. `gen_dropi.py` preserva esa marca por SKU en cada regeneración
+y los SKUs nuevos entran siempre públicos. Falta: **la subida misma**
+(manual, desde el panel de Dropi) y, tras subir, re-exportar los
+productos de Dropi a `DROPI/` y correr `gen_dropi.py` para que la
+conciliación absorba lo publicado — desde ahí las cargas son
+**incrementales** (solo productos nuevos). El panel de Dropi trae
+dos opciones — **Carga masiva** (crear) y **Actualizar** (lo
+publicado) —: el modelo objetivo es altas incrementales por carga
+masiva + resubida periódica de precios y existencias por actualizar
+(pendiente probar con 2-3 SKUs que actualiza sin pisar los
+privados); las bajas siempre a mano.
+
 ## Características de la tienda
 
 - Vitrina con grid paginado, carruseles por categoría y lightbox tipo Amazon.
@@ -276,7 +297,7 @@ Estado del proyecto tras la última tanda de mejoras (actualizado a finales de o
 | QA | `qa_e2e.py` **42/42** y `qa_carrito.py` **38/38** (verde antes de publicar; el carrito exige el Precio 2 exacto en todo el catálogo) |
 | Costos | Documentado: el API de POSGold no trae costos (verificado); el Excel de PRODUCTOS es el contrato de formato y el pipeline falla seguro en cada etapa |
 | Catálogo | 1.943 productos publicados, **todos activos y con existencias**: la conciliación dura con POSGold (3 puertas) aborta la corrida sin publicar si algo no cuadra; los nuevos de POSGold entran solos en la próxima corrida si cumplen los filtros (incluido costo en el Excel) |
-| Dropi | Carga masiva espejo del catálogo (`gen_dropi.py`): **Precio 5 de POSGold** en vivo, tachado honesto del Precio 2 real, rentabilidad sobre costo, mínimo 50 unidades, sin duplicar lo ya publicado y descripciones de campaña en **texto plano** con el pie de la tienda (importadores directos, despachos 1:00 p. m., WhatsApp dropshippers **3106988465**); los copys los produce `gen_descripciones.py` leyendo la **foto real** de cada producto con un modelo de visión (API de NVIDIA) |
+| Dropi | Carga masiva espejo del catálogo (`gen_dropi.py`): **Precio 5 de POSGold** en vivo, tachado honesto del Precio 2 real, rentabilidad sobre costo, mínimo 50 unidades, sin duplicar lo ya publicado y descripciones de campaña en **texto plano** con el pie de la tienda (importadores directos, despachos 1:00 p. m., WhatsApp dropshippers **3106988465**); los copys los produce `gen_descripciones.py` leyendo la **foto real** de cada producto con un modelo de visión (API de NVIDIA). **Carga completa y lista para subir (26-10-2026)**: 1.144 productos verificados al 100 % (copys y pie incluidos); 140 suben **privados** por curación (colección/licencias, un público por grupo de nombres repetidos y selección de la dueña); pendiente la subida manual desde el panel de Dropi |
 | Novedades | Cada corrida deja `reportes/novedades_*.xlsx` para la tienda: lo que no publica y por qué (inactivos, agotados, duplicados, sin precio, sin foto, sin costo), marcando lo que estaba publicado; el cron lo sube como artefacto de Actions (`novedades-sync`) |
 | Hub | **Fase 0+1 construidas** (21 oct 2026): catálogo maestro con costos + adaptador de Mercado Libre (`hub/`); pendiente aprobar la app en developers.mercadolibre.com.co. **Decisión de alcance (23 oct 2026)**: solo sincronización de productos — los pedidos de ML se gestionan en la plataforma de ML, no en POSGold; el correo a GoldPOS queda archivado como plan B (`docs/correo_goldpos.md`) |
 | Panel | Publica configuración y costos solo (API de GitHub); nada se edita a mano |
