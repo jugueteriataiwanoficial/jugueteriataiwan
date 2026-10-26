@@ -122,10 +122,13 @@ con guardia de rentabilidad sobre la comisión real de ML.
   [`hub/README.md`](hub/README.md).
 - Plan completo (fases 2–4: webhooks, OMS, panel unificado) y decisiones
   abiertas: [`docs/plan_hub.md`](docs/plan_hub.md).
-- **Hallazgo de octubre de 2026**: la cuenta POSGold ya tiene registrados
-  5 endpoints de creación de pedidos y una sección de Webhooks (ambos sin
-  activar) — el flujo "pedido web/ML → factura en POSGold" está a un
-  correo de distancia ([`docs/correo_goldpos.md`](docs/correo_goldpos.md)).
+- **Decisión de alcance (23-10-2026)**: la empresa definió que la
+  integración es **solo sincronización de productos** (fases 0+1); los
+  pedidos de Mercado Libre se gestionan directamente en la plataforma de
+  ML, **no** en POSGold. Por eso los endpoints de pedidos y webhooks de
+  POSGold (Inactivos) no bloquean nada y el correo a GoldPOS
+  ([`docs/correo_goldpos.md`](docs/correo_goldpos.md)) queda **archivado
+  como plan B** — no se espera respuesta para el alcance vigente.
 
 ```bash
 python hub/construir_hub.py                       # catálogo maestro (requiere Excel de costos)
@@ -133,6 +136,32 @@ python hub/canal_ml.py --dry-run                  # plan del canal ML sin token 
 python hub/canal_ml.py --autorizar                # primera vez: OAuth de ML
 python hub/canal_ml.py --sincronizar --publicar 3 # corrida completa del canal
 ```
+
+
+## Dropi: la carga masiva espejo del catálogo
+
+El marketplace **Dropi** se alimenta con
+`DROPI/carga-masiva-productos-con-variables.xlsx` (formato oficial de 20
+columnas), un **espejo del catálogo** que regenera `gen_dropi.py` con las
+mismas reglas de la tienda: solo elegibles de `catalogo.js`, PRECIO =
+**Precio 5 de POSGold** (en vivo con `GetProduct_V6`, con tachado honesto
+del Precio 2 real), rentabilidad sobre `costopromedio`, mínimo **50
+unidades**, sin duplicar lo ya publicado en Dropi (conciliación con los
+exports `products_*.xlsx` y `variaciones*.xlsx`) y sin imagen no se
+carga. Toda descripción es **texto plano** (sin HTML, por decisión de la
+tienda) y cierra con el pie de Juguetería Taiwan: importadores directos,
+despachos antes/después de la 1:00 p. m. y WhatsApp de atención
+dropshippers **3106988465**.
+
+Los textos de campaña —pensados para que los dropshippers los copien a
+sus anuncios— los produce `gen_descripciones.py`: un modelo de **visión**
+(API de NVIDIA, llave `NVIDIA_API_KEY` en el entorno, nunca en el repo)
+lee la **foto real de cada producto** y escribe el copy sin inventar
+medidas, edades ni materiales. El resultado vive en
+`data/descripciones_dropi.json` (por SKU; las correcciones de la dueña
+siempre mandan y nunca se pisan). Si Dropi ya tiene un producto
+publicado, la carga masiva no lo duplica; lo que sale del catálogo hay
+que pausarlo a mano en el panel de Dropi.
 
 ## Características de la tienda
 
@@ -221,6 +250,14 @@ python sync_posgold.py --verificar-todas
 # enlace de configuración de un solo toque (llave + tokens para un navegador)
 python generar_enlace_config.py
 
+# regenerar la carga masiva de Dropi (espejo del catalogo al Precio 5,
+# reglas de la tienda + conciliacion dura; --dry-run solo diagnostica)
+python gen_dropi.py
+
+# copys de campana para Dropi con vision (API NVIDIA; llena por lotes
+# data/descripciones_dropi.json con lo que le ve a la FOTO real de POSGold)
+python gen_descripciones.py --limit 20
+
 # verificar sintaxis JS del index (bloques <script> sin src)
 node -e "const h=require('fs').readFileSync('index.html','utf8');const re=/<script(?![^>]*\bsrc=)(?![^>]*ld\+json)[^>]*>([\s\S]*?)<\/script>/gi;let m;while((m=re.exec(h))!==null){if(m[1].trim())new Function(m[1]);}console.log('OK')"
 ```
@@ -229,7 +266,7 @@ Publicar = `git push origin main` (GitHub Pages reconstruye en ~1 minuto).
 
 ## Checkpoint — octubre de 2026
 
-Estado del proyecto tras la última tanda de mejoras (22 de octubre de 2026):
+Estado del proyecto tras la última tanda de mejoras (actualizado a finales de octubre de 2026):
 
 | Área | Estado |
 |---|---|
@@ -239,7 +276,8 @@ Estado del proyecto tras la última tanda de mejoras (22 de octubre de 2026):
 | QA | `qa_e2e.py` **42/42** y `qa_carrito.py` **38/38** (verde antes de publicar; el carrito exige el Precio 2 exacto en todo el catálogo) |
 | Costos | Documentado: el API de POSGold no trae costos (verificado); el Excel de PRODUCTOS es el contrato de formato y el pipeline falla seguro en cada etapa |
 | Catálogo | 1.943 productos publicados, **todos activos y con existencias**: la conciliación dura con POSGold (3 puertas) aborta la corrida sin publicar si algo no cuadra; los nuevos de POSGold entran solos en la próxima corrida si cumplen los filtros (incluido costo en el Excel) |
+| Dropi | Carga masiva espejo del catálogo (`gen_dropi.py`): **Precio 5 de POSGold** en vivo, tachado honesto del Precio 2 real, rentabilidad sobre costo, mínimo 50 unidades, sin duplicar lo ya publicado y descripciones de campaña en **texto plano** con el pie de la tienda (importadores directos, despachos 1:00 p. m., WhatsApp dropshippers **3106988465**); los copys los produce `gen_descripciones.py` leyendo la **foto real** de cada producto con un modelo de visión (API de NVIDIA) |
 | Novedades | Cada corrida deja `reportes/novedades_*.xlsx` para la tienda: lo que no publica y por qué (inactivos, agotados, duplicados, sin precio, sin foto, sin costo), marcando lo que estaba publicado; el cron lo sube como artefacto de Actions (`novedades-sync`) |
-| Hub | **Fase 0+1 construidas** (21 oct 2026): catálogo maestro con costos + adaptador de Mercado Libre (`hub/`); pendiente aprobar la app en developers.mercadolibre.com.co. Hallazgo: POSGold ya tiene endpoints de pedidos y webhooks registrados (Inactivos) — correo de solicitud listo en `docs/correo_goldpos.md` |
+| Hub | **Fase 0+1 construidas** (21 oct 2026): catálogo maestro con costos + adaptador de Mercado Libre (`hub/`); pendiente aprobar la app en developers.mercadolibre.com.co. **Decisión de alcance (23 oct 2026)**: solo sincronización de productos — los pedidos de ML se gestionan en la plataforma de ML, no en POSGold; el correo a GoldPOS queda archivado como plan B (`docs/correo_goldpos.md`) |
 | Panel | Publica configuración y costos solo (API de GitHub); nada se edita a mano |
 | Dopamina descartada | Urgencia artificial y metas falsas: probadas/evaluadas y rechazadas (la urgencia ya costó pedidos una vez) |

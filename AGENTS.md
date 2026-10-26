@@ -30,6 +30,8 @@ python qa_carrito.py        # carrito: identidad, aritmetica exacta, mensaje Wha
 python sync_posgold.py --dry-run   # sync de prueba sin tocar catalogo.js
 python sync_posgold.py --verificar-todas   # auditar/regenerar miniaturas
 python generar_enlace_config.py    # enlace de config (llave+tokens) para un navegador
+python gen_dropi.py          # actualiza la carga masiva DROPI con Precio 5 de POSGold (--dry-run para probar)
+python gen_descripciones.py  # copys de campana con vision (API NVIDIA, llena data/descripciones_dropi.json por lotes)
 ```
 
 Verificación de sintaxis JS del index (los dos primeros `<script>` son JSON-LD,
@@ -150,10 +152,73 @@ es rechazado, el cron movió el remoto: `git pull --rebase origin main` y de nue
   `GetProduct_V6` en uso — todos marcados "Inactivo" (verificado:
   `CiudadesGet` responde 404 con JWT válido; `GetProduct_V6` 200). Hay
   botón "Actualizar permisos" en `/apilog/Index`. La sección Webhooks
-  existe pero está vacía (pedir catálogo de eventos). El token maestro
-  (Empresa → Token) vive en `.env` como `POSGOLD_API_TOKEN` (local,
-  gitignored). Correo a GoldPOS listo en `docs/correo_goldpos.md`; plan
-  completo en `docs/plan_hub.md` y `hub/README.md`.
+  existe pero está vacía. El token maestro (Empresa → Token) vive en
+  `.env` como `POSGOLD_API_TOKEN` (local, gitignored).
+  **Decisión de alcance (23-10-2026)**: la integración es SOLO
+  sincronización de productos (fases 0+1 del hub); los pedidos de ML se
+  gestionan en la plataforma de Mercado Libre y NO se empujan a POSGold —
+  los endpoints de pedidos/webhooks Inactivos no bloquean nada y el
+  correo a GoldPOS (`docs/correo_goldpos.md`) queda ARCHIVADO como plan B
+  (solo relevante si se retoma la OMS). Plan en `docs/plan_hub.md` y
+  `hub/README.md`.
+- **Dropi (`DROPI/`, `gen_dropi.py`, `gen_descripciones.py`)**: la carga
+  masiva `DROPI/carga-masiva-productos-con-variables.xlsx` (formato
+  oficial de 20 columnas) es un ESPEJO del catálogo. La regenera
+  `gen_dropi.py` (requiere `.env`; `--dry-run` diagnostica sin tocar)
+  aplicando las mismas reglas de la tienda, en orden:
+  1. Solo elegibles de `catalogo.js` (activo + existencias + foto +
+     costo + rentabilidad, ya filtrados por el cron): el que salió del
+     catálogo sale también de Dropi.
+  2. PRECIO = **Precio 5 de POSGold** (IVA incluido, consultado EN VIVO
+     con `GetProduct_V6` como el cron); sin Precio 5 no se carga
+     (regla "sin precio").
+  3. PRECIO SUGERIDO = Precio 2 real solo si queda por encima del
+     Precio 5 (tachado honesto, nunca inventado).
+  4. **Rentabilidad al Precio 5**: utilidad = Precio 5 sin IVA −
+     `costopromedio` del Excel `PRODUCTOS*.xlsx` (unido por
+     `productoid`, campo ajustable con `COSTO_CAMPO` en `.env`, igual
+     que el cron); en/bajo el costo no se enlista y sin costo en el
+     Excel tampoco (fail-safe, como el catálogo).
+  5. **Nivel de existencias: solo enlistan productos con 50+ unidades**
+     (STOCK < 50 no se carga; ajustable con `--min-stock`).
+  6. **Conciliación con lo ya publicado en Dropi**: los SKUs (incluye
+     `VARIATION SKU`) y nombres normalizados de los exports
+     `DROPI/products_*.xlsx` y `DROPI/variaciones*.xlsx` (el más
+     reciente de cada patrón) no se enlistan — no duplica lo que ya
+     vive en la tienda Dropi; el nombre cubre exportados sin SKU.
+  7. Sin imagen no se carga: conserva la URL viva de la fila (verifica
+     todas con HEAD), rellena la faltante con el original JPEG de
+     POSGold (`fulls[0]`) y usa la miniatura del repo de respaldo.
+  8. **Descripciones de campaña para dropshippers**: TODAS las filas
+     llevan texto de venta + el pie de la tienda (importadores
+     directos, despachos antes/después de la 1:00 p. m. y WhatsApp de
+     atención dropshippers **3106988465**). El texto va en **TEXTO
+     PLANO** (decisión de la tienda: Dropi puede no renderizar HTML) —
+     viñetas "•" y saltos de línea; cualquier HTML que llegue se
+     convierte automáticamente. El copy por SKU vive en
+     `data/descripciones_dropi.json` y manda sobre la curación; el
+     pie lo agrega `gen_dropi.py` al escribir y lo corta al releer el
+     Excel, nunca se duplica.
+  9. Curación por SKU preservada (PRIVADO, CATEGORIA, DESCRIPCION,
+     imágenes buenas); los SKUs nuevos heredan categoría del export
+     07-10 (`DROPI_carga_masiva*ENRIQUECIDO*`) o del mapeo web→Dropi.
+
+  Los copys los produce `gen_descripciones.py` con un modelo de visión
+  por la API de NVIDIA (llave en la variable de entorno
+  `NVIDIA_API_KEY`, NUNCA en el repo; modelo por defecto
+  `nvidia/nemotron-3.5-super-vl-120b-a12b`, que lee la FOTO real de
+  POSGold y tiene prohibido inventar medidas/edades/materiales —
+  llama-3.2-11b-vision inventaba specs y se descartó), por lotes
+  `--limit N` ordenados por stock (mayor rotación primero),
+  incremental y reanudable: lo que ya está en el JSON no se pisa, las
+  correcciones de la dueña mandan. Conciliación dura antes de
+  escribir: aborta si queda UNA fila sin precio, sin imagen, con
+  stock ≤ 0, rentabilidad ≤ 0 al Precio 5, HTML en la descripción o
+  sin el pie de la tienda. Los Excel de DROPI no se commitean (salen
+  en `.gitignore`). OJO: Dropi no borra lo ya publicado: los que
+  salen del catálogo, quedan sin Precio 5, pierden rentabilidad, ya
+  viven en Dropi o bajan de 50 unidades hay que pausarlos a mano en
+  el panel de Dropi.
 
 ## Gotchas conocidos
 
