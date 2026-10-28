@@ -144,12 +144,28 @@ python hub/canal_ml.py --sincronizar --publicar 3 # corrida completa del canal
 El marketplace **Dropi** se alimenta con
 `DROPI/carga-masiva-productos-con-variables.xlsx` (formato oficial de 20
 columnas), un **espejo del catálogo** que regenera `gen_dropi.py` con las
-mismas reglas de la tienda: solo elegibles de `catalogo.js`, PRECIO =
-**Precio 5 de POSGold** (en vivo con `GetProduct_V6`, con tachado honesto
-del Precio 2 real), rentabilidad sobre `costopromedio`, mínimo **50
-unidades**, sin duplicar lo ya publicado en Dropi (conciliación con los
-exports `products_*.xlsx` y `variaciones*.xlsx`) y sin imagen no se
-carga. Toda descripción es **texto plano** (sin HTML, por decisión de la
+mismas reglas de la tienda: solo elegibles de `catalogo.js` y solo
+**JUGUETERIA, JUEGO DE MESA y DIDACTICO** (el alcance del
+marketplace), PRECIO =
+**Precio 5 de POSGold** (en vivo con `GetProduct_V6`) **cerrado al
+siguiente $1.000** ($10.500 → $11.000, siempre hacia arriba),
+PRECIO SUGERIDO =
+**PRECIO + $10.000 como mínimo** en todas las filas (el Precio 2 real
+solo se conserva si ya lo supera; también cerrado a $1.000),
+rentabilidad sobre `costopromedio`,
+mínimo **50 unidades**, **piso de precio de $2.000** (con
+**$5.000 para piñatería y cacharrería** —no son producto de
+dropshipping— y **slime conservado a $500**: el gancho viral),
+sin duplicar lo ya publicado en Dropi (conciliación con **todos**
+los exports `products_*.xlsx` y `variaciones*.xlsx`: el listado
+puede partirse en varias páginas) y sin imagen no se
+carga. Además del principal, `gen_dropi.py` genera la **serie de
+cargas en partes de hasta 50 filas** (`carga-masiva-parte-01-de-
+NN.xlsx`, `-02-`, ...) que cubre el 100 % de la carga y se sube
+**en orden**. El archivo se escribe con **xlsxwriter** (shared strings):
+openpyxl escribe inline strings y el cargue de Dropi responde
+"Encabezado no reconocido". Toda descripción es **texto plano** (sin
+HTML, por decisión de la
 tienda) y cierra con el pie de Juguetería Taiwan: importadores directos,
 despachos antes/después de la 1:00 p. m. y WhatsApp de atención
 dropshippers **3106988465**.
@@ -164,25 +180,70 @@ siempre mandan y nunca se pisan). Si Dropi ya tiene un producto
 publicado, la carga masiva no lo duplica; lo que sale del catálogo hay
 que pausarlo a mano en el panel de Dropi.
 
-**Estado (26-10-2026) — lista para subir.** La carga está completa y
-verificada: **1.144 productos**, todos con Precio 5 rentable, imagen
-viva, 50+ unidades, copy de campaña y pie (los copys cerraron al
-100 % y están volcados al Excel). **140 suben PRIVADO=SI** — ocultos
-del marketplace, activables después desde el panel de Dropi — por
-curación de la tienda: las figuras de colección y licencias (la misma
-categoría que la vitrina mantiene oculta), un solo ejemplar público
-por cada grupo de nombres repetidos y una selección propia de la
-dueña. `gen_dropi.py` preserva esa marca por SKU en cada regeneración
-y los SKUs nuevos entran siempre públicos. Falta: **la subida misma**
-(manual, desde el panel de Dropi) y, tras subir, re-exportar los
-productos de Dropi a `DROPI/` y correr `gen_dropi.py` para que la
-conciliación absorba lo publicado — desde ahí las cargas son
-**incrementales** (solo productos nuevos). El panel de Dropi trae
-dos opciones — **Carga masiva** (crear) y **Actualizar** (lo
-publicado) —: el modelo objetivo es altas incrementales por carga
-masiva + resubida periódica de precios y existencias por actualizar
-(pendiente probar con 2-3 SKUs que actualiza sin pisar los
-privados); las bajas siempre a mano.
+**Estado (26-10-2026) — dos rechazos corregidos; export absorbido,
+carga lista para subir limpia.** El primer intento (26-10 11:06) fue
+rechazado por Dropi con **"Encabezado no reconocido en la estructura
+del archivo"**: openpyxl escribe inline strings y el parser de Dropi
+no los lee; el archivo se reescribió con **xlsxwriter** (shared
+strings) y ahora el script aborta si el xlsx no trae
+`sharedStrings.xml`. Con la misma corrección entró la regla de la
+dueña: **PRECIO SUGERIDO = precio + $10.000 mínimo en todas las
+filas** (99 iban vacías, 1.045 por debajo del mínimo; solo 82
+conservan el Precio 2 real porque ya lo superan). El cargue de
+etapas (13:34, juguetería + juego de mesa + didáctico) marcó **95
+filas por NOMBRE de 40+ caracteres** ("supera el máximo permitido y
+será truncado"); el reintento (13:36) marcó solo 7. Corregido:
+**nombre máximo 39** (recorte por palabra completa, medido en
+bytes UTF-8 para no romper la Ñ). **El export `products_20261026_
+154402.xlsx` reveló que NADA entró de esos intentos** (solo viven
+los 10 productos históricos): el cargue de Dropi es todo-o-nada —
+si UNA fila falla, no se importa nada — así que no hay duplicados
+y el archivo corregido se sube limpio. La carga quedó completa y
+verificada: **1.144 productos**, todos con Precio 5 rentable,
+imagen viva, 50+ unidades, copy de campaña, pie, sugerido mínimo y
+nombre ≤ 39.
+**140 suben PRIVADO=SI** — ocultos del marketplace, activables
+después desde el panel de Dropi — por curación de la tienda: las
+figuras de colección y licencias (la misma categoría que la
+vitrina mantiene oculta), un solo ejemplar público por cada grupo
+de nombres repetidos y una selección propia de la dueña.
+`gen_dropi.py` preserva esa marca por SKU en cada regeneración y
+los SKUs nuevos entran siempre públicos. **Piso de precio
+(27-10-2026)**: el Precio 5 mínimo para enlistar es **$2.000**
+(por debajo, empacar y despachar una unidad cuesta más de lo que
+deja), con **$5.000 para piñatería y cacharrería** y **slime
+conservado a $500**; aplicado, la carga quedó en **1.003
+productos** (112 salieron por el piso, incluidos 10 privados; los
+75 slime se conservan todos).
+
+**Estado (28-10-2026) — cargue por partes en marcha, con alcance de
+3 categorías y precios cerrados.** Tras corregir formato
+(xlsxwriter), nombres (≤ 39 bytes) y choques de SKU, una prueba de
+50 productos públicos entró limpia por el panel y el listado
+publicado resultó **partirse en varias páginas** (la conciliación
+absorbe TODOS los exports). Regla nueva: **el cargue se sube en
+partes de hasta 50 filas en orden serie** — `gen_dropi.py` genera
+`carga-masiva-parte-01-de-NN.xlsx`, `-02-`, ... hasta cubrir el
+100 % (partición disjunta: se suben seguidas, sin re-exportar
+entre ellas; al terminar la serie o si una falla, re-exportar
+todas las páginas y regenerar). Las partes 01 y 02 de la serie
+vieja entraron limpias (100 publicados); la 03 fue rechazada en
+el todo-o-nada por UN SKU con listado viejo invisible (03371) —
+mismo patrón de 04521 y 04539, que viven en
+`SKU_BLOQUEADOS_DROPI` y se prueban aparte con
+`carga-masiva-mini-bloqueados.xlsx` (generado en cada corrida).
+Reglas de la dueña aplicadas después: **la carga solo lleva
+JUGUETERIA, JUEGO DE MESA y DIDACTICO** (616 productos salieron
+del alcance; los 125 ya publicados en Dropi de otras categorías
+se pausan a mano) y **todos los precios van cerrados al siguiente
+$1.000, siempre hacia arriba**. El principal quedó en **333
+productos (13 privados)** y la serie nueva es **7 partes** que se
+suben desde la 01. El
+panel de Dropi trae dos opciones — **Carga masiva** (crear) y
+**Actualizar** (lo publicado) —: el modelo objetivo es altas
+incrementales por carga masiva + resubida periódica de precios y
+existencias por actualizar (pendiente probar con 2-3 SKUs que
+actualiza sin pisar los privados); las bajas siempre a mano.
 
 ## Características de la tienda
 
@@ -297,7 +358,7 @@ Estado del proyecto tras la última tanda de mejoras (actualizado a finales de o
 | QA | `qa_e2e.py` **42/42** y `qa_carrito.py` **38/38** (verde antes de publicar; el carrito exige el Precio 2 exacto en todo el catálogo) |
 | Costos | Documentado: el API de POSGold no trae costos (verificado); el Excel de PRODUCTOS es el contrato de formato y el pipeline falla seguro en cada etapa |
 | Catálogo | 1.943 productos publicados, **todos activos y con existencias**: la conciliación dura con POSGold (3 puertas) aborta la corrida sin publicar si algo no cuadra; los nuevos de POSGold entran solos en la próxima corrida si cumplen los filtros (incluido costo en el Excel) |
-| Dropi | Carga masiva espejo del catálogo (`gen_dropi.py`): **Precio 5 de POSGold** en vivo, tachado honesto del Precio 2 real, rentabilidad sobre costo, mínimo 50 unidades, sin duplicar lo ya publicado y descripciones de campaña en **texto plano** con el pie de la tienda (importadores directos, despachos 1:00 p. m., WhatsApp dropshippers **3106988465**); los copys los produce `gen_descripciones.py` leyendo la **foto real** de cada producto con un modelo de visión (API de NVIDIA). **Carga completa y lista para subir (26-10-2026)**: 1.144 productos verificados al 100 % (copys y pie incluidos); 140 suben **privados** por curación (colección/licencias, un público por grupo de nombres repetidos y selección de la dueña); pendiente la subida manual desde el panel de Dropi |
+| Dropi | Carga masiva espejo del catálogo (`gen_dropi.py`), **solo JUGUETERIA, JUEGO DE MESA y DIDACTICO** (alcance de la dueña 28-10): **Precio 5 de POSGold** en vivo **cerrado al siguiente $1.000** (siempre hacia arriba), **PRECIO SUGERIDO = precio + $10.000 mínimo** (también cerrado), **nombre máximo 39 caracteres** (recorte por palabra completa, en bytes UTF-8), rentabilidad sobre costo, mínimo 50 unidades, **piso de precio $2.000**, sin duplicar lo ya publicado (absorbe **todos** los exports: el listado se parte en páginas) y descripciones de campaña en **texto plano** con el pie de la tienda (importadores directos, despachos 1:00 p. m., WhatsApp dropshippers **3106988465**); los copys los produce `gen_descripciones.py` leyendo la **foto real** de cada producto con un modelo de visión (API de NVIDIA). **Cargue en serie (28-10): partes de hasta 50 filas** (disjuntas, en orden, cubren el 100 % y se regeneran en cada choque) — 150 ya publicados (prueba-50 + partes 01-02 viejas); la 03 vieja cayó por el SKU bloqueado 03371 y la serie se regeneró en **7 partes** (principal: **333 filas, 13 privados**); los bloqueados del alcance (04521, 04539) se prueban aparte con `carga-masiva-mini-bloqueados.xlsx`; **125 publicados de otras categorías quedaron fuera del alcance nuevo — pausarlos es manual** |
 | Novedades | Cada corrida deja `reportes/novedades_*.xlsx` para la tienda: lo que no publica y por qué (inactivos, agotados, duplicados, sin precio, sin foto, sin costo), marcando lo que estaba publicado; el cron lo sube como artefacto de Actions (`novedades-sync`) |
 | Hub | **Fase 0+1 construidas** (21 oct 2026): catálogo maestro con costos + adaptador de Mercado Libre (`hub/`); pendiente aprobar la app en developers.mercadolibre.com.co. **Decisión de alcance (23 oct 2026)**: solo sincronización de productos — los pedidos de ML se gestionan en la plataforma de ML, no en POSGold; el correo a GoldPOS queda archivado como plan B (`docs/correo_goldpos.md`) |
 | Panel | Publica configuración y costos solo (API de GitHub); nada se edita a mano |
