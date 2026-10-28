@@ -17,6 +17,11 @@
 *.pdf
 *.pptx
 
+# --- Hub: catalogo maestro (SIEMPRE trae costos: NUNCA al repo) ---
+# (hub/ml_token.enc SI se commitea: es el token ML cifrado AES-256,
+#  mismo modelo que costos.posgold.enc)
+hub/productos.json
+
 # --- Transcripciones, informacion privada y notas (NINGUN txt al repo) ---
 *.txt
 gen_presentacion.py
