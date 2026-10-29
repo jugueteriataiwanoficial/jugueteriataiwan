@@ -1,0 +1,43 @@
+{
+ "version": 1,
+ "fallback": "MCO1910",
+ "prefijos_juguete": [
+  "MCO-TOY",
+  "MCO-PUZZLE",
+  "MCO-STUFFED",
+  "MCO-DOLL",
+  "MCO-RADIO_CONTROL",
+  "MCO-MINIATURE",
+  "MCO-JOKE"
+ ],
+ "dominios_up": [
+  "MCO-PUZZLE_CUBES"
+ ],
+ "por_palabra": [
+  {
+   "palabras": ["PELUCHE", "PELUCHES", "STUFFED"],
+   "categoria": "MCO176652",
+   "nota": "Peluches"
+  },
+  {
+   "palabras": ["MINIATURA", "FIGURA", "FUNKO"],
+   "categoria": "MCO457877",
+   "nota": "Miniaturas y figuras"
+  },
+  {
+   "palabras": ["BROMA", "CHISTE", "BROMAS"],
+   "categoria": "MCO416865",
+   "nota": "Juguetes de bromas"
+  },
+  {
+   "palabras": ["PIANO", "TECLADO", "ORGANO"],
+   "categoria": "MCO189402",
+   "nota": "Pianos y organos de juguete"
+  },
+  {
+   "palabras": ["CUBO RUBIK", "RUBIK", "IVYCUBE"],
+   "categoria": "MCO170729",
+   "nota": "Cubos; el dominio exige family_name (User Products)"
+  }
+ ]
+}

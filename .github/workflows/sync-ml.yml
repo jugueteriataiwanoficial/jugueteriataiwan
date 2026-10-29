@@ -1,8 +1,8 @@
 # ==================================================================
-# SYNC MERCADO LIBRE (canal ML del hub) — Fase 1.
+# SYNC MERCADO LIBRE (canal ML del hub) — Fases 0-2.
 #
-# Despachado SOLO a mano (workflow_dispatch) hasta que la app de
-# Mercado Libre este creada, autorizada y validada:
+# Despachado SOLO a mano (workflow_dispatch) hasta validar los
+# payloads y la primera publicacion:
 #   Actions -> sync-ml -> Run workflow -> "publicar" = cuantos items
 #   nuevos crear en esta corrida (0 = solo sincronizar).
 #
@@ -51,6 +51,11 @@ jobs:
       - name: Instalar openpyxl
         run: pip install openpyxl
 
+      - name: Verificar mapas ML versionados
+        run: |
+          test -s data/categorias_ml.json
+          test -s data/marcas_ml.json
+
       - name: Descifrar costos de POSGold
         run: |
           openssl enc -d -aes-256-cbc -pbkdf2 -iter 200000 \
@@ -80,6 +85,9 @@ jobs:
 
       - name: Construir catalogo maestro del hub
         run: python hub/construir_hub.py --costos PRODUCTOS_cloud.xlsx
+
+      - name: QA offline del adaptador ML
+        run: python qa_ml.py
 
       - name: Sincronizar y publicar en Mercado Libre
         run: python hub/canal_ml.py --sincronizar --publicar "${{ inputs.publicar }}"

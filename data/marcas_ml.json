@@ -1,0 +1,18 @@
+{
+ "version": 1,
+ "marca_defecto": "Juguetería Taiwan",
+ "por_sku": {},
+ "por_palabra": [
+  {"palabras": ["FUNKO"], "marca": "Funko"},
+  {"palabras": ["LEGO"], "marca": "LEGO"},
+  {"palabras": ["RUBIK", "IVYCUBE"], "marca": "Rubik"},
+  {"palabras": ["BARBIE"], "marca": "Barbie"},
+  {"palabras": ["HOT WHEELS"], "marca": "Hot Wheels"},
+  {"palabras": ["NERF"], "marca": "Nerf"},
+  {"palabras": ["DISNEY"], "marca": "Disney"},
+  {"palabras": ["MARVEL"], "marca": "Marvel"},
+  {"palabras": ["POKEMON", "POKÉMON"], "marca": "Pokemon"},
+  {"palabras": ["SQUISHMALLOW"], "marca": "Squishmallows"},
+  {"palabras": ["MINECRAFT"], "marca": "Minecraft"}
+ ]
+}

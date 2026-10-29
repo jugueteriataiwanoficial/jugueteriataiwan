@@ -30,6 +30,10 @@ plan completo (fases 2–4: backend de webhooks, OMS, panel unificado).
 |---|---|---|
 | `hub/construir_hub.py` | Genera el catálogo maestro desde POSGold + Excel de costos | Sí (código) |
 | `hub/canal_ml.py` | Adaptador de Mercado Libre: altas, pausas, stock, precios | Sí (código) |
+| `hub/ml_diagnostico.py` | Diagnóstico de categorías, atributos y publicaciones; no publica | Sí (código) |
+| `data/categorias_ml.json` | Mapa curado de palabras → categoría ML y fallback | Sí (sin costos) |
+| `data/marcas_ml.json` | Marcas conocidas por SKU o palabra | Sí (sin costos) |
+| `qa_ml.py` | QA offline del adaptador (precios, atributos, payloads, estado) | Sí |
 | `hub/productos.json` | **El catálogo maestro, SIEMPRE trae costos** | **NUNCA** (gitignored) |
 | `hub/ml_token.enc` | Refresh token de ML cifrado (AES-256-CBC + PBKDF2) | Sí (cifrado) |
 | `data/canal_ml.json` | Estado del canal ML: SKU → listing, precios, stock publicado | Sí (sin costos) |
@@ -60,14 +64,30 @@ un canal necesita saber cuándo pausar, no solo cuándo aparece stock).
 
 ```bash
 python hub/canal_ml.py --autorizar      # primera vez: OAuth → refresh token en .env
-python hub/canal_ml.py --prueba         # valida credenciales (/users/me)
+python hub/canal_ml.py --prueba         # valida credenciales (/users/me + tags)
 python hub/canal_ml.py --dry-run        # el plan sin llamar a ML (ni token)
+python hub/canal_ml.py --reconciliar    # reconstruye data/canal_ml.json desde ML
 python hub/canal_ml.py --sincronizar    # pausas/activaciones/stock/precio
 python hub/canal_ml.py --publicar 5     # crea hasta 5 publicaciones nuevas
 python hub/canal_ml.py --sincronizar --publicar 3   # corrida completa
 ```
 
 (sin banderas = dry-run: muestra el plan y un `reportes/plan_ml_*.json`)
+
+Antes de la primera alta, `--publicar` reconcilia solo si el estado está vacío
+o no conoce los tags del vendedor. También se puede forzar con `--reconciliar`.
+Los avisos de SKU desconocido quedan marcados como `origen: externo` y **no**
+se pausan automáticamente.
+
+Diagnóstico y payloads sin publicar:
+
+```bash
+python hub/ml_diagnostico.py                 # 5 SKUs de muestra, endpoints públicos
+python hub/ml_diagnostico.py --sku 001309 --sku 00723
+python hub/ml_diagnostico.py --payloads      # payloads completos, no publica
+python hub/ml_diagnostico.py --con-token     # usa SOLO ML_ACCESS_TOKEN (no rota)
+python qa_ml.py                              # QA offline, sin red ni costos
+```
 
 ---
 
@@ -90,6 +110,8 @@ python hub/canal_ml.py --sincronizar --publicar 3   # corrida completa
 | `ML_LIMITE_ALTA` | `5` | Altas máximas por corrida |
 | `ML_PRECIO_MINIMO` | `0` | No publicar por debajo de este precio |
 | `ML_CATEGORIAS_EXCLUIDAS` | `cacharro` | Slugs de `categoria_web` vetados en ML |
+| `ML_VALIDAR` | `1` | Valida el payload con `POST /items/validate` antes del alta |
+| `ML_NO_ROTAR` | — | `1` exige `ML_ACCESS_TOKEN`; nunca refresca el token |
 
 Los `ML_*` también se aceptan como variables de proceso (así los inyecta el
 workflow desde los secrets de Actions).
@@ -114,9 +136,25 @@ agotado en POSGold → publicación `paused` (nunca se finaliza: es destructivo)
 Vuelve el stock → `active`. Cambia stock/precio → `PUT /items/{id}` con solo
 los campos que cambiaron.
 
-**Categorización** — automática con `domain_discovery/search` de ML, cacheada
-en `data/canal_ml.json` (clave = título sin acentos). EAN (SKU de 13 dígitos)
-viaja como atributo `GTIN`.
+**Categorización** — primero el mapa curado `data/categorias_ml.json`
+(palabras → categoría), luego `domain_discovery/search` y, si ninguna
+candidata es de juguetes, el fallback `MCO1910` (Otros, dominio
+`MCO-TOYS_AND_GAMES`). Se descartan dominios de otras ramas (colmenas,
+cajones de madera, pianos reales, juguetes de mascotas) y categorías con
+`listing_allowed=false`.
+La caché vive en `data/canal_ml.json`; su versión se invalida sola al cambiar
+el criterio.
+
+**Atributos** — se leen de `/categories/{id}/attributes`. BRAND, MODEL,
+MANUFACTURER, SELLER_SKU, GTIN e ITEM_CONDITION se llenan con datos reales;
+si falta un requerido (por ejemplo `POWER_SUPPLY_TYPE`), el producto **no se
+publica** y queda anotado en `faltantes` con la categoría y el atributo. GTIN
+solo viaja si es un EAN-13 con dígito verificador válido.
+
+**User Products** — si `/users/me` trae el tag `user_product_seller`, el alta
+usa `family_name` y omite `title`; sin el tag usa el flujo legacy con `title`.
+Cada SKU es un ítem (sin variaciones inventadas). La descripción se crea
+después del ítem con `POST /items/{id}/description`.
 
 ---
 
@@ -135,18 +173,26 @@ El OAuth de ML **rota el refresh token en cada uso** (el access token dura
 Si ML rechaza el refresh (`HTTP 401` en `/oauth/token`), vuelve a autorizar:
 `python hub/canal_ml.py --autorizar`.
 
+Modo sin rotación (pruebas): pega un `ML_ACCESS_TOKEN` temporal en `.env` y
+pon `ML_NO_ROTAR=1`. Con esa bandera el script nunca llama al refresh; si falta
+el access token, aborta con instrucciones. `hub/ml_diagnostico.py --con-token`
+también usa solo el access token.
+
 ---
 
-## Antes de que ML funcione
+## Puesta en marcha
 
-1. Crear la aplicación en [developers.mercadolibre.com.co](https://developers.mercadolibre.com.co/devcenter)
-   con la cuenta vendedora de la tienda (la aprobación tarda días).
+1. App creada y autorizada (29 oct 2026) en
+   [developers.mercadolibre.com.co](https://developers.mercadolibre.com.co/devcenter)
+   con la cuenta vendedora de la tienda.
 2. Configurar `ML_CLIENT_ID`, `ML_CLIENT_SECRET` y (opcional para la primera
    vez) `ML_REFRESH_TOKEN` en los secrets del repo, y `ML_TOKEN_KEY`.
 3. `python hub/canal_ml.py --autorizar` (local) → `--prueba` →
-   `--publicar 2` con pocos productos para validar moderación de fotos y
-   atributos obligatorios de cada categoría (BRAND/MODEL: si ML los pide,
-   el error del alta los lista y se amplía `crear_publicacion()`).
+   `python hub/ml_diagnostico.py --con-token` (tags e inventario actual) →
+   `python hub/ml_diagnostico.py --payloads` (payloads completos) →
+   `python qa_ml.py` → `--publicar 1` y revisar la moderación antes de subir
+   a 2-3. Si ML pide un atributo nuevo, el alta lo lista en `faltantes` y se
+   agrega al producto o al mapa curado, nunca se inventa.
 4. Hasta entonces `sync-ml.yml` es dispatch-only (no corre solo).
 
 ## Estado de la integración POSGold (21-10-2026)

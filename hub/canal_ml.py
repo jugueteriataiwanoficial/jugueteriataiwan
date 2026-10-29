@@ -14,6 +14,7 @@ Comandos:
   --prueba               valida credenciales (refresh token -> /users/me)
   --dry-run              calcula el plan (altas/pausas/activaciones/
                          stock/precio) SIN llamar a ML (no necesita token)
+  --reconciliar          reconstruye data/canal_ml.json desde ML
   --sincronizar          ejecuta el plan sobre publicaciones existentes
   --publicar [N]         crea hasta N publicaciones nuevas (default: env
                          ML_LIMITE_ALTA)
@@ -37,7 +38,12 @@ Variables de .env (todas opcionales salvo las credenciales):
   ML_LIMITE_ALTA=5                  altas maximas por corrida
   ML_PRECIO_MINIMO=0                no publicar por debajo de este precio
   ML_CATEGORIAS_EXCLUIDAS=cacharro  slugs de categoria_web vetados en ML
+  ML_VALIDAR=1                      valida el payload con /items/validate
+  ML_NO_ROTAR=1                     exige ML_ACCESS_TOKEN; nunca refresca
   ML_REDIRECT_URI                   el registrado en la app (para --autorizar)
+
+  Categorias curadas: data/categorias_ml.json (fallback MCO1910).
+  Marcas conocidas: data/marcas_ml.json (sin costos).
 
 SEGURIDAD Y TOKENS:
   - El refresh token de ML ROTA en cada uso: cada refresh devuelve uno
@@ -69,9 +75,12 @@ import actualizar_costos as ac  # noqa: E402  (solo encontrar_openssl)
 ENV_FILE = sp.ENV_FILE
 HUB_PATH = construir_hub.HUB_PATH
 ESTADO_PATH = os.path.join(sp.DIR_DATA, "canal_ml.json")
+CATEGORIAS_PATH = os.path.join(sp.DIR_DATA, "categorias_ml.json")
+MARCAS_PATH = os.path.join(sp.DIR_DATA, "marcas_ml.json")
 DIR_REPORTES = sp.DIR_REPORTES
 API = "https://api.mercadolibre.com"
 AUTH = "https://auth.mercadolibre.com"
+ATRIBUTOS_CACHE = {}
 OPENSSL_ARGS = ac.OPENSSL_ARGS  # enc -aes-256-cbc -pbkdf2 -iter 200000 -salt
 
 log = sp.log
@@ -96,6 +105,31 @@ def cargar_config():
     return env
 
 
+def normalizar_estado(est):
+    """Completa claves nuevas y descarta cache de categorias viejo.
+
+    La cache anterior guardaba el predictor crudo (p. ej. Abeja -> Colmenas).
+    Es solo cache: se puede regenerar sin perder publicaciones.
+    """
+    if not isinstance(est, dict):
+        est = {}
+    est.setdefault("version", 1)
+    est.setdefault("site", "MCO")
+    est.setdefault("listings", {})
+    if est.get("categorias_version") != 2:
+        est["categorias"] = {}
+        est["dominios_cat"] = {}
+        est["categorias_fuente"] = {}
+        est["categorias_info"] = {}
+        est["faltantes"] = {}
+        est["categorias_version"] = 2
+    for clave in ("listings", "categorias", "dominios_cat",
+                  "categorias_fuente", "categorias_info", "faltantes"):
+        if not isinstance(est.get(clave), dict):
+            est[clave] = {}
+    return est
+
+
 def cargar_estado():
     if os.path.exists(ESTADO_PATH):
         try:
@@ -103,10 +137,8 @@ def cargar_estado():
                 est = json.load(f)
         except Exception:
             est = {}
-        if isinstance(est, dict) and est.get("listings"):
-            return est
-    return {"version": 1, "site": "MCO", "actualizado": None,
-            "listings": {}, "categorias": {}}
+        return normalizar_estado(est)
+    return normalizar_estado({})
 
 
 def guardar_estado(est):
@@ -234,6 +266,10 @@ class SesionML:
             self.token = env["ML_ACCESS_TOKEN"]
             self.rotante = False
         else:
+            if env.get("ML_NO_ROTAR") == "1":
+                log("ERROR: ML_NO_ROTAR=1 exige ML_ACCESS_TOKEN en .env.")
+                log("       No se refresca el token: la rotacion esta bloqueada.")
+                sys.exit(1)
             self.token = refrescar_token(env)
             self.rotante = True
 
@@ -324,6 +360,225 @@ def descripcion_ml(p, titulo):
             f"Jugueteria Taiwan - Cali, Colombia. Despachos a todo el pais.")
 
 
+# ------------------------------------------------------------------
+# Catalogos curados (publicos, sin costos)
+# ------------------------------------------------------------------
+
+
+def _leer_json(ruta, defecto):
+    if not os.path.exists(ruta):
+        return defecto
+    try:
+        with open(ruta, encoding="utf-8") as f:
+            data = json.load(f)
+        return data if isinstance(data, (dict, list)) else defecto
+    except Exception:
+        return defecto
+
+
+def cargar_categorias():
+    defecto = {
+        "fallback": "MCO1910",
+        "prefijos_juguete": ["MCO-TOY", "MCO-PUZZLE", "MCO-STUFFED",
+                             "MCO-DOLL", "MCO-RADIO_CONTROL"],
+        "dominios_up": ["MCO-PUZZLE_CUBES"],
+        "por_palabra": [],
+    }
+    data = _leer_json(CATEGORIAS_PATH, defecto)
+    if not isinstance(data, dict):
+        data = defecto
+    for k, v in defecto.items():
+        data.setdefault(k, v)
+    return data
+
+
+def cargar_marcas():
+    defecto = {"marca_defecto": "Juguetería Taiwan",
+               "por_sku": {}, "por_palabra": []}
+    data = _leer_json(MARCAS_PATH, defecto)
+    if not isinstance(data, dict):
+        data = defecto
+    for k, v in defecto.items():
+        data.setdefault(k, v)
+    return data
+
+
+def marca_modelo(p, marcas=None):
+    """Marca conocida por SKU/palabra; si no hay, la marca de la tienda.
+    El modelo sale del nombre completo (sin la marca), nunca de la
+    primera palabra suelta."""
+    marcas = marcas or cargar_marcas()
+    nombre = p.get("nombre") or ""
+    sku = str(p.get("sku") or "")
+    brand = (p.get("marca") or marcas.get("por_sku", {}).get(sku) or "").strip()
+    if not brand:
+        n = sp.sin_acentos(nombre)
+        for regla in marcas.get("por_palabra", []):
+            for palabra in regla.get("palabras", []):
+                if sp.sin_acentos(palabra) in n:
+                    brand = (regla.get("marca") or "").strip()
+                    break
+            if brand:
+                break
+    if not brand:
+        brand = marcas.get("marca_defecto") or "Juguetería Taiwan"
+    model = (p.get("modelo") or nombre).strip()
+    if brand and sp.sin_acentos(model).startswith(sp.sin_acentos(brand)):
+        model = model[len(brand):].strip(" -_/")
+    if not model:
+        model = sku or brand
+    return brand, model[:60]
+
+
+def ean13_valido(valor):
+    s = re.sub(r"\D", "", str(valor or ""))
+    if len(s) != 13:
+        return False
+    suma = sum(int(d) * (3 if i % 2 else 1) for i, d in enumerate(s[:12]))
+    return (10 - suma % 10) % 10 == int(s[12])
+
+
+def _attrs_categoria(sesion, cid):
+    if cid in ATRIBUTOS_CACHE:
+        return ATRIBUTOS_CACHE[cid]
+    codigo, data = sesion.get(f"/categories/{cid}/attributes")
+    attrs = data.get("attributes") if isinstance(data, dict) else data
+    if codigo != 200 or not isinstance(attrs, list):
+        return None
+    ATRIBUTOS_CACHE[cid] = attrs
+    return attrs
+
+
+def _valor_requerido(req, p, brand, model, ean):
+    aid = req.get("id")
+    if aid == "ITEM_CONDITION":
+        return {"id": aid, "value_id": "2230284", "value_name": "Nuevo"}
+    if aid == "BRAND":
+        valor = brand
+    elif aid == "MODEL":
+        valor = model
+    elif aid == "MANUFACTURER":
+        valor = brand
+    elif aid == "SELLER_SKU":
+        valor = p.get("sku")
+    elif aid == "GTIN":
+        valor = ean
+    else:
+        return None
+    if not valor:
+        return None
+    if req.get("value_type") == "list":
+        valores = req.get("values") or []
+        buscado = sp.sin_acentos(str(valor))
+        for v in valores:
+            if sp.sin_acentos(v.get("name") or "") == buscado:
+                return {"id": aid, "value_id": v.get("id"),
+                        "value_name": v.get("name")}
+        return None
+    return {"id": aid, "value_name": str(valor)}
+
+
+def atributos_para(sesion, cid, p, brand=None, model=None):
+    """Arma solo atributos que ML declara para la categoria. Si falta un
+    requerido, devuelve la lista y el producto NO se publica."""
+    brand = brand or marca_modelo(p)[0]
+    model = model or marca_modelo(p)[1]
+    ean = str(p.get("ean")) if ean13_valido(p.get("ean")) else None
+    if not ean and ean13_valido(p.get("sku")):
+        ean = str(p.get("sku"))
+    attrs = _attrs_categoria(sesion, cid)
+    if attrs is None:
+        return [], [{"id": "*", "motivo": "no se pudieron leer los atributos"}]
+    salida, faltantes = [], []
+    llenables = {"BRAND", "MODEL", "MANUFACTURER", "SELLER_SKU",
+                 "GTIN", "ITEM_CONDITION"}
+    for req in attrs:
+        tags = req.get("tags") or {}
+        requerido = (tags.get("required") or tags.get("catalog_required")
+                     or tags.get("grid_template_required"))
+        if not requerido and req.get("id") not in llenables:
+            continue
+        val = _valor_requerido(req, p, brand, model, ean)
+        if val:
+            salida.append(val)
+        elif requerido:
+            faltantes.append({"id": req.get("id"),
+                              "nombre": req.get("name"),
+                              "value_type": req.get("value_type")})
+    ids = {a.get("id") for a in salida}
+    if "ITEM_CONDITION" not in ids:
+        salida.append({"id": "ITEM_CONDITION", "value_id": "2230284",
+                       "value_name": "Nuevo"})
+    if ean and "GTIN" not in ids:
+        salida.append({"id": "GTIN", "value_name": ean})
+    return salida, faltantes
+
+
+# ------------------------------------------------------------------
+# Categorias: mapa curado + predictor + fallback de juguetes
+# ------------------------------------------------------------------
+
+
+def _categoria_info(sesion, cid, est):
+    cache = est.setdefault("categorias_info", {})
+    if cid in cache:
+        return cache[cid]
+    codigo, data = sesion.get(f"/categories/{cid}")
+    if codigo != 200 or not isinstance(data, dict):
+        return None
+    settings = data.get("settings") or {}
+    info = {
+        "categoria": cid,
+        "nombre": data.get("name"),
+        "dominio": settings.get("catalog_domain"),
+        "listing_allowed": settings.get("listing_allowed"),
+        "max_titulo": settings.get("max_title_length"),
+    }
+    cache[cid] = info
+    return info
+
+
+def _es_dominio_juguete(dominio, cfg):
+    d = (dominio or "").upper()
+    # OJO: "PET_TOY" / "DOG_TOY" son juguetes de mascotas, no de niños.
+    if any(x in d for x in ("PET_TOY", "PET_SUPPLIES", "DOG_TOY",
+                            "CAT_TOY", "TOY_PET")):
+        return False
+    if any(d.startswith(p.upper()) for p in cfg.get("prefijos_juguete", [])):
+        return True
+    # Hay dominios de juguetes que no empiezan por MCO-TOY (p. ej.
+    # MCO-NON_REMOTE_CONTROL_TOY_VEHICLES); se reconocen por la rama.
+    return any(x in d for x in ("TOY", "PUZZLE", "STUFFED", "DOLL",
+                                "MINIATURE", "JOKE"))
+
+
+def _es_dominio_up(dominio, cfg):
+    return (dominio or "").upper() in {d.upper() for d in cfg.get("dominios_up", [])}
+
+
+def _categoria_curada(titulo, cfg):
+    n = sp.sin_acentos(titulo)
+    for regla in cfg.get("por_palabra", []):
+        for palabra in regla.get("palabras", []):
+            if sp.sin_acentos(palabra) in n:
+                return regla.get("categoria")
+    return None
+
+
+def _categoria_valida(sesion, cid, est, cfg, tags):
+    info = _categoria_info(sesion, cid, est)
+    if not info or info.get("listing_allowed") is not True:
+        return None
+    dom = info.get("dominio")
+    if _es_dominio_up(dom, cfg) and "user_product_seller" not in tags:
+        return None
+    curadas = {r.get("categoria") for r in cfg.get("por_palabra", [])}
+    if (not _es_dominio_juguete(dom, cfg) and cid != cfg.get("fallback")
+            and cid not in curadas):
+        return None
+    return info
+
+
 def categorias_excluidas(env):
     return {s.strip().lower() for s in
             env.get("ML_CATEGORIAS_EXCLUIDAS", "cacharro").split(",") if s.strip()}
@@ -361,6 +616,8 @@ def construir_plan(hub, estado, env, limite_altas):
     stock_max = int(env.get("ML_STOCK_MAXIMO", "99"))
     acciones, altas = [], []
     for sku, l in sorted(estado["listings"].items()):
+        if l.get("origen") == "externo":
+            continue
         p = por_sku.get(sku)
         out = (p is None or not p.get("activo") or (p.get("stock") or 0) <= 0)
         if out:
@@ -401,27 +658,139 @@ def construir_plan(hub, estado, env, limite_altas):
 
 
 # ------------------------------------------------------------------
+# Reconciliacion: reconstruir el estado desde ML (idempotencia)
+# ------------------------------------------------------------------
+
+
+def _item_a_listing(item, catalogo_skus):
+    attrs = {a.get("id"): a.get("value_name")
+             for a in item.get("attributes") or []}
+    sku = item.get("seller_custom_field") or attrs.get("SELLER_SKU")
+    externo = not sku or sku not in catalogo_skus
+    clave = sku or ("ML:" + str(item.get("id")))
+    return clave, {
+        "listing_id": item.get("id"),
+        "titulo": item.get("title"),
+        "permalink": item.get("permalink"),
+        "estado": item.get("status"),
+        "precio": item.get("price"),
+        "stock_publicado": item.get("available_quantity"),
+        "categoria_ml": item.get("category_id"),
+        "seller_custom_field": sku,
+        "user_product_id": item.get("user_product_id"),
+        "family_name": item.get("family_name"),
+        "origen": "externo" if externo else "catalogo",
+        "sin_sku": bool(not sku),
+    }
+
+
+def _items_en_lote(sesion, ids):
+    items = []
+    for i in range(0, len(ids), 20):
+        lote = ids[i:i + 20]
+        codigo, data = sesion.get("/items?ids=" + ",".join(lote))
+        if codigo == 200 and isinstance(data, list):
+            for sobre in data:
+                if isinstance(sobre, dict) and sobre.get("code") == 200:
+                    body = sobre.get("body") or {}
+                    if body.get("id"):
+                        items.append(body)
+        else:
+            for lid in lote:
+                codigo, item = sesion.get(f"/items/{lid}")
+                if codigo == 200 and isinstance(item, dict):
+                    items.append(item)
+        time.sleep(0.3)
+    return items
+
+
+def reconciliar_estado(sesion, est, hub, limite=1000):
+    """Lee las publicaciones activas/pausadas del vendedor y reconstruye
+    data/canal_ml.json. Las de SKU desconocido se guardan como externas y
+    NO se pausan automaticamente."""
+    hub_skus = {p.get("sku") for p in hub.get("productos", []) if p.get("sku")}
+    codigo, me = sesion.get("/users/me")
+    if codigo != 200:
+        raise RuntimeError(f"/users/me respondio {codigo}: {str(me)[:200]}")
+    uid = me.get("id")
+    est["vendedor"] = {"id": uid, "nickname": me.get("nickname"),
+                       "tags": me.get("tags") or []}
+    ids, offset = [], 0
+    while len(ids) < limite:
+        n = min(100, limite - len(ids))
+        qs = urllib.parse.urlencode({"status": "active,paused", "limit": str(n),
+                                     "offset": str(offset)})
+        codigo, data = sesion.get(f"/users/{uid}/items/search?{qs}")
+        if codigo != 200:
+            raise RuntimeError(f"items/search respondio {codigo}: {str(data)[:200]}")
+        results = (data or {}).get("results") or []
+        if not results:
+            break
+        ids.extend(results)
+        offset += len(results)
+        total = ((data or {}).get("paging") or {}).get("total")
+        if total is not None and offset >= int(total):
+            break
+        time.sleep(0.3)
+    nuevos = {}
+    for item in _items_en_lote(sesion, ids):
+        clave, fila = _item_a_listing(item, hub_skus)
+        viejo = est.get("listings", {}).get(clave) or {}
+        if viejo.get("creado"):
+            fila["creado"] = viejo["creado"]
+        fila["actualizado"] = dt.datetime.now().isoformat(timespec="seconds")
+        nuevos[clave] = fila
+    for clave, viejo in (est.get("listings") or {}).items():
+        if viejo.get("origen") == "externo" and clave not in nuevos:
+            nuevos[clave] = viejo
+    est["listings"] = nuevos
+    return len(ids), len(nuevos)
+
+
+# ------------------------------------------------------------------
 # Ejecucion del plan
 # ------------------------------------------------------------------
 
 
-def categoria_para(sesion, titulo, estado):
-    """Categorizador automatico: domain discovery de ML con cache en el
-    estado (evita repetir la busqueda por producto)."""
+def categoria_para(sesion, titulo, estado, cfg=None):
+    """Prioridad: mapa curado -> predictor con dominio de juguetes ->
+    fallback MCO1910 (Otros, dominio MCO-TOYS_AND_GAMES).
+
+    Nunca acepta a ciegas una categoria de otra rama (colmenas, cajones,
+    pianos de verdad): si el dominio no es de juguetes, se descarta.
+    """
+    cfg = cfg or cargar_categorias()
     cache = estado.setdefault("categorias", {})
     clave = sp.sin_acentos(titulo)[:48]
     if clave in cache:
         return cache[clave]
+    tags = (estado.get("vendedor") or {}).get("tags") or []
+
+    curada = _categoria_curada(titulo, cfg)
+    if curada and _categoria_valida(sesion, curada, estado, cfg, tags):
+        cache[clave] = curada
+        estado.setdefault("categorias_fuente", {})[clave] = "curada"
+        return curada
+
     site = estado.get("site", "MCO")
-    qs = urllib.parse.urlencode({"q": titulo, "limit": "3"})
+    qs = urllib.parse.urlencode({"q": titulo, "limit": "5"})
     codigo, data = sesion.get(f"/sites/{site}/domain_discovery/search?{qs}")
-    cid = None
-    if codigo == 200 and isinstance(data, list) and data:
-        cid = (data[0] or {}).get("category_id")
-    if not cid:
-        raise RuntimeError(f"sin categoria para '{titulo}' (HTTP {codigo})")
-    cache[clave] = cid
-    return cid
+    if codigo == 200 and isinstance(data, list):
+        for item in data:
+            cand = (item or {}).get("category_id")
+            if not cand:
+                continue
+            if _categoria_valida(sesion, cand, estado, cfg, tags):
+                cache[clave] = cand
+                estado.setdefault("categorias_fuente", {})[clave] = "discovery"
+                return cand
+
+    fallback = cfg.get("fallback") or "MCO1910"
+    if _categoria_valida(sesion, fallback, estado, cfg, tags):
+        cache[clave] = fallback
+        estado.setdefault("categorias_fuente", {})[clave] = "fallback"
+        return fallback
+    raise RuntimeError(f"sin categoria valida para '{titulo}' (HTTP {codigo})")
 
 
 def ejecutar_accion(sesion, est, a):
@@ -447,13 +816,28 @@ def ejecutar_accion(sesion, est, a):
     return False, data
 
 
-def crear_publicacion(sesion, est, env, alta):
+def construir_payload(sesion, est, env, alta):
+    """Arma el payload sin publicar. Devuelve (payload, meta) o (None, error).
+    Es la unica fuente de verdad para el alta y para QA offline."""
     p = alta["producto"]
-    site = est.get("site", "MCO")
-    titulo = alta["titulo"]
-    cid = categoria_para(sesion, titulo, est)
+    sku = p["sku"]
+    titulo = titulo_ml(p.get("nombre") or alta["titulo"], env)
+    cid = categoria_para(sesion, p.get("nombre") or titulo, est,
+                         cargar_categorias())
+    info = (est.get("categorias_info") or {}).get(cid) or {}
+    max_titulo = int(info.get("max_titulo") or env.get("ML_TITULO_MAX", "60"))
+    if len(titulo) > max_titulo:
+        titulo = titulo[:max_titulo].rsplit(" ", 1)[0].strip()
+
+    brand, model = marca_modelo(p)
+    attributes, faltantes = atributos_para(sesion, cid, p, brand, model)
+    if faltantes:
+        return None, {"error": "faltan atributos obligatorios",
+                      "categoria": cid, "faltantes": faltantes}
+
+    tags = (est.get("vendedor") or {}).get("tags") or []
+    up = "user_product_seller" in tags
     payload = {
-        "title": titulo,
         "category_id": cid,
         "price": alta["precio"],
         "currency_id": "COP",
@@ -461,26 +845,74 @@ def crear_publicacion(sesion, est, env, alta):
         "buying_mode": "buy_it_now",
         "listing_type_id": env.get("ML_TIPO_PUBLICACION", "gold_special"),
         "condition": "new",
-        "description": {"plain_text": descripcion_ml(p, titulo)},
-        "pictures": [{"source": u} for u in p["fotos"][:10]],
+        "pictures": [{"source": u} for u in (p.get("fotos") or [])[:10] if u],
+        "attributes": attributes,
+        "seller_custom_field": sku,
     }
-    if p.get("ean"):
-        payload["attributes"] = [{"id": "GTIN", "value_name": p["ean"]}]
-    codigo, data = sesion.post(f"/items", payload)
-    if codigo in (200, 201):
-        sku = p["sku"]
-        est["listings"][sku] = {
-            "listing_id": data.get("id"),
-            "titulo": titulo,
-            "permalink": data.get("permalink"),
-            "estado": data.get("status"),
-            "precio": alta["precio"],
-            "stock_publicado": alta["stock"],
-            "categoria_ml": cid,
-            "creado": dt.datetime.now().isoformat(timespec="seconds"),
+    if up:
+        payload["family_name"] = titulo
+    else:
+        payload["title"] = titulo
+    return payload, {"categoria": cid, "titulo": titulo, "marca": brand,
+                     "modelo": model, "up": up, "attributes": attributes}
+
+
+def crear_publicacion(sesion, est, env, alta):
+    p = alta["producto"]
+    sku = p["sku"]
+    payload, meta = construir_payload(sesion, est, env, alta)
+    if payload is None:
+        est.setdefault("faltantes", {})[sku] = {
+            "categoria": meta.get("categoria"),
+            "faltantes": meta.get("faltantes"),
+            "actualizado": dt.datetime.now().isoformat(timespec="seconds"),
         }
-        return True, data
-    return False, data
+        return False, meta
+    cid = meta["categoria"]
+    titulo = meta["titulo"]
+
+    if env.get("ML_VALIDAR", "1") != "0":
+        codigo, data = sesion.post("/items/validate", payload)
+        causas = data.get("cause") if isinstance(data, dict) else None
+        est.setdefault("validaciones", {})[sku] = {
+            "http": codigo, "categoria": cid,
+            "causas": causas or [],
+            "actualizado": dt.datetime.now().isoformat(timespec="seconds"),
+        }
+        if codigo not in (200, 204) or causas:
+            return False, {"error": "validacion rechazada", "http": codigo,
+                           "categoria": cid, "detalle": data}
+
+    codigo, data = sesion.post("/items", payload)
+    if codigo not in (200, 201):
+        return False, data
+    lid = data.get("id")
+    if not lid:
+        return False, {"error": "ML no devolvio id del item", "detalle": data}
+    desc_error = None
+    if lid:
+        dcod, ddata = sesion.post(f"/items/{lid}/description",
+                                  {"plain_text": descripcion_ml(p, titulo)})
+        if dcod not in (200, 201):
+            desc_error = {"http": dcod, "detalle": ddata}
+    est["listings"][sku] = {
+        "listing_id": lid,
+        "titulo": data.get("title") or titulo,
+        "permalink": data.get("permalink"),
+        "estado": data.get("status"),
+        "precio": alta["precio"],
+        "stock_publicado": alta["stock"],
+        "categoria_ml": cid,
+        "seller_custom_field": sku,
+        "user_product_id": data.get("user_product_id"),
+        "family_name": data.get("family_name"),
+        "origen": "catalogo",
+        "creado": dt.datetime.now().isoformat(timespec="seconds"),
+    }
+    if desc_error:
+        est["listings"][sku]["descripcion_error"] = desc_error
+    est.setdefault("faltantes", {}).pop(sku, None)
+    return True, data
 
 
 # ------------------------------------------------------------------
@@ -542,6 +974,8 @@ def cmd_prueba(env):
     log("OK: token valido.")
     log(f"  vendedor : {me.get('nickname')} (id {me.get('id')})")
     log(f"  site     : {me.get('site_id')}")
+    tags = me.get("tags") or []
+    log("  tags     : " + (", ".join(tags) if tags else "(ninguno)"))
     log(f"  tipo     : {'access token de .env (modo dev)' if env.get('ML_ACCESS_TOKEN') else 'refresh token rotado y persistido'}")
 
 
@@ -553,7 +987,7 @@ def cargar_hub_o_salir(env):
         return json.load(f)
 
 
-def reporte_plan(plan, altas, acciones):
+def reporte_plan(plan, altas, acciones, estado=None):
     os.makedirs(DIR_REPORTES, exist_ok=True)
     ruta = os.path.join(DIR_REPORTES, "plan_ml_" +
                         dt.datetime.now().strftime("%Y-%m-%d_%H%M%S") + ".json")
@@ -564,7 +998,9 @@ def reporte_plan(plan, altas, acciones):
         json.dump({"generado": dt.datetime.now().isoformat(timespec="seconds"),
                    "altas": [{k: v for k, v in a.items() if k != "producto"}
                              for a in altas],
-                   "acciones": limpia}, f, ensure_ascii=False, indent=1)
+                   "acciones": limpia,
+                   "faltantes": (estado or {}).get("faltantes", {})},
+                  f, ensure_ascii=False, indent=1)
     log(f"  plan completo (local, con margenes): {ruta}")
 
 
@@ -596,6 +1032,8 @@ def main():
                     help="ejecuta pausas/activaciones/stock/precio")
     ap.add_argument("--publicar", nargs="?", const=-1, type=int, metavar="N",
                     help="publica hasta N productos nuevos")
+    ap.add_argument("--reconciliar", action="store_true",
+                    help="reconstruye data/canal_ml.json desde ML")
     args = ap.parse_args()
     try:
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")
@@ -617,16 +1055,29 @@ def main():
     log(f"hub: {hub.get('total')} productos ({hub.get('generado')})")
     log(f"canal ML: {len(estado['listings'])} publicaciones en data/canal_ml.json")
 
+    sesion = None
+    necesita_ml = args.sincronizar or args.publicar is not None or args.reconciliar
+    if args.reconciliar or (necesita_ml and (not estado["listings"]
+                                             or not estado.get("vendedor"))):
+        sesion = SesionML(env)
+        vistos, total = reconciliar_estado(sesion, estado, hub)
+        guardar_estado(estado)
+        log(f"reconciliacion: {vistos} avisos leidos, {total} en el estado")
+
     acciones, altas = construir_plan(hub, estado, env, limite)
 
     if not (args.sincronizar or args.publicar is not None):
         mostrar_plan(acciones, altas, limite)
-        reporte_plan(None, altas, acciones)
+        if estado.get("faltantes"):
+            log(f"  con atributos faltantes: {len(estado['faltantes'])} SKUs "
+                "(ver data/canal_ml.json)")
+        reporte_plan(None, altas, acciones, estado)
         log("\n(dry-run: no se llamo a ML. Con token configurado:")
         log("  python hub/canal_ml.py --sincronizar --publicar N)")
         return
 
-    sesion = SesionML(env)
+    if sesion is None:
+        sesion = SesionML(env)
     ok = fallos = 0
     log(f"\n[SINC] {len(acciones)} acciones sobre publicaciones existentes...")
     for a in acciones:
