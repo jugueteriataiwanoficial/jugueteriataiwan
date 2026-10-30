@@ -85,6 +85,29 @@ def construir(env, ruta_costos=None, salida=HUB_PATH):
     log("\n[3/3] Normalizando al modelo del hub...")
     productos = []
     codigos_vistos = set()
+
+    # Defaults de dimensiones por categoría web (cm, g)
+    # ML exige dimensions = "altoxanchoxlargo,peso" en cm y g
+    DIMS_DEFAULT = {
+        "jugueteria":        {"alto": 10, "ancho": 10, "largo": 5, "peso": 200},
+        "juego-de-mesa":     {"alto": 30, "ancho": 20, "largo": 5, "peso": 500},
+        "didactico":         {"alto": 20, "ancho": 15, "largo": 5, "peso": 300},
+        "cubo-rubik":        {"alto": 6,  "ancho": 6,  "largo": 6, "peso": 100},
+        "peluches":          {"alto": 25, "ancho": 15, "largo": 10, "peso": 200},
+        "animales":          {"alto": 10, "ancho": 8,  "largo": 5, "peso": 150},
+        "burbujeros":        {"alto": 15, "ancho": 10, "largo": 5, "peso": 150},
+        "colecciones":       {"alto": 10, "ancho": 8,  "largo": 5, "peso": 100},
+        "deporte":           {"alto": 20, "ancho": 15, "largo": 10, "peso": 300},
+        "escolar":           {"alto": 15, "ancho": 10, "largo": 5, "peso": 200},
+        "hogar":             {"alto": 10, "ancho": 10, "largo": 5, "peso": 200},
+        "piñateria":         {"alto": 10, "ancho": 10, "largo": 5, "peso": 100},
+        "slime":             {"alto": 8,  "ancho": 8,  "largo": 8, "peso": 150},
+        "termos":            {"alto": 15, "ancho": 8,  "largo": 8, "peso": 200},
+        "armatodo":          {"alto": 15, "ancho": 10, "largo": 5, "peso": 200},
+        "bebe":              {"alto": 10, "ancho": 10, "largo": 5, "peso": 150},
+        "cacharro":          {"alto": 10, "ancho": 10, "largo": 5, "peso": 100},
+    }
+    FALLBACK_DIMS = {"alto": 10, "ancho": 10, "largo": 5, "peso": 200}
     for it in productos_api:
         pid = it.get("Productoid")
         sku = sp.codigo_limpio(it.get("Codigo") or it.get("Producto_cod"))
@@ -93,9 +116,26 @@ def construir(env, ruta_costos=None, salida=HUB_PATH):
         nombre = (it.get("Producto") or "").strip()
         iva = float(it.get("ProductoImpuestoPorcentaje") or 0)
         p2 = float(it.get("Precio2") or 0)
+        p5 = float(it.get("Precio5") or 0)
         base_sin_iva = (p2 / (1 + iva / 100)) if iva > 0 else p2
         costo = costos.get(pid)
         cat_web = sp.categoria_web(it.get("Categoria"))
+
+        # dimensiones: POSGold trae paca_altura, paca_ancho, paca_profundidad, cubicaje
+        # ML exige "altoxanchoxlargo,peso" en cm y g
+        try:
+            alto = float(it.get("paca_altura") or it.get("PacaAltura") or 0)
+            ancho = float(it.get("paca_ancho") or it.get("PacaAncho") or 0)
+            largo = float(it.get("paca_profundidad") or it.get("PacaProfundidad") or 0)
+            peso = float(it.get("Peso") or 0)
+        except Exception:
+            alto = ancho = largo = peso = 0
+        # Usar defaults por categoría si POSGold no trae datos
+        dims = DIMS_DEFAULT.get(cat_web, FALLBACK_DIMS)
+        if not alto: alto = dims["alto"]
+        if not ancho: ancho = dims["ancho"]
+        if not largo: largo = dims["largo"]
+        if not peso: peso = dims["peso"]
 
         # fotos originales de POSGold (publicas): sin descargar nada.
         # Se descarta el placeholder "sin imagen" y las repetidas.
@@ -121,6 +161,7 @@ def construir(env, ruta_costos=None, salida=HUB_PATH):
             "activo": activo,
             "stock": stock,
             "precio_detal": int(round(p2)) if p2 > 0 else None,
+            "precio5": int(round(p5)) if p5 > 0 else None,
             "precio_base_sin_iva": round(base_sin_iva, 1) if p2 > 0 else None,
             "precio1": int(round(float(it.get("Precio1") or 0))) or None,
             "iva": iva,
@@ -131,6 +172,10 @@ def construir(env, ruta_costos=None, salida=HUB_PATH):
             "fotos": fotos,
             "slug_web": (por_codigo_cache.get(sku) or {}).get("slug"),
             "duplicado": sku in codigos_vistos,
+            "alto": int(round(alto)),
+            "ancho": int(round(ancho)),
+            "largo": int(round(largo)),
+            "peso": int(round(peso)),
         }
         codigos_vistos.add(sku)
         # vendible = la regla de la vitrina SIN exigir foto ni costo:

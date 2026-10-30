@@ -29,7 +29,7 @@ Variables de .env (todas opcionales salvo las credenciales):
                                      omite, se usa COSTOS_KEY)
   ML_SITE_ID=MCO
   ML_TIPO_PUBLICACION=gold_special  (gold_special=Clasica, silver=Gratuita)
-  ML_PRECIO_FACTOR=0.15             recargo sobre el detal de la vitrina
+  ML_PRECIO_FACTOR=0.20             recargo sobre Precio 5 (15% + 5%)
   ML_PRECIO_REDONDEO=100
   ML_COMISION_PCT=16                comision ML aproximada (cuidado del precio)
   ML_MARGEN_MINIMO=0.25             utilidad/costo minima para publicar
@@ -77,10 +77,13 @@ HUB_PATH = construir_hub.HUB_PATH
 ESTADO_PATH = os.path.join(sp.DIR_DATA, "canal_ml.json")
 CATEGORIAS_PATH = os.path.join(sp.DIR_DATA, "categorias_ml.json")
 MARCAS_PATH = os.path.join(sp.DIR_DATA, "marcas_ml.json")
+DESCRIPCIONES_PATH = os.path.join(sp.DIR_DATA, "descripciones_dropi.json")
 DIR_REPORTES = sp.DIR_REPORTES
 API = "https://api.mercadolibre.com"
 AUTH = "https://auth.mercadolibre.com"
+CATEGORIAS_ML = {"jugueteria", "juego-de-mesa", "didactico"}
 ATRIBUTOS_CACHE = {}
+_DESCRIPCIONES_CACHE = None
 OPENSSL_ARGS = ac.OPENSSL_ARGS  # enc -aes-256-cbc -pbkdf2 -iter 200000 -salt
 
 log = sp.log
@@ -127,6 +130,8 @@ def normalizar_estado(est):
                   "categorias_fuente", "categorias_info", "faltantes"):
         if not isinstance(est.get(clave), dict):
             est[clave] = {}
+    if not isinstance(est.get("ignorados"), list):
+        est["ignorados"] = []
     return est
 
 
@@ -285,7 +290,7 @@ class SesionML:
             try:
                 codigo, texto = sp.http_texto(url, headers=headers,
                                               metodo=metodo, datos=cuerpo,
-                                              timeout=90)
+                                              timeout=90, limite_error=5000)
             except Exception as e:
                 ultimo = str(e)[:200]
                 if i < reintentos:
@@ -295,7 +300,11 @@ class SesionML:
             if codigo == 429 and i < reintentos:
                 time.sleep(pausas[min(i, len(pausas) - 1)])
                 continue
-            return codigo, (json.loads(texto) if texto.strip() else {})
+            try:
+                data = json.loads(texto) if texto.strip() else {}
+            except json.JSONDecodeError:
+                data = {"raw": texto[:1000]}
+            return codigo, data
         raise RuntimeError("ML no respondio: " + str(ultimo))
 
     def llamada(self, metodo, ruta, datos=None):
@@ -321,26 +330,37 @@ class SesionML:
 
 
 def precio_ml(p, env):
-    """Precio del canal: detal de la vitrina x recargo, redondeado.
-    El recargo cubre la comision de ML; la rentabilidad final se vigila
-    aparte con pasa_rentabilidad()."""
-    base = float(p.get("precio_detal") or 0)
-    factor = float(env.get("ML_PRECIO_FACTOR", "0.15"))
+    """Precio ML = (Precio5 + envio) / (1 - comision - pasarela), redondeado.
+    Precio5 ya incluye ganancia + IVA.
+    ML cobra 15% comision + 5% pasarela = 20% total.
+    Jugueteria Taiwan asume envio gratis: paga $23.000 por envio."""
+    precio5 = float(p.get("precio5") or 0)
+    if precio5 <= 0:
+        return 0
+    comision = float(env.get("ML_COMISION_PCT", "15")) / 100.0
+    pasarela = float(env.get("ML_PASARELA_PCT", "5")) / 100.0
+    envio = float(env.get("ML_ENVIO_COSTO", "23000"))
+    divisor = 1 - comision - pasarela
+    if divisor <= 0:
+        return 0
+    precio = (precio5 + envio) / divisor
     redondeo = int(env.get("ML_PRECIO_REDONDEO", "100"))
-    precio = base * (1 + factor)
-    precio = int(round(precio / redondeo) * redondeo) if redondeo > 1 else int(round(precio))
+    # Redondeo half-up (no banker's rounding)
+    precio = int((precio + redondeo / 2) // redondeo * redondeo)
     return max(precio, 0)
 
 
 def pasa_rentabilidad(p, precio, env):
-    """Utilidad/costo minima DESPUES de la comision de ML. Sin costo
-    conocido no se publica (misma regla de la vitrina)."""
+    """Utilidad/costo minima DESPUES de la comision de ML + pasarela.
+    Sin costo conocido no se publica (misma regla de la vitrina)."""
     costo = p.get("costo")
     if not costo:
         return False, "sin costo"
-    com = float(env.get("ML_COMISION_PCT", "16")) / 100.0
+    comision = float(env.get("ML_COMISION_PCT", "15")) / 100.0
+    pasarela = float(env.get("ML_PASARELA_PCT", "5")) / 100.0
     mmin = float(env.get("ML_MARGEN_MINIMO", "0.25"))
-    util = precio * (1 - com) - costo
+    total_com = comision + pasarela
+    util = precio * (1 - total_com) - costo
     return (util / costo) >= mmin, round(util / costo, 2)
 
 
@@ -352,7 +372,56 @@ def titulo_ml(nombre, env):
     return t
 
 
-def descripcion_ml(p, titulo):
+def completar_titulo_ml(sesion, est, cid, titulo, brand):
+    """ML rechaza titulos cortos o de una sola palabra
+    (item.title.minimum_length: pide marca, modelo o categoria).
+    Se completa con el nombre de la categoria y la marca hasta 40."""
+    t = (titulo or "").strip()
+    if len(t) >= 40 and " " in t:
+        return t
+    extras = []
+    info = _categoria_info(sesion, cid, est) or {}
+    if info.get("nombre"):
+        extras.append(info["nombre"])
+    if brand:
+        extras.append(brand)
+    for extra in extras:
+        pieza = re.sub(r"\s+", " ", extra).title().strip()
+        if pieza and pieza.lower() not in t.lower():
+            t = (t + " " + pieza).strip()
+        if len(t) >= 40:
+            break
+    return t
+
+
+def cargar_descripciones_ml():
+    global _DESCRIPCIONES_CACHE
+    if _DESCRIPCIONES_CACHE is None:
+        data = _leer_json(DESCRIPCIONES_PATH, {})
+        _DESCRIPCIONES_CACHE = data if isinstance(data, dict) else {}
+    return _DESCRIPCIONES_CACHE
+
+
+def sin_pie_dropi(texto):
+    """Quita el pie de la plantilla Dropi y su WhatsApp; elimina emojis."""
+    t = str(texto or "")
+    for marca in ("-----------------------",
+                  "WhatsApp de atenci\u00f3n dropshippers",
+                  "WhatsApp de atencion dropshippers",
+                  "3106988465"):
+        pos = t.find(marca)
+        if pos >= 0:
+            t = t[:pos]
+    t = "\n".join(l for l in t.splitlines()
+                  if "3106988465" not in l).strip()
+    t = "".join(c for c in t if ord(c) <= 0xFFFF)
+    return t
+
+
+def descripcion_ml(p, titulo, base=""):
+    texto = sin_pie_dropi(base)
+    if texto:
+        return texto
     sku = p.get("sku") or ""
     return (f"{titulo}.\n"
             f"Producto nuevo, original y sellado.\n"
@@ -463,6 +532,8 @@ def _valor_requerido(req, p, brand, model, ean):
         valor = p.get("sku")
     elif aid == "GTIN":
         valor = ean
+    elif aid == "BOARD_GAME_NAME":
+        valor = (p.get("nombre") or "").strip()
     else:
         return None
     if not valor:
@@ -478,6 +549,40 @@ def _valor_requerido(req, p, brand, model, ean):
     return {"id": aid, "value_name": str(valor)}
 
 
+def _valor_defecto_req(req, p):
+    """Valores por defecto para atributos obligatorios que el hub no
+    sabe responder. POWER_SUPPLY_TYPE se lee del nombre del producto
+    (pilas/luz/sonido/electronico => bateria; si no, operacion manual).
+    IS_FACTORY_KIT es No (juguetes sueltos, no son kits de fabrica).
+    OJO: sin_acentos() devuelve MAYUSCULAS sin tildes: se normalizan
+    ambos lados con la misma funcion (así compara _valor_requerido)."""
+    aid = req.get("id")
+    valores = req.get("values") or []
+
+    def buscar(prefijos):
+        for objetivo in prefijos:
+            objetivo_n = sp.sin_acentos(objetivo)
+            for v in valores:
+                nombre_v = sp.sin_acentos(v.get("name") or "")
+                if objetivo_n in nombre_v:
+                    return {"id": aid, "value_id": v.get("id"),
+                            "value_name": v.get("name")}
+        return None
+
+    if aid == "IS_FACTORY_KIT":
+        return buscar(["no"])
+    if aid == "POWER_SUPPLY_TYPE":
+        nombre = sp.sin_acentos(p.get("nombre") or "")
+        if any(x in nombre for x in ("PILA", "BATERIA", "LUZ", "LUCE",
+                                     "SONIDO", "ELECTRONI", "LED",
+                                     "ROTAT", "GIRA")):
+            con_bateria = buscar(["bateria"])
+            if con_bateria:
+                return con_bateria
+        return buscar(["operacion manual"])
+    return None
+
+
 def atributos_para(sesion, cid, p, brand=None, model=None):
     """Arma solo atributos que ML declara para la categoria. Si falta un
     requerido, devuelve la lista y el producto NO se publica."""
@@ -491,7 +596,7 @@ def atributos_para(sesion, cid, p, brand=None, model=None):
         return [], [{"id": "*", "motivo": "no se pudieron leer los atributos"}]
     salida, faltantes = [], []
     llenables = {"BRAND", "MODEL", "MANUFACTURER", "SELLER_SKU",
-                 "GTIN", "ITEM_CONDITION"}
+                 "GTIN", "ITEM_CONDITION", "BOARD_GAME_NAME"}
     for req in attrs:
         tags = req.get("tags") or {}
         requerido = (tags.get("required") or tags.get("catalog_required")
@@ -499,6 +604,8 @@ def atributos_para(sesion, cid, p, brand=None, model=None):
         if not requerido and req.get("id") not in llenables:
             continue
         val = _valor_requerido(req, p, brand, model, ean)
+        if not val and requerido:
+            val = _valor_defecto_req(req, p)
         if val:
             salida.append(val)
         elif requerido:
@@ -590,7 +697,11 @@ def elegible_para_alta(p, estado, env):
     sku = p.get("sku")
     if not sku or sku in estado["listings"] or p.get("duplicado"):
         return None
+    if sku in set(estado.get("ignorados") or []):
+        return None
     if not p.get("vendible"):
+        return None
+    if (p.get("categoria_web") or "").lower() not in CATEGORIAS_ML:
         return None
     if (p.get("categoria_web") or "").lower() in categorias_excluidas(env):
         return None
@@ -615,8 +726,16 @@ def construir_plan(hub, estado, env, limite_altas):
     por_sku = {p["sku"]: p for p in hub["productos"] if p.get("sku")}
     stock_max = int(env.get("ML_STOCK_MAXIMO", "99"))
     acciones, altas = [], []
+    ignorados = set(estado.get("ignorados") or [])
     for sku, l in sorted(estado["listings"].items()):
         if l.get("origen") == "externo":
+            continue
+        if sku in ignorados:
+            if l.get("estado") != "paused":
+                acciones.append({"tipo": "pausar", "sku": sku,
+                                 "listing_id": l.get("listing_id"),
+                                 "titulo": l.get("titulo"),
+                                 "razon": "SKU marcado como ignorado"})
             continue
         p = por_sku.get(sku)
         out = (p is None or not p.get("activo") or (p.get("stock") or 0) <= 0)
@@ -835,8 +954,14 @@ def construir_payload(sesion, est, env, alta):
         return None, {"error": "faltan atributos obligatorios",
                       "categoria": cid, "faltantes": faltantes}
 
+    titulo = completar_titulo_ml(sesion, est, cid, titulo, brand)
+    if len(titulo) > max_titulo:
+        titulo = titulo[:max_titulo].rsplit(" ", 1)[0].strip()
+
     tags = (est.get("vendedor") or {}).get("tags") or []
     up = "user_product_seller" in tags
+    # dimensiones para Mercado Envíos: "altoxanchoxlargo,peso" en cm y g
+    dims = f"{p.get('alto',10)}x{p.get('ancho',10)}x{p.get('largo',5)},{p.get('peso',200)}"
     payload = {
         "category_id": cid,
         "price": alta["precio"],
@@ -848,6 +973,12 @@ def construir_payload(sesion, est, env, alta):
         "pictures": [{"source": u} for u in (p.get("fotos") or [])[:10] if u],
         "attributes": attributes,
         "seller_custom_field": sku,
+        "shipping": {
+            "mode": "me2",
+            "local_pick_up": False,
+            "dimensions": dims,
+            "free_methods": [{"id": "me2", "rule": {"free_mode": "country", "value": None}}],
+        },
     }
     if up:
         payload["family_name"] = titulo
@@ -874,12 +1005,14 @@ def crear_publicacion(sesion, est, env, alta):
     if env.get("ML_VALIDAR", "1") != "0":
         codigo, data = sesion.post("/items/validate", payload)
         causas = data.get("cause") if isinstance(data, dict) else None
+        errores = [c for c in (causas or [])
+                   if isinstance(c, dict) and c.get("type") == "error"]
         est.setdefault("validaciones", {})[sku] = {
             "http": codigo, "categoria": cid,
-            "causas": causas or [],
+            "causas": causas or [], "errores": errores,
             "actualizado": dt.datetime.now().isoformat(timespec="seconds"),
         }
-        if codigo not in (200, 204) or causas:
+        if errores or (codigo not in (200, 204) and not causas):
             return False, {"error": "validacion rechazada", "http": codigo,
                            "categoria": cid, "detalle": data}
 
@@ -891,8 +1024,9 @@ def crear_publicacion(sesion, est, env, alta):
         return False, {"error": "ML no devolvio id del item", "detalle": data}
     desc_error = None
     if lid:
+        base_desc = cargar_descripciones_ml().get(sku, "")
         dcod, ddata = sesion.post(f"/items/{lid}/description",
-                                  {"plain_text": descripcion_ml(p, titulo)})
+                                  {"plain_text": descripcion_ml(p, titulo, base_desc)})
         if dcod not in (200, 201):
             desc_error = {"http": dcod, "detalle": ddata}
     est["listings"][sku] = {

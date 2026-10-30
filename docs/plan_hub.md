@@ -69,8 +69,8 @@ Reglas del diseño:
 
 | Fase | Qué es | Estado |
 |---|---|---|
-| 0 | Catálogo maestro `hub/productos.json` (todo el inventario + costos) | ✅ Construida y probada (6.171 productos, 5.937 con costo) |
-| 1 | Adaptador ML batch: altas, pausas, stock, precios en GitHub Actions | ✅ Código listo — pendiente crear/autorizar la app en ML |
+| 0 | Catálogo maestro `hub/productos.json` (todo el inventario + costos) | ✅ Construida y probada (6.249 productos, 5.937 con costo) |
+| 1 | Adaptador ML batch: altas, pausas, stock, precios en GitHub Actions | ✅ Construida y en producción: campaña de altas completa (29-10-2026) — 678 publicaciones (658 activas), 0 elegibles pendientes; solo quedan 10 activaciones congeladas por moderación de ML (panel manual) y las nuevas esperan moderación en la corrida siguiente |
 | 2 | Backend mínimo (webhooks ML, renovación de token en caliente, stock en vivo) | ⏸️ **Fuera de alcance** (decisión 23-10-2026): los pedidos se gestionan en la plataforma de ML; polling batch 4×/día basta. El hallazgo de Webhooks de POSGold queda como reserva para una fase 2 futura |
 | 3 | OMS: orden ML → reserva de inventario → factura/cotización en POSGold → guía Mercado Envíos | ⏸️ **Fuera de alcance** (decisión 23-10-2026): los pedidos de ML NO se empujan a POSGold. Si algún día se retoma, POSGold ya tiene los 5 endpoints de pedidos registrados (Inactivos); el correo de solicitud queda archivado en `correo_goldpos.md` |
 | 4 | Panel unificado: stock/órdenes de todos los canales desde el panel admin existente | ⏸️ **Fuera de alcance** por ahora (decisión 23-10-2026) |
@@ -131,9 +131,17 @@ se envía salvo que la empresa retome la OMS.
 
 - **Rate limit de ML (HTTP 429):** el adaptador reintenta con backoff; el
   catálogo (~300 publicables) cabe holgado en corridas batch.
-- **Moderación de ML:** fotos y atributos obligatorios por categoría (BRAND,
-  MODEL) pueden rechazar altas item por item; la corrida continúa y deja el
-  error en el log. Ajustar `crear_publicacion()` según lo que ML pida.
+- **Moderación de ML:** fotos y atributos obligatorios por categoría
+  (BRAND, MODEL) pueden rechazar altas item por item; la corrida continúa
+  y deja el error en `est["validaciones"]`. Resuelto en el código tras la
+  campaña (29-10-2026): atributos obligatorios con valor por defecto
+  honrado (`POWER_SUPPLY_TYPE`, `IS_FACTORY_KIT` — ver
+  `_valor_defecto_req`), títulos de una palabra completados
+  (`completar_titulo_ml`) y las categorías que exigen GTIN sin EAN en el
+  hub van a `ignorados`. Lo que no se puede resolver por API son las
+  publicaciones que ML congela por cuenta propia
+  (`item.status.not_modifiable`, 10 al cierre de la campaña): hay que
+  liberarlas una a una desde el panel de ML.
 - **Sobreventa de inventario:** ML y la tienda física comparten el mismo stock
   real. Con la decisión de alcance (23-10-2026) no habrá fase 3 de descuento
   en POSGold a corto plazo, así que el techo `ML_STOCK_MAXIMO` y el stock

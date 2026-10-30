@@ -19,9 +19,10 @@ sys.path.insert(0, os.path.join(BASE_DIR, "hub"))
 import canal_ml as c  # noqa: E402
 
 ENV = {
-    "ML_PRECIO_FACTOR": "0.15",
     "ML_PRECIO_REDONDEO": "100",
-    "ML_COMISION_PCT": "16",
+    "ML_COMISION_PCT": "15",
+    "ML_PASARELA_PCT": "5",
+    "ML_ENVIO_COSTO": "23000",
     "ML_MARGEN_MINIMO": "0.25",
     "ML_STOCK_MINIMO": "2",
     "ML_STOCK_MAXIMO": "99",
@@ -47,6 +48,10 @@ class FakeSession:
         self.rutas = rutas
         self.llamadas = []
 
+    def post(self, ruta, datos):
+        self.llamadas.append(ruta)
+        return 200, {"id": "M-NUEVO"}
+
     def get(self, ruta):
         self.llamadas.append(ruta)
         for prefijo, respuesta in sorted(self.rutas.items(),
@@ -56,9 +61,30 @@ class FakeSession:
                 return respuesta
         return 404, {"error": "ruta no simulada", "ruta": ruta}
 
+
+class FakeValidacion(FakeSession):
+    def __init__(self, rutas, validacion):
+        super().__init__(rutas)
+        self.validacion = validacion
+
     def post(self, ruta, datos):
         self.llamadas.append(ruta)
-        return 200, {"id": "M-NUEVO"}
+        if ruta == "/items/validate":
+            return self.validacion
+        if ruta == "/items":
+            return 201, {"id": "M-NUEVO", "title": "Producto"}
+        if ruta.endswith("/description"):
+            return 201, {}
+        return 200, {}
+
+    def get(self, ruta):
+        self.llamadas.append(ruta)
+        for prefijo, respuesta in sorted(self.rutas.items(),
+                                          key=lambda kv: len(kv[0]),
+                                          reverse=True):
+            if ruta.startswith(prefijo):
+                return respuesta
+        return 404, {"error": "ruta no simulada", "ruta": ruta}
 
 
 def info(cid, nombre, dominio, allowed=True, max_titulo=60):
@@ -79,12 +105,16 @@ def attr(aid, value_type="string", values=None, required=True):
 
 def probar_precio_y_rentabilidad():
     print("\nPRECIO Y RENTABILIDAD")
-    check("precio 10.000 x 1,15 = 11.500",
-          c.precio_ml({"precio_detal": 10000}, ENV) == 11500)
-    check("redondeo a 100",
-          c.precio_ml({"precio_detal": 8000}, ENV) == 9200)
+    # Formula: (Precio5 + 23000) / 0.80, redondeado a 100
+    check("precio5 10000 -> (10000+23000)/0.80 = 41250 -> 41300",
+          c.precio_ml({"precio5": 10000}, ENV) == 41300)
+    check("precio5 8000 -> (8000+23000)/0.80 = 38750 -> 38800",
+          c.precio_ml({"precio5": 8000}, ENV) == 38800)
+    check("sin precio5 no hay precio",
+          c.precio_ml({"precio_detal": 10000}, ENV) == 0)
+    # Rentabilidad con comision 15% + pasarela 5% = 20% total
     ok, margen = c.pasa_rentabilidad({"costo": 1000}, 2000, ENV)
-    check("margen 68% pasa", ok and margen == 0.68, str((ok, margen)))
+    check("margen 60% pasa", ok and margen == 0.60, str((ok, margen)))
     ok, _ = c.pasa_rentabilidad({"costo": 2000}, 2000, ENV)
     check("sin utilidad no pasa", not ok)
     check("sin costo no pasa", not c.pasa_rentabilidad({}, 2000, ENV)[0])
@@ -120,7 +150,7 @@ def probar_categorias():
         "/categories/MCO1910": info("MCO1910", "Otros", "MCO-TOYS_AND_GAMES"),
     })
     est = c.normalizar_estado({})
-    est["vendedor"] = {"tags": []}
+    est["vendedor"] = {"tags": ["user_product_seller"]}
     cid = c.categoria_para(s, "ABEJA BASTON BOLSA", est)
     clave = c.sp.sin_acentos("ABEJA BASTON BOLSA")[:48]
     check("abeja cae al fallback", cid == "MCO1910", cid)
@@ -144,7 +174,7 @@ def probar_categorias():
         "/categories/MCO1910": info("MCO1910", "Otros", "MCO-TOYS_AND_GAMES"),
     })
     est2 = c.normalizar_estado({})
-    est2["vendedor"] = {"tags": []}
+    est2["vendedor"] = {"tags": ["user_product_seller"]}
     cid2 = c.categoria_para(s2, "PIANO DE JUGUETE SURTIDO", est2)
     clave2 = c.sp.sin_acentos("PIANO DE JUGUETE SURTIDO")[:48]
     check("piano usa categoria curada", cid2 == "MCO189402", cid2)
@@ -208,20 +238,19 @@ def probar_payloads():
     print("\nPAYLOADS COMPLETOS")
     c.ATRIBUTOS_CACHE.clear()
     s = FakeSession({
-        "/categories/MCO189402": info("MCO189402", "Pianos y Organos",
-                                      "MCO-TOY_KEYBOARDS_AND_PIANOS"),
-        "/categories/MCO189402/attributes": attrs(
+        "/categories/MCO1910": info("MCO1910", "Otros", "MCO-TOYS_AND_GAMES"),
+        "/categories/MCO1910/attributes": attrs(
             attr("BRAND"), attr("MODEL"),
             attr("ITEM_CONDITION", "list",
                  [{"id": "2230284", "name": "Nuevo"}]),
         ),
     })
-    p = {"sku": "00711", "nombre": "PIANO DE JUGUETE SURTIDO",
+    p = {"sku": "00711", "nombre": "PRODUCTO GENERICO",
          "fotos": ["https://example.com/p.jpg"], "ean": None}
     est = c.normalizar_estado({})
     est["vendedor"] = {"tags": []}
     alta = {"sku": "00711", "precio": 8000, "stock": 34,
-            "producto": p, "titulo": "Piano De Juguete Surtido"}
+            "producto": p, "titulo": "Producto Generico"}
     payload, meta = c.construir_payload(s, est, ENV, alta)
     ids = {a.get("id") for a in (payload or {}).get("attributes", [])}
     check("payload legacy con title", bool((payload or {}).get("title")))
@@ -285,7 +314,8 @@ def producto(sku, activo=True, stock=10, costo=1000, vendible=True,
     return {
         "sku": sku, "nombre": "Producto " + sku, "activo": activo,
         "stock": stock, "costo": costo, "precio_detal": precio,
-        "fotos": ["https://example.com/f.jpg"], "categoria_web": "jugueteria",
+        "precio5": precio, "fotos": ["https://example.com/f.jpg"],
+        "categoria_web": "jugueteria",
         "duplicado": False, "vendible": vendible,
     }
 
@@ -305,7 +335,7 @@ def probar_alta():
     p = {"sku": "00711", "nombre": "PIANO DE JUGUETE SURTIDO",
          "fotos": ["https://example.com/p.jpg"]}
     est = c.normalizar_estado({})
-    est["vendedor"] = {"tags": []}
+    est["vendedor"] = {"tags": ["user_product_seller"]}
     alta = {"sku": "00711", "precio": 8000, "stock": 34,
             "producto": p, "titulo": "Piano De Juguete Surtido"}
     ok, data = c.crear_publicacion(s, est, ENV, alta)
@@ -318,6 +348,79 @@ def probar_alta():
           any(x == "/items/validate" for x in s.llamadas), str(s.llamadas))
     check("alta describe despues",
           any(x.endswith("/description") for x in s.llamadas), str(s.llamadas))
+
+
+def probar_validacion_warnings():
+    print("\nVALIDACION ML: WARNINGS NO BLOQUEAN")
+    rutas = {
+        "/categories/MCO189402": info("MCO189402", "Pianos y Organos",
+                                      "MCO-TOY_KEYBOARDS_AND_PIANOS"),
+        "/categories/MCO189402/attributes": attrs(
+            attr("BRAND"), attr("MODEL"),
+            attr("ITEM_CONDITION", "list",
+                 [{"id": "2230284", "name": "Nuevo"}]),
+        ),
+    }
+    p = {"sku": "00711", "nombre": "PIANO DE JUGUETE SURTIDO",
+         "fotos": ["https://example.com/p.jpg"]}
+    alta = {"sku": "00711", "precio": 8000, "stock": 34,
+            "producto": p, "titulo": "Piano De Juguete Surtido"}
+
+    c.ATRIBUTOS_CACHE.clear()
+    s = FakeValidacion(rutas, (400, {"cause": [
+        {"type": "warning", "code": "shipping.me2_adoption_mandatory"},
+    ]}))
+    est = c.normalizar_estado({})
+    est["vendedor"] = {"tags": ["user_product_seller"]}
+    ok, data = c.crear_publicacion(s, est, ENV, alta)
+    check("warning no bloquea el alta", ok and "00711" in est["listings"],
+          str((ok, data)))
+    val = est["validaciones"].get("00711", {})
+    check("guarda causas warning", len(val.get("causas") or []) == 1 and
+          val.get("errores") == [], str(val))
+
+    c.ATRIBUTOS_CACHE.clear()
+    s2 = FakeValidacion(rutas, (400, {"cause": [
+        {"type": "error", "code": "item.attribute.missing_conditional_required"},
+    ]}))
+    est2 = c.normalizar_estado({})
+    est2["vendedor"] = {"tags": ["user_product_seller"]}
+    ok2, data2 = c.crear_publicacion(s2, est2, ENV, alta)
+    check("error si bloquea el alta", not ok2 and "00711" not in est2["listings"],
+          str((ok2, data2)))
+    check("guarda error de validacion",
+          len(est2["validaciones"]["00711"].get("errores") or []) == 1,
+          str(est2.get("validaciones")))
+
+
+def probar_alcance_descripcion_ignorados():
+    print("\nALCANCE, DESCRIPCION E IGNORADOS")
+    p = producto("X")
+    est = c.normalizar_estado({})
+    p["categoria_web"] = "cacharro"
+    check("categoria fuera de alcance no es alta",
+          c.elegible_para_alta(p, est, ENV) is None)
+    p["categoria_web"] = "didactico"
+    check("didactico si es alta",
+          c.elegible_para_alta(p, est, ENV) is not None)
+
+    crudo = "Texto Dropi\n\n-----------------------\nPie tienda\nWhatsApp 3106988465"
+    limpio = c.sin_pie_dropi(crudo)
+    check("quita pie y WhatsApp Dropi",
+          limpio == "Texto Dropi" and "3106988465" not in limpio, repr(limpio))
+    check("usa descripcion Dropi",
+          c.descripcion_ml({"sku": "X"}, "X", crudo) == "Texto Dropi")
+
+    est2 = c.normalizar_estado({
+        "listings": {"X": {"listing_id": "M-X", "estado": "active"}},
+        "ignorados": ["X"],
+    })
+    acciones, altas = c.construir_plan({"productos": [p]}, est2, ENV, 5)
+    tipos = {(a["tipo"], a["sku"]) for a in acciones}
+    check("ignorado se pausa", ("pausar", "X") in tipos, str(tipos))
+    check("ignorado no se reactiva ni se da de alta",
+          ("activar", "X") not in tipos and not altas,
+          str((tipos, altas)))
 
 
 def probar_plan():
@@ -394,6 +497,8 @@ def main():
     probar_atributos()
     probar_payloads()
     probar_alta()
+    probar_validacion_warnings()
+    probar_alcance_descripcion_ignorados()
     probar_plan()
     probar_reconciliacion()
     total = CONTADOR["total"]

@@ -178,7 +178,8 @@ def cargar_env(ruta=ENV_FILE):
     return env
 
 
-def http_texto(url, headers=None, timeout=90, metodo="GET", datos=None, reintentos=3):
+def http_texto(url, headers=None, timeout=90, metodo="GET", datos=None,
+               reintentos=3, limite_error=300):
     """GET/POST que devuelve texto. Reintenta errores de red y 5xx."""
     hs = {"User-Agent": UA}
     if headers:
@@ -193,7 +194,7 @@ def http_texto(url, headers=None, timeout=90, metodo="GET", datos=None, reintent
         except urllib.error.HTTPError as e:
             cuerpo = ""
             try:
-                cuerpo = e.read().decode("utf-8", errors="replace")[:300]
+                cuerpo = e.read().decode("utf-8", errors="replace")[:limite_error]
             except Exception:
                 pass
             if e.code >= 500 and intento < reintentos - 1:

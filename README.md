@@ -134,8 +134,11 @@ con guardia de rentabilidad sobre la comisión real de ML.
 ```bash
 python hub/construir_hub.py                       # catálogo maestro (requiere Excel de costos)
 python hub/canal_ml.py --dry-run                  # plan del canal ML sin token ni red
+python hub/canal_ml.py --reconciliar              # reconstruye el estado desde ML
 python hub/canal_ml.py --autorizar                # primera vez: OAuth de ML
 python hub/canal_ml.py --sincronizar --publicar 3 # corrida completa del canal
+python hub/ml_diagnostico.py --payloads           # payloads ML sin publicar
+python qa_ml.py                                   # QA offline del adaptador ML
 ```
 
 
@@ -179,6 +182,17 @@ medidas, edades ni materiales. El resultado vive en
 siempre mandan y nunca se pisan). Si Dropi ya tiene un producto
 publicado, la carga masiva no lo duplica; lo que sale del catálogo hay
 que pausarlo a mano en el panel de Dropi.
+
+**Punto ciego de los archivados:** el panel no muestra el SKU de un
+listado archivado y el export solo trae activos, pero Dropi sigue
+reservando ese SKU y rechaza la carga completa con "Ya existe un
+producto con este SKU". `auditar_skus_dropi.py` abre Chromium con un
+perfil persistente, pide login manual (sin guardar credenciales) y
+pagina el endpoint interno del panel para volcar **activos +
+archivados** a `reportes/dropi_skus.json` (gitignored). `gen_dropi.py`
+absorbe ese snapshot antes de generar y excluye los SKU que ya existen;
+`--solo-revisar` audita las partes/principal contra el snapshot sin
+abrir el navegador.
 
 **Estado (26-10-2026) — dos rechazos corregidos; export absorbido,
 carga lista para subir limpia.** El primer intento (26-10 11:06) fue
@@ -227,17 +241,20 @@ partes de hasta 50 filas en orden serie** — `gen_dropi.py` genera
 100 % (partición disjunta: se suben seguidas, sin re-exportar
 entre ellas; al terminar la serie o si una falla, re-exportar
 todas las páginas y regenerar). Las partes 01 y 02 de la serie
-vieja entraron limpias (100 publicados); la 03 fue rechazada en
-el todo-o-nada por UN SKU con listado viejo invisible (03371) —
-mismo patrón de 04521 y 04539, que viven en
+vieja entraron limpias (100 publicados) y las partes 01-03 de la
+serie nueva también (50+50+50): los 4 exports de la mañana del
+28-10 confirman **394 SKUs publicados**. La 04 cayó en el
+todo-o-nada por UN SKU con listado viejo invisible (02587, ID
+1832792 "Blue Orange Spot It Dobble 123", ya archivado y aún así
+bloqueante) — mismo patrón de 03371, 04521 y 04539, que viven en
 `SKU_BLOQUEADOS_DROPI` y se prueban aparte con
 `carga-masiva-mini-bloqueados.xlsx` (generado en cada corrida).
 Reglas de la dueña aplicadas después: **la carga solo lleva
 JUGUETERIA, JUEGO DE MESA y DIDACTICO** (616 productos salieron
-del alcance; los 125 ya publicados en Dropi de otras categorías
-se pausan a mano) y **todos los precios van cerrados al siguiente
-$1.000, siempre hacia arriba**. El principal quedó en **333
-productos (13 privados)** y la serie nueva es **7 partes** que se
+del alcance; de los 394 publicados, 217 están en alcance y 125 de
+otras categorías se pausan a mano) y **todos los precios van
+cerrados al siguiente $1.000, siempre hacia arriba**. El principal
+quedó en **182 productos** y la serie nueva es **4 partes** que se
 suben desde la 01. El
 panel de Dropi trae dos opciones — **Carga masiva** (crear) y
 **Actualizar** (lo publicado) —: el modelo objetivo es altas
@@ -336,6 +353,10 @@ python generar_enlace_config.py
 # reglas de la tienda + conciliacion dura; --dry-run solo diagnostica)
 python gen_dropi.py
 
+# auditor de SKU de la cuenta Dropi: login manual, activos + archivados
+# (reportes/dropi_skus.json; --solo-revisar audita las partes sin navegador)
+python auditar_skus_dropi.py
+
 # copys de campana para Dropi con vision (API NVIDIA; llena por lotes
 # data/descripciones_dropi.json con lo que le ve a la FOTO real de POSGold)
 python gen_descripciones.py --limit 20
@@ -358,8 +379,8 @@ Estado del proyecto tras la última tanda de mejoras (actualizado a finales de o
 | QA | `qa_e2e.py` **42/42** y `qa_carrito.py` **38/38** (verde antes de publicar; el carrito exige el Precio 2 exacto en todo el catálogo) |
 | Costos | Documentado: el API de POSGold no trae costos (verificado); el Excel de PRODUCTOS es el contrato de formato y el pipeline falla seguro en cada etapa |
 | Catálogo | 1.943 productos publicados, **todos activos y con existencias**: la conciliación dura con POSGold (3 puertas) aborta la corrida sin publicar si algo no cuadra; los nuevos de POSGold entran solos en la próxima corrida si cumplen los filtros (incluido costo en el Excel) |
-| Dropi | Carga masiva espejo del catálogo (`gen_dropi.py`), **solo JUGUETERIA, JUEGO DE MESA y DIDACTICO** (alcance de la dueña 28-10): **Precio 5 de POSGold** en vivo **cerrado al siguiente $1.000** (siempre hacia arriba), **PRECIO SUGERIDO = precio + $10.000 mínimo** (también cerrado), **nombre máximo 39 caracteres** (recorte por palabra completa, en bytes UTF-8), rentabilidad sobre costo, mínimo 50 unidades, **piso de precio $2.000**, sin duplicar lo ya publicado (absorbe **todos** los exports: el listado se parte en páginas) y descripciones de campaña en **texto plano** con el pie de la tienda (importadores directos, despachos 1:00 p. m., WhatsApp dropshippers **3106988465**); los copys los produce `gen_descripciones.py` leyendo la **foto real** de cada producto con un modelo de visión (API de NVIDIA). **Cargue en serie (28-10): partes de hasta 50 filas** (disjuntas, en orden, cubren el 100 % y se regeneran en cada choque) — 150 ya publicados (prueba-50 + partes 01-02 viejas); la 03 vieja cayó por el SKU bloqueado 03371 y la serie se regeneró en **7 partes** (principal: **333 filas, 13 privados**); los bloqueados del alcance (04521, 04539) se prueban aparte con `carga-masiva-mini-bloqueados.xlsx`; **125 publicados de otras categorías quedaron fuera del alcance nuevo — pausarlos es manual** |
+| Dropi | Carga masiva espejo del catálogo (`gen_dropi.py`), **solo JUGUETERIA, JUEGO DE MESA y DIDACTICO** (alcance de la dueña 28-10): **Precio 5 de POSGold** en vivo **cerrado al siguiente $1.000** (siempre hacia arriba), **PRECIO SUGERIDO = precio + $10.000 mínimo** (también cerrado), **nombre máximo 39 caracteres** (recorte por palabra completa, en bytes UTF-8), rentabilidad sobre costo, mínimo 50 unidades, **piso de precio $2.000**, sin duplicar lo ya publicado (absorbe **todos** los exports: el listado se parte en páginas) y descripciones de campaña en **texto plano** con el pie de la tienda (importadores directos, despachos 1:00 p. m., WhatsApp dropshippers **3106988465**); los copys los produce `gen_descripciones.py` leyendo la **foto real** de cada producto con un modelo de visión (API de NVIDIA). **Cargue en serie (28-10): partes de hasta 50 filas** (disjuntas, en orden, cubren el 100 % y se regeneran en cada choque) — **394 ya publicados** (prueba-50, partes 01-02 viejas y partes 01-03 nuevas); la 04 cayó por el SKU bloqueado 02587 (archivado 1832792) y la serie se regeneró en **4 partes** (principal: **182 filas**); los bloqueados del alcance (02587, 04521, 04539) se prueban aparte con `carga-masiva-mini-bloqueados.xlsx`; **de los 394 publicados, 217 están en alcance y 125 de otras categorías quedaron fuera — pausarlos es manual** |
 | Novedades | Cada corrida deja `reportes/novedades_*.xlsx` para la tienda: lo que no publica y por qué (inactivos, agotados, duplicados, sin precio, sin foto, sin costo), marcando lo que estaba publicado; el cron lo sube como artefacto de Actions (`novedades-sync`) |
-| Hub | **Fase 0+1 construidas** (21 oct 2026): catálogo maestro con costos + adaptador de Mercado Libre (`hub/`); pendiente aprobar la app en developers.mercadolibre.com.co. **Decisión de alcance (23 oct 2026)**: solo sincronización de productos — los pedidos de ML se gestionan en la plataforma de ML, no en POSGold; el correo a GoldPOS queda archivado como plan B (`docs/correo_goldpos.md`) |
+| Hub | **Fase 0+1 construidas**: catálogo maestro con costos + adaptador de Mercado Libre (`hub/`); app autorizada (29 oct 2026), diagnóstico/atributos dinámicos/QA offline listos y publicación real en pruebas controladas. **Decisión de alcance (23 oct 2026)**: solo sincronización de productos — los pedidos de ML se gestionan en la plataforma de ML, no en POSGold; el correo a GoldPOS queda archivado como plan B (`docs/correo_goldpos.md`) |
 | Panel | Publica configuración y costos solo (API de GitHub); nada se edita a mano |
 | Dopamina descartada | Urgencia artificial y metas falsas: probadas/evaluadas y rechazadas (la urgencia ya costó pedidos una vez) |

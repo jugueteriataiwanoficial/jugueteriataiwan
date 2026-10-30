@@ -27,10 +27,14 @@ arquitectura completa.
 ```bash
 python qa_e2e.py            # suite completa: 42/42 esperado (Playwright + WebKit)
 python qa_carrito.py        # carrito: identidad, aritmetica exacta, mensaje WhatsApp, vuelo y confeti (38/38)
+python qa_ml.py             # adaptador ML offline: precios, atributos, payloads, estado (sin red ni costos)
+python hub/ml_diagnostico.py --payloads   # arma payloads ML con datos publicos, sin publicar ni rotar token
 python sync_posgold.py --dry-run   # sync de prueba sin tocar catalogo.js
 python sync_posgold.py --verificar-todas   # auditar/regenerar miniaturas
 python generar_enlace_config.py    # enlace de config (llave+tokens) para un navegador
 python gen_dropi.py          # actualiza la carga masiva DROPI con Precio 5 de POSGold (--dry-run para probar)
+python auditar_skus_dropi.py # login manual Dropi y vuelca TODOS los SKU (activos+archivados) a reportes/dropi_skus.json
+python auditar_skus_dropi.py --solo-revisar   # audita partes/principal contra el snapshot, sin navegador
 python gen_descripciones.py  # copys de campana con vision (API NVIDIA, llena data/descripciones_dropi.json por lotes)
 ```
 
@@ -134,9 +138,10 @@ es rechazado, el cron movió el remoto: `git pull --rebase origin main` y de nue
   POSGold (activos y agotados: los canales necesitan saber cuándo pausar) con
   costos unidos por `Productoid`; es **gitignored, NUNCA se commitea ni se
   imprimen costos a consola**. `hub/canal_ml.py` lee ese hub y gestiona el
-  canal ML: altas, pausas/activaciones, stock y precio (detal ×
-  `ML_PRECIO_FACTOR`, con guardia de rentabilidad descontando la comisión
-  `ML_COMISION_PCT`; sin costo conocido no publica). El estado del canal
+  canal ML: altas, pausas/activaciones, stock y precio (Precio 5 ya incluye ganancia + IVA).
+  ML cobra 15% comisión + 5% pasarela = 20% total; Juguetería Taiwan asume envío gratis ($23.000).
+  Fórmula: **ML = (Precio 5 + 23000) / 0.80**, redondeado a $100.
+  Guardia de rentabilidad descuenta comisión + pasarela (20%); sin costo conocido no publica). El estado del canal
   (SKU→listing, sin costos) vive en `data/canal_ml.json` (generado, se
   commitea). El refresh token de ML **rota en cada uso**: se persiste cifrado
   en `hub/ml_token.enc` (AES-256+PBKDF2, mismo modelo que `costos.posgold.enc`;
@@ -144,6 +149,26 @@ es rechazado, el cron movió el remoto: `git pull --rebase origin main` y de nue
   subir. `sync-ml.yml` es dispatch-only hasta aprobar la app en
   developers.mercadolibre.com.co. Comandos: `--autorizar` (primera vez),
   `--prueba`, `--dry-run` (sin red ni token), `--sincronizar --publicar N`.
+  **Campaña de altas completa (29-10-2026)**: 678 publicaciones en
+  `data/canal_ml.json` (658 activas, 0 elegibles pendientes, `qa_ml.py`
+  70/70), subidas en tandas de `--publicar 50`. El ciclo de cada tanda:
+  alta OK → `paused` → el sync siguiente la activa (la moderación de ML
+  despeja entre corridas). Al cierre quedaban 3 puntas: (a) 9 recién
+  creadas esperando moderación (se activan solas), (b) 10 congeladas por
+  ML con `item.status.not_modifiable` — solo manual en el panel: 01389,
+  01476, 01731, 02110, 02280, 02418, 02419, 02896, 02973 y 03119 (cada
+  corrida lo reintenta en vano hasta liberarlas allá), (c) 2 `ignorados`
+  (001309 preexistente; 02039 Cubo Rubik Soma Madera porque su categoría
+  UP exige GTIN y no trae EAN válido). Dos arreglos del adaptador nacidos
+  de los rechazos: `_valor_defecto_req` llena `IS_FACTORY_KIT` = No
+  (242084) y `POWER_SUPPLY_TYPE` desde el nombre del producto
+  (pilas/luz/sonido/electrónico/gira → Batería 4491927; si no, Operación
+  manual 49605648), y `completar_titulo_ml` completa los títulos de una
+  sola palabra con el nombre de la categoría + la marca hasta 40
+  (ML rechazaba "Tatuco", "Piratas", "Monopolio" y "Cazafantasmas" con
+  `item.title.minimum_length`). GOTCHA: `sp.sin_acentos()` devuelve
+  MAYÚSCULAS sin tildes — comparar nombres de valores ML normalizando
+  ambos lados con ella (comparar en minúscula nunca matchea).
 - **POSGold: panel Desarrollador de la cuenta (21-10-2026)**: la empresa
   tiene 8 endpoints API registrados, 5 de creación de PEDIDOS
   (`PedidoWebCreateAnonimo_v3/_v5`, `PedidoCreateExternal`,
@@ -194,7 +219,14 @@ es rechazado, el cron movió el remoto: `git pull --rebase origin main` y de nue
       nombre cubre exportados sin SKU. Se absorben TODOS los archivos
       de cada patrón (28-10: el listado publicado se partió en 2
       páginas y llegó en 2 exports; leer solo el más reciente dejaría
-      ciega la conciliación y duplicaría lo publicado).
+      ciega la conciliación y duplicaría lo publicado). Para los
+      listados ARCHIVADOS (el export no los trae y el panel no muestra
+      su SKU), `auditar_skus_dropi.py` abre Chromium con login manual
+      y pagina el endpoint interno del panel para volcar TODOS los
+      SKU de la cuenta a `reportes/dropi_skus.json` (gitignored);
+      `gen_dropi.py` absorbe ese snapshot y bloquea esos SKU. Los
+      nombres del snapshot solo bloquean si el listado está ACTIVO:
+      un archivado puede volver a enlistarse con otro SKU.
   7. Sin imagen no se carga: conserva la URL viva de la fila (verifica
      todas con HEAD), rellena la faltante con el original JPEG de
      POSGold (`fulls[0]`) y usa la miniatura del repo de respaldo.
@@ -420,6 +452,24 @@ es rechazado, el cron movió el remoto: `git pull --rebase origin main` y de nue
   las partes 01-02 de la serie vieja, que cubrían todas las
   categorías): viven allá y Dropi no borra — pausarlos es manual
   en el panel; otros 67 publicados sí son del alcance.
+  **Partes 01-03 publicadas; parte-04 rechazada por otro bloqueador
+  (28-10 09:19)**: las partes 01, 02 y 03 entraron limpias
+  (50+50+50; los 4 exports de la mañana confirman **394 SKUs
+  publicados**, en 100+100+108+92 filas) y la parte-04 cayó en el
+  todo-o-nada por **02587** ("SPOT IT DOBBLE VARIOS MOTIVOS"), que
+  choca con el listado viejo **ID 1832792 "Blue Orange Spot It
+  Dobble 123"** (reporte `error-importando-productos28-10-2026
+  09_19.xlsx`, fila 24). Ese listado YA estaba archivado en el panel
+  y aun así bloquea: archivar no libera el SKU (misma lección de
+  1840409/03371). Corregido: 02587 entró a `SKU_BLOQUEADOS_DROPI`
+  (cuarto bloqueador) y la serie se regeneró: el principal quedó en
+  **182 filas** y la serie nueva es de **4 partes**
+  (`carga-masiva-parte-01-de-04.xlsx` ... `-04-`, 50+50+50+32; la
+  numeración de 7 murió con la regeneración). El mini quedó con
+  **3 SKUs del alcance (02587, 04521 y 04539)**; 03371 sigue fuera
+  por categoría. De los 394 publicados, **342 siguen en el catálogo:
+  217 del alcance y 125 de otras categorías que hay que pausar a
+  mano**; los otros 52 no cruzan el catálogo actual.
   **Decisión confirmada: las filas curadas suben PRIVADO=SI** (ocultas
   del marketplace, activables después
   desde el panel de Dropi): histórico 83 de COLECCIÓN/licencias
@@ -450,35 +500,40 @@ es rechazado, el cron movió el remoto: `git pull --rebase origin main` y de nue
   **Modelo operativo — dos opciones en el panel de Dropi**: "Carga
   masiva" (crear) y "Actualizar" (lo publicado). Altas = Excel
   INCREMENTAL tras re-exportar (solo lo no publicado: lo que
-  `gen_dropi.py` ya genera); actualizaciones = archivo con los ya
-  publicados y su Precio 5/stock frescos por "Actualizar"; bajas =
-  pausar a mano (Dropi no borra). Nota de curación: al volverse el
-  Excel incremental, la marca PRIVADO de los ya publicados deja de
-  vivir en el archivo de trabajo (queda en Dropi y en los respaldos);
-  si un SKU publicado se borra allá y re-entra al catálogo, re-
-  entraría PÚBLICO — marcarlo de nuevo o persistir la curación
-    (abajo). Pendiente, en orden: (1) **subir las partes EN ORDEN**
-   (`carga-masiva-parte-01-de-07.xlsx`, luego la 02, 03, ... hasta
-   la 07) por el panel con "Carga masiva" — son disjuntas por
+   `gen_dropi.py` ya genera); actualizaciones = archivo con los ya
+   publicados y su Precio 5/stock frescos por "Actualizar"; bajas =
+   pausar a mano (Dropi no borra). Nota de curación: al volverse el
+   Excel incremental, la marca PRIVADO de los ya publicados deja de
+   vivir en el archivo de trabajo (queda en Dropi y en los respaldos);
+   si un SKU publicado se borra allá y re-entra al catálogo, re-
+   entraría PÚBLICO — marcarlo de nuevo o persistir la curación
+     (abajo). Pendiente, en orden: (1) correr
+   `python auditar_skus_dropi.py` (login manual; vuelca activos +
+   archivados a `reportes/dropi_skus.json`) y luego `python
+   gen_dropi.py` para regenerar las partes excluyendo TODOS los SKU
+   de la cuenta (las partes actuales se generaron antes del snapshot
+   y pueden chocar con un archivado invisible), (2) **subir las
+   partes EN ORDEN** (`carga-masiva-parte-01-de-04.xlsx`, luego la
+   02, 03 y 04) por el panel con "Carga masiva" — son disjuntas por
    construcción, no hace falta re-exportar entre partes (sin API
    pública de carga; la sesión de observación de app.dropi.co quedó
-   en `reportes/observacion_dropi/`), (2) **al terminar la serie**
+   en `reportes/observacion_dropi/`), (3) **al terminar la serie**
    (o si UNA parte falla): re-exportar `products_*.xlsx` a `DROPI/`
    — **TODAS las páginas, con la paginación al máximo** — y correr
    `gen_dropi.py` para que la conciliación absorba lo publicado y
-    regenere la serie de lo que falte, (3) probar el mini-archivo
-    `carga-masiva-mini-bloqueados.xlsx` (los 2 SKUs bloqueadores
-    del alcance: 04521 y 04539; el 03371 salió con la regla 13):
-    si entra, quitarlos de
+     regenere la serie de lo que falte, (4) probar el mini-archivo
+     `carga-masiva-mini-bloqueados.xlsx` (los 3 SKUs bloqueadores
+     del alcance: 02587, 04521 y 04539; 03371 salió con la regla 13):
+     si entra, quitarlos de
     `SKU_BLOQUEADOS_DROPI` y correr de
-    nuevo, (4) probar "Actualizar" con 2-3 SKUs antes de conectarla
+    nuevo, (5) probar "Actualizar" con 2-3 SKUs antes de conectarla
    al pipeline: si sobrescribe TODAS las columnas puede pisar
    PRIVADO (voltearía los privados a públicos) y si hace upsert
-   quizá una sola opción baste, (5) con esa prueba, agregar a
+   quizá una sola opción baste, (6) con esa prueba, agregar a
    `gen_dropi.py` un modo `--actualizar` (publicados con Precio
    5/stock frescos, preservando PRIVADO; idealmente migrando la
    curación a un `data/curacion_dropi.json` por SKU que sobreviva a
-   las regeneraciones, como las descripciones), (6) pausar a mano en
+   las regeneraciones, como las descripciones), (7) pausar a mano en
    Dropi lo que salga del catálogo, pierda el Precio 5 o la
    rentabilidad, o baje de 50 unidades.
 

@@ -654,8 +654,37 @@ sin publicaciones fuera de alcance.
 - **Fase 2 hecha y probada offline:** mapa curado
   `data/categorias_ml.json`, marcas `data/marcas_ml.json`, atributos
   dinámicos, rama User Products, validador previo, descripción posterior al
-  alta y reconciliación por `seller_custom_field`. `qa_ml.py` pasa 59/59 y el
+  alta y reconciliación por `seller_custom_field`. `qa_ml.py` pasa 69/69 y el
   dry-run propone las mismas 5 altas con precios y márgenes.
+- **Cuenta y token (29-10-2026):** se generó `ML_ACCESS_TOKEN` y el refresh
+  rotó y quedó persistido; la cuenta autorizada es
+  `jugueteriataiwan27@gmail.com` (seller `3780215017`, tag
+  `user_product_seller`). Tras completar el domicilio, la API reporta
+  `list.allow=true`. La validación viva deja 4 de 5 payloads con solo warnings
+  de envío (ME1/ME2, no bloqueantes); `00695` queda fuera porque `MCO170729`
+  exige `GTIN` condicional y no tiene EAN. `qa_ml.py` ahora distingue warnings
+  de errores (70/70).
+- **Alcance y copys (29-10-2026):** solo se publican `jugueteria`,
+  `juego-de-mesa` y `didactico`; las descripciones salen de
+  `data/descripciones_dropi.json` sin el pie ni el WhatsApp de Dropi (si el
+  SKU no tiene copy, se usa el texto genérico); emojis se eliminan.
+  El producto de prueba `001309` quedó pausado y en `ignorados` para que no se
+  reactive ni vuelva a entrar como alta.
+- **Precio ML (29-10-2026 corregido):** Precio 5 ya incluye ganancia + IVA.
+  ML cobra 15% comisión + 5% pasarela = 20% total.
+  Juguetería Taiwan asume envío gratis ($23.000 por envío).
+  Fórmula: **ML = (Precio5 + 23000) / 0.80**, redondeado a $100.
+  Ejemplos: `00711` $6,100 → $36,400; `00723` $6,000 → $36,300; `00742` $14,280 → $46,600.
+- **Primera publicación real (29-10-2026 corregida):** tres productos publicados con fórmula correcta:
+  `00711` Piano De Juguete Surtido (`MCO4590889778`, $36,400),
+  `00723` Nobody Sausage Magic Dancer (`MCO4590915748`, $36,300, descripción Dropi sin pie),
+  `00742` Caja Marimba De Colores Madera (`MCO4590852352`, $46,600).
+  El producto de prueba `001309` permanece pausado/ignorado.
+- **Primera publicación (29-10-2026):** `001309` “Abeja Baston Bolsa” quedó
+  publicada en `MCO1910` como `MCO2332448697`, activa, a `$9,200` con 99
+  unidades; la imagen de POSGold terminó de procesar y la descripción quedó
+  cargada. El `00695` sigue fuera por el `GTIN`; los otros 3 payloads del
+  muestreo solo tenían warnings de envío.
 - **Corrección de dominios:** también se reconocen dominios de juguete que no
   empiezan por `MCO-TOY` (p. ej.
   `MCO-NON_REMOTE_CONTROL_TOY_VEHICLES`). El SKU `00752` dejó de caer en

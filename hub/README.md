@@ -101,9 +101,10 @@ python qa_ml.py                              # QA offline, sin red ni costos
 | `ML_TOKEN_KEY` | `COSTOS_KEY` | Llave AES para `hub/ml_token.enc` |
 | `ML_SITE_ID` | `MCO` | Sitio de ML (Colombia) |
 | `ML_TIPO_PUBLICACION` | `gold_special` | Clásica (`gold_special`), Gratuita (`silver`) |
-| `ML_PRECIO_FACTOR` | `0.15` | Recargo sobre el detal de la vitrina (cubre la comisión) |
 | `ML_PRECIO_REDONDEO` | `100` | Redondeo del precio ML (COP) |
-| `ML_COMISION_PCT` | `16` | Comisión ML estimada, para la guardia de rentabilidad |
+| `ML_COMISION_PCT` | `15` | Comisión ML (15% en juguetes) |
+| `ML_PASARELA_PCT` | `5` | Pasarela de pago (5%) |
+| `ML_ENVIO_COSTO` | `23000` | Costo envío gratis asumido por vendedor |
 | `ML_MARGEN_MINIMO` | `0.25` | Utilidad/costo mínima (después de comisión) para publicar |
 | `ML_STOCK_MINIMO` | `2` | No publicar productos con menos existencias |
 | `ML_STOCK_MAXIMO` | `99` | Techo publicado (no regala el inventario real) |
@@ -126,8 +127,10 @@ foto, cumple el stock mínimo, la categoría no está excluida, tiene costo
 conocido y pasa la guardia de rentabilidad. Sin costo conocido **no** se
 publica (misma regla dura de la vitrina).
 
-**Precio ML** = detal de la vitrina × (1 + `ML_PRECIO_FACTOR`), redondeado.
-La guardia exige que `precio × (1 − comisión) − costo` deje al menos
+**Precio ML** = (Precio 5 + `ML_ENVIO_COSTO`) / (1 − `ML_COMISION_PCT` − `ML_PASARELA_PCT`), redondeado.
+Precio 5 ya incluye ganancia + IVA. ML cobra 15% comisión + 5% pasarela = 20% total.
+Juguetería Taiwan asume envío gratis: paga $23.000 por envío.
+La guardia exige que `precio × (1 − comisión − pasarela) − costo` deje al menos
 `ML_MARGEN_MINIMO` sobre el costo; si no, el producto se salta y queda
 anotado en el plan.
 
@@ -147,9 +150,20 @@ el criterio.
 
 **Atributos** — se leen de `/categories/{id}/attributes`. BRAND, MODEL,
 MANUFACTURER, SELLER_SKU, GTIN e ITEM_CONDITION se llenan con datos reales;
-si falta un requerido (por ejemplo `POWER_SUPPLY_TYPE`), el producto **no se
-publica** y queda anotado en `faltantes` con la categoría y el atributo. GTIN
-solo viaja si es un EAN-13 con dígito verificador válido.
+si falta un requerido que el adaptador no sabe responder, el producto **no
+se publica** y queda anotado en `faltantes` con la categoría y el atributo.
+Dos atributos obligatorios tienen valor por defecto honesto
+(`_valor_defecto_req`): `IS_FACTORY_KIT` = No (juguetes sueltos, no kits de
+fábrica) y `POWER_SUPPLY_TYPE` se lee del nombre del producto
+(pilas/luz/sonido/electrónico/gira → Batería; si no, Operación manual).
+GTIN solo viaja si es un EAN-13 con dígito verificador válido; las
+categorías que lo exigen sin EAN en el hub (p. ej. cubos de Rubik en UP)
+van a `ignorados` y el plan deja de intentarlas.
+
+**Títulos** — ML rechaza títulos de una sola palabra o demasiado cortos
+(`item.title.minimum_length`: "pide marca, modelo o categoría").
+`completar_titulo_ml()` los completa con el nombre de la categoría y la
+marca hasta 40 caracteres, siempre respetando el máximo de la categoría.
 
 **User Products** — si `/users/me` trae el tag `user_product_seller`, el alta
 usa `family_name` y omite `title`; sin el tag usa el flujo legacy con `title`.
@@ -194,6 +208,33 @@ también usa solo el access token.
    a 2-3. Si ML pide un atributo nuevo, el alta lo lista en `faltantes` y se
    agrega al producto o al mapa curado, nunca se inventa.
 4. Hasta entonces `sync-ml.yml` es dispatch-only (no corre solo).
+
+## Estado del canal ML (29-10-2026)
+
+Campaña de altas de fase 1 **completa** (corridas `--publicar 50` en lote):
+678 publicaciones en `data/canal_ml.json` (658 `active`, 20 `paused`),
+0 elegibles pendientes y 0 `faltantes`. Verificación: `python qa_ml.py`
+(70/70).
+
+- **Altas recién creadas en `paused`** (9 al cierre): esperando moderación
+  de ML; el sync las activa en la corrida siguiente (patrón confirmado:
+  el alta se crea, la activación entra en la pasada siguiente).
+- **Atascadas en `item.status.not_modifiable`** (10): ML no permite cambiar
+  el estado por API (moderación colgada o transición vedada). Solo manual
+  en el panel de ML — cada corrida lo reintentará en vano hasta que se
+  liberen allá: 01389, 01476, 01731, 02110, 02280, 02418, 02419, 02896,
+  02973 y 03119 (llaveros, trompos, rummy, encajable, caja didáctica).
+- **`ignorados`** (excluidos del plan para siempre, el canal persiste la
+  lista en el estado): `001309` Abeja Baston Bolsa (ignorado preexistente,
+  queda `paused`) y `02039` Cubo Rubik Soma Madera (la categoría UP de
+  cubos exige GTIN y el producto no trae EAN válido).
+- Lecciones de la campaña, ya en código: los 14 SKUs rechazados se
+  arreglaron con `_valor_defecto_req` (atributos con valor honesto por
+  defecto) y `completar_titulo_ml` (títulos de una palabra). Gotcha para
+  mantenerlo: **`sp.sin_acentos()` devuelve MAYÚSCULAS sin tildes** — toda
+  comparación de nombres de valor ML (`_valor_requerido`,
+  `_valor_defecto_req`) se normaliza con esa misma función en ambos lados;
+  comparar en minúscula nunca hace match.
 
 ## Estado de la integración POSGold (21-10-2026)
 

@@ -1,43 +1,74 @@
 {
- "version": 1,
- "fallback": "MCO1910",
- "prefijos_juguete": [
-  "MCO-TOY",
-  "MCO-PUZZLE",
-  "MCO-STUFFED",
-  "MCO-DOLL",
-  "MCO-RADIO_CONTROL",
-  "MCO-MINIATURE",
-  "MCO-JOKE"
- ],
- "dominios_up": [
-  "MCO-PUZZLE_CUBES"
- ],
- "por_palabra": [
-  {
-   "palabras": ["PELUCHE", "PELUCHES", "STUFFED"],
-   "categoria": "MCO176652",
-   "nota": "Peluches"
-  },
-  {
-   "palabras": ["MINIATURA", "FIGURA", "FUNKO"],
-   "categoria": "MCO457877",
-   "nota": "Miniaturas y figuras"
-  },
-  {
-   "palabras": ["BROMA", "CHISTE", "BROMAS"],
-   "categoria": "MCO416865",
-   "nota": "Juguetes de bromas"
-  },
-  {
-   "palabras": ["PIANO", "TECLADO", "ORGANO"],
-   "categoria": "MCO189402",
-   "nota": "Pianos y organos de juguete"
-  },
-  {
-   "palabras": ["CUBO RUBIK", "RUBIK", "IVYCUBE"],
-   "categoria": "MCO170729",
-   "nota": "Cubos; el dominio exige family_name (User Products)"
-  }
- ]
+  "version": 2,
+  "fallback": "MCO1910",
+  "prefijos_juguete": [
+   "MCO-TOY",
+   "MCO-PUZZLE",
+   "MCO-STUFFED",
+   "MCO-DOLL",
+   "MCO-RADIO_CONTROL",
+   "MCO-MINIATURE",
+   "MCO-JOKE"
+  ],
+  "dominios_up": [
+   "MCO-PUZZLE_CUBES",
+   "MCO-BOARD_AND_CARD_GAMES",
+   "MCO-KIDS_LEARNING_CARDS",
+   "MCO-LEARNING_TOY_LAPTOPS",
+   "MCO-INFANTS_LEARNING_MAZES_AND_CUBES",
+   "MCO-TOY_KEYBOARDS_AND_PIANOS",
+   "MCO-NON_REMOTE_CONTROL_TOY_VEHICLES"
+  ],
+  "por_palabra": [
+   {
+    "palabras": ["PELUCHE", "PELUCHES", "STUFFED"],
+    "categoria": "MCO176652",
+    "nota": "Peluches"
+   },
+   {
+    "palabras": ["MINIATURA", "FIGURA", "FUNKO"],
+    "categoria": "MCO457877",
+    "nota": "Miniaturas y figuras"
+   },
+   {
+    "palabras": ["BROMA", "CHISTE", "BROMAS"],
+    "categoria": "MCO416865",
+    "nota": "Juguetes de bromas"
+   },
+   {
+    "palabras": ["PIANO", "TECLADO", "ORGANO"],
+    "categoria": "MCO189402",
+    "nota": "Pianos y organos de juguete"
+   },
+   {
+    "palabras": ["CUBO RUBIK", "RUBIK", "IVYCUBE"],
+    "categoria": "MCO170729",
+    "nota": "Cubos; el dominio exige family_name (User Products)"
+   },
+   {
+    "palabras": ["BINGO", "DOMINO", "FICHAS", "CASINO", "CARTA", "MESA", "JUEGO DE MESA", "JUEGO DE MESA", "LOTERIA", "TANGRAM", "BUKY", "CUCARACHA", "BENDITO", "AY CARAMBA"],
+    "categoria": "MCO1161",
+    "nota": "Juegos de mesa y cartas"
+   },
+   {
+    "palabras": ["DIDACTICO", "EDUCATIVO", "APRENDIZAJE", "LOTERIA", "TANGRAM", "MADERA", "COMPUTADORA", "LAPTOP", "LABERINTO"],
+    "categoria": "MCO433049",
+    "nota": "Juguetes didacticos/educativos"
+   },
+   {
+    "palabras": ["CAMION", "VOLQUETA", "VEHICULO", "CARRO", "AUTO", "MOTO", "TRUCK", "EXCAVADORA", "TRACTOR"],
+    "categoria": "MCO433685",
+    "nota": "Vehiculos no control remoto"
+   },
+   {
+    "palabras": ["TAMBOR", "BATERIA", "MARIMBA", "INSTRUMENTO", "MUSICAL", "XILÓFONO", "XILOFONO"],
+    "categoria": "MCO189402",
+    "nota": "Instrumentos musicales de juguete"
+   },
+   {
+    "palabras": ["KIT", "UÑA", "BELLEZA", "MAQUILLAJE", "ACCESORIO"],
+    "categoria": "MCO1910",
+    "nota": "Kits de belleza/accesorios -> fallback"
+   }
+  ]
 }
