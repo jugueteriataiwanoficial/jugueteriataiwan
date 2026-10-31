@@ -49,6 +49,8 @@ import urllib.request
 import openpyxl
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, os.path.join(BASE_DIR, "hub"))
+import mejorar_titulo as mt  # noqa: E402  fase A: entrada generica vs curada
 RUTA_CATALOGO = os.path.join(BASE_DIR, "catalogo.js")
 RUTA_CARGA = os.path.join(BASE_DIR, "DROPI", "carga-masiva-productos-con-variables.xlsx")
 RUTA_JSON = os.path.join(BASE_DIR, "data", "descripciones_dropi.json")
@@ -272,6 +274,17 @@ def validar_titulo(titulo):
     return True
 
 
+def pedido_mejorable(sku, nombre, guardadas, deterministico=None):
+    """En modo --titulos: la vision puede MEJORAR una entrada solo si es
+    exactamente el titulo generico de la fase A (la prueba de que ningun
+    humano la toco). Un titulo de la duena o de una vuelta previa no se
+    pisa."""
+    if sku not in guardadas:
+        return True
+    generica = deterministico or mt.limpiar_nombre(nombre)
+    return guardadas[sku] == generica
+
+
 def main():
     ap = argparse.ArgumentParser(description="Genera copys y titulos con vision")
     ap.add_argument("--limit", type=int, default=20, help="cuantos productos en esta corrida")
@@ -292,11 +305,28 @@ def main():
     excel = leer_excel()
     guardadas = cargar_json(ruta_salida)
 
+    # En modo --titulos: que entrada vigente es SOLO generica de la
+    # fase A (recomputada desde el hub); la vision puede mejorarla.
+    deterministicos = {}
+    if modo_titulos:
+        ruta_hub = os.path.join(BASE_DIR, "hub", "productos.json")
+        if os.path.exists(ruta_hub):
+            with open(ruta_hub, encoding="utf-8") as f:
+                hub_prods = json.load(f).get("productos", [])
+            for ph in hub_prods:
+                if ph.get("sku"):
+                    deterministicos[ph["sku"]] = mt.titulo_determinista(
+                        ph.get("nombre"), ph.get("categoria_web", ""))
+
     pendientes = []
     for fila in excel:
         s = fila["sku"]
         if s in guardadas:
-            continue
+            if not modo_titulos:
+                continue
+            if not pedido_mejorable(s, fila["nombre"], guardadas,
+                                    deterministicos.get(s)):
+                continue
         if args.sku and s != args.sku:
             continue
         if args.categoria and fila["categoria"].upper() != args.categoria.upper():
