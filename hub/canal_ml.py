@@ -71,6 +71,7 @@ sys.path.insert(0, BASE_DIR)
 import sync_posgold as sp  # noqa: E402
 import construir_hub       # noqa: E402
 import actualizar_costos as ac  # noqa: E402  (solo encontrar_openssl)
+import mejorar_titulo      # noqa: E402  fase A de titulos curados
 
 ENV_FILE = sp.ENV_FILE
 HUB_PATH = construir_hub.HUB_PATH
@@ -78,6 +79,7 @@ ESTADO_PATH = os.path.join(sp.DIR_DATA, "canal_ml.json")
 CATEGORIAS_PATH = os.path.join(sp.DIR_DATA, "categorias_ml.json")
 MARCAS_PATH = os.path.join(sp.DIR_DATA, "marcas_ml.json")
 DESCRIPCIONES_PATH = os.path.join(sp.DIR_DATA, "descripciones_dropi.json")
+TITULOS_PATH = mejorar_titulo.TITULOS_PATH
 DIR_REPORTES = sp.DIR_REPORTES
 API = "https://api.mercadolibre.com"
 AUTH = "https://auth.mercadolibre.com"
@@ -385,6 +387,53 @@ def titulo_ml(nombre, env):
     if len(t) > maximo:
         t = t[:maximo].rsplit(" ", 1)[0].strip()
     return t
+
+
+def titulo_final(p, env, curados=None):
+    """Titulo REAL que debe mostrar cada canal: si el SKU tiene titulo
+    curado (data/titulos_productos.json, lo que la duena o la fase B
+    validaron) manda ese; si no, aplica la limpieza deterministica de
+    la fase A (mejorar_titulo) sobre el nombre de POSGold. NUNCA
+    devuelve vacio; recorta al maximo por palabra."""
+    if curados is None:
+        curados = mejorar_titulo.cargar_titulos()
+    sku = p.get("sku")
+    crudo = curados.get(sku) if sku else None
+    if crudo and crudo.strip():
+        base = " ".join(crudo.split())
+    else:
+        base = mejorar_titulo.titulo_determinista(
+            p.get("nombre"), p.get("categoria_web", ""))
+    maximo = int(env.get("ML_TITULO_MAX", "60"))
+    return mejorar_titulo.recortar_a_palabra(base, maximo)
+
+
+def tareas_titulo(estado, hub, env, curados=None):
+    """Modo --titulos (purico, testeable offline): toda publicacion
+    del catalogo cuya curacion difiere del titulo publicado en ML.
+    Nunca toca externos ni ignorados (eso seria restaurar lo que la
+    duena escondio/renombro a mano)."""
+    if curados is None:
+        curados = mejorar_titulo.cargar_titulos()
+    ignorados = set(estado.get("ignorados") or [])
+    maximo = int(env.get("ML_TITULO_MAX", "60"))
+    por_sku = {p["sku"]: p for p in hub["productos"] if p.get("sku")}
+    tareas = []
+    for sku, l in sorted(estado["listings"].items()):
+        if l.get("origen") == "externo" or sku in ignorados:
+            continue
+        if l.get("estado") not in ("active", "paused"):
+            continue
+        if sku not in curados or sku not in por_sku:
+            continue
+        deseado = mejorar_titulo.recortar_a_palabra(
+            " ".join((curados.get(sku) or "").split()), maximo)
+        actual = " ".join((l.get("titulo") or "").split()).lower()
+        if actual and deseado.lower() != actual:
+            tareas.append({"sku": sku, "listing_id": l["listing_id"],
+                           "titulo_actual": l.get("titulo"),
+                           "titulo": deseado})
+    return tareas
 
 
 def completar_titulo_ml(sesion, est, cid, titulo, brand):
@@ -772,12 +821,12 @@ def construir_plan(hub, estado, env, limite_altas):
         if cambios:
             acciones.append({"tipo": "actualizar", "sku": sku,
                              "listing_id": l.get("listing_id"),
-                             "titulo": titulo_ml(p["nombre"], env),
+                             "titulo": titulo_final(p, env),
                              "cambios": cambios})
         if l.get("estado") == "paused":
             acciones.append({"tipo": "activar", "sku": sku,
                              "listing_id": l.get("listing_id"),
-                             "titulo": titulo_ml(p["nombre"], env)})
+                             "titulo": titulo_final(p, env)})
     for p in hub["productos"]:
         if len(altas) >= limite_altas:
             break
@@ -785,7 +834,7 @@ def construir_plan(hub, estado, env, limite_altas):
         if cand:
             altas.append({"sku": cand["sku"], "precio": cand["precio"],
                           "margen": cand["margen"],
-                          "titulo": titulo_ml(p["nombre"], env),
+                          "titulo": titulo_final(p, env),
                           "stock": min(int(p["stock"]), stock_max),
                           "producto": p})
     return acciones, altas
@@ -955,7 +1004,7 @@ def construir_payload(sesion, est, env, alta):
     Es la unica fuente de verdad para el alta y para QA offline."""
     p = alta["producto"]
     sku = p["sku"]
-    titulo = titulo_ml(p.get("nombre") or alta["titulo"], env)
+    titulo = titulo_final(p, env)
     cid = categoria_para(sesion, p.get("nombre") or titulo, est,
                          cargar_categorias())
     info = (est.get("categorias_info") or {}).get(cid) or {}
@@ -1215,6 +1264,9 @@ def main():
                     help="reconstruye data/canal_ml.json desde ML")
     ap.add_argument("--descripciones", action="store_true",
                     help="reenvia las descripciones que fallaron en la alta")
+    ap.add_argument("--titulos", action="store_true",
+                    help="actualiza titulos de las publicaciones existentes "
+                         "con data/titulos_productos.json (fase A de curacion)")
     args = ap.parse_args()
     try:
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")
@@ -1238,7 +1290,7 @@ def main():
 
     sesion = None
     necesita_ml = args.sincronizar or args.publicar is not None \
-        or args.reconciliar or args.descripciones
+        or args.reconciliar or args.descripciones or args.titulos
     if args.reconciliar or (necesita_ml and (not estado["listings"]
                                              or not estado.get("vendedor"))):
         sesion = SesionML(env)
@@ -1247,16 +1299,21 @@ def main():
         log(f"reconciliacion: {vistos} avisos leidos, {total} en el estado")
 
     acciones, altas = construir_plan(hub, estado, env, limite)
+    titulos = tareas_titulo(estado, hub, env)
 
     if not (args.sincronizar or args.publicar is not None
-            or args.descripciones):
+            or args.descripciones or args.titulos):
         mostrar_plan(acciones, altas, limite)
+        if titulos:
+            log(f"  titulos a actualizar (--titulos): {len(titulos)}")
+            for t in titulos[:5]:
+                log(f"    {t['sku']}  {t['titulo_actual'][:36]} -> {t['titulo'][:36]}")
         if estado.get("faltantes"):
             log(f"  con atributos faltantes: {len(estado['faltantes'])} SKUs "
                 "(ver data/canal_ml.json)")
         reporte_plan(None, altas, acciones, estado)
         log("\n(dry-run: no se llamo a ML. Con token configurado:")
-        log("  python hub/canal_ml.py --sincronizar --publicar N)")
+        log("  python hub/canal_ml.py --sincronizar --publicar N [--titulos])")
         return
 
     if sesion is None:
@@ -1296,6 +1353,27 @@ def main():
 
     if args.descripciones:
         reintentar_descripciones(sesion, estado, hub)
+
+    if args.titulos:
+        log(f"\n[TIT] {len(titulos)} titulos a actualizar "
+            "(data/titulos_productos.json manda)...")
+        for t in titulos:
+            try:
+                codigo, data = sesion.put(
+                    f"/items/{t['listing_id']}", {"title": t["titulo"]})
+            except Exception as e:
+                codigo, data = 0, {"error": str(e)[:200]}
+            l = estado["listings"].setdefault(t["sku"], {})
+            if codigo in (200, 201):
+                ok += 1
+                l["titulo"] = t["titulo"]
+                l["actualizado"] = dt.datetime.now().isoformat(timespec="seconds")
+                log(f"  titulo OK   {t['sku']}  {t['titulo'][:44]}")
+            else:
+                fallos += 1
+                log(f"  titulo X    {t['sku']}: {str(data)[:160]}")
+            guardar_estado(estado)
+            time.sleep(0.4)
 
     guardar_estado(estado)
     log(f"\nRESUMEN: {ok} exitos, {fallos} fallos")

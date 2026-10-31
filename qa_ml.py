@@ -485,6 +485,67 @@ def probar_reconciliacion():
     check("externo marcado", est["listings"]["ML:M2"].get("origen") == "externo")
 
 
+def probar_titulos_curados():
+    print("\nTITULOS CURADOS (fase A)")
+    mt = c.mejorar_titulo
+    # limpieza deterministica
+    t = mt.titulo_determinista("DINOSAURIO DE PLASTICO CON SONIDO", "jugueteria")
+    check("tildes de diccionario + stopwords",
+          t == "Dinosaurio de Plástico con Sonido", repr(t))
+    t = mt.titulo_determinista("CAJA CUBO RUBIK 3X3 IVYCUBE", "jugueteria")
+    check("numeros en minuscula (3x3)", t == "Caja Cubo Rubik 3x3 Ivycube",
+          repr(t))
+    t = mt.titulo_determinista("TANGRAM IMPORTADO 20*20CM", "jugueteria")
+    check("medidas 20*20CM -> 20x20cm", "20x20cm" in t, repr(t))
+    t = mt.titulo_determinista("BOLSA MUÑECO X7 ANIME", "jugueteria")
+    check("sin acento artificial en tokens con Ñ", "Muñeco" in t, repr(t))
+    t = mt.titulo_determinista("NARUTO X4", "colecciones")
+    check("sustantivo de emergencia solo categorias de venta",
+          t == "Naruto x4", repr(t))
+    t = mt.titulo_determinista("CAJITA RUSIA", "juego-de-mesa")
+    check("sustantivo corto se agrega (Juego de Mesa)",
+          t.endswith("Juego de Mesa"), repr(t))
+    check("recorte por palabra", mt.recortar_a_palabra("aa bb cc", 5) == "aa")
+    # la curacion (duena/fase B) manda sobre lo deterministico
+    t = c.titulo_final({"sku": "A", "nombre": "CRUDO MALO"}, ENV,
+                       curados={"A": "Título Redactado por la Dueña"})
+    check("curado manda", t == "Título Redactado por la Dueña", repr(t))
+    t = c.titulo_final({"sku": "B", "nombre": "CARTON TRUCO DE MAGIA",
+                        "categoria_web": "jugueteria"}, ENV, curados={})
+    check("fase A como respaldo", t == "Cartón Truco de Magia", repr(t))
+    # modulo --titulos: nadie toca externos ni ignorados
+    hub = {"productos": [
+        {"sku": "A", "nombre": "VIEJO"}, {"sku": "B", "nombre": "VIEJO"},
+        {"sku": "E", "nombre": "VIEJO"}, {"sku": "D", "nombre": "VIEJO"},
+    ]}
+    est = c.normalizar_estado({"listings": {
+        "A": {"listing_id": "L-A", "origen": "catalogo", "estado": "active",
+              "titulo": "Viejo"},
+        "B": {"listing_id": "L-B", "origen": "catalogo", "estado": "active",
+              "titulo": "mismo"},
+        "E": {"listing_id": "L-E", "origen": "externo", "estado": "active",
+              "titulo": "Viejo"},
+        "D": {"listing_id": "L-D", "origen": "catalogo", "estado": "active",
+              "titulo": "Viejo"},
+        "G": {"listing_id": "L-G", "origen": "catalogo", "estado": "paused",
+              "titulo": "Viejo"},
+    }, "ignorados": ["D"]})
+    est["listings"]["G"]["origen"] = "catalogo"  # paused y con curado hinge
+    tareas = c.tareas_titulo(est, hub, ENV, curados={
+        "A": "Nuevo A", "B": "mismo", "E": "Nuevo E", "D": "Nuevo D",
+        "G": "Nuevo G"})
+    skus = [t["sku"] for t in tareas]
+    check("solo A cambia (B igual, E externo, D ignorado, G sin duda)", skus == ["A"], str(skus))
+    check("la tarea lleva listing_id del listing",
+          tareas and tareas[0]["listing_id"] == "L-A", str(tareas))
+    # curacion sin honra del maximo de la categoria: recorta por palabra
+    tareas = c.tareas_titulo(est, hub,
+                             {"ML_TITULO_MAX": "10"},
+                             curados={"A": "Un Titulo Demasiado Largo Para ML"})
+    check("recorta el titulo curado al maximo por palabra",
+          tareas and tareas[0]["titulo"] == "Un Titulo", str(tareas))
+
+
 def main():
     try:
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")
@@ -501,6 +562,7 @@ def main():
     probar_alcance_descripcion_ignorados()
     probar_plan()
     probar_reconciliacion()
+    probar_titulos_curados()
     total = CONTADOR["total"]
     print(f"\nRESUMEN QA ML: {total - len(FALLOS)}/{total}")
     if FALLOS:

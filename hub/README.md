@@ -33,6 +33,7 @@ plan completo (fases 2–4: backend de webhooks, OMS, panel unificado).
 | `hub/ml_diagnostico.py` | Diagnóstico de categorías, atributos y publicaciones; no publica | Sí (código) |
 | `data/categorias_ml.json` | Mapa curado de palabras → categoría ML y fallback | Sí (sin costos) |
 | `data/marcas_ml.json` | Marcas conocidas por SKU o palabra | Sí (sin costos) |
+| `data/titulos_productos.json` | Títulos curados por SKU (fase A determinista + visión + dueña; lo existente nunca se pisa) | Sí (sin costos) |
 | `qa_ml.py` | QA offline del adaptador (precios, atributos, payloads, estado) | Sí |
 | `hub/productos.json` | **El catálogo maestro, SIEMPRE trae costos** | **NUNCA** (gitignored) |
 | `hub/ml_token.enc` | Refresh token de ML cifrado (AES-256-CBC + PBKDF2) | Sí (cifrado) |
@@ -53,6 +54,8 @@ costo (solo conteos y porcentajes).
 python hub/construir_hub.py                 # POSGold + PRODUCTOS*.xlsx más reciente
 python hub/construir_hub.py --costos RUTA   # Excel de costos explícito
 python hub/construir_hub.py --salida RUTA   # destino distinto (pruebas)
+python hub/mejorar_titulo.py --vista 40     # fase A: muestra antes->después
+python hub/mejorar_titulo.py --escribir     # fase A: llena data/titulos_productos.json
 ```
 
 Reutiliza las primitivas de `sync_posgold.py` (login JWT, `GetProduct_V6`,
@@ -69,7 +72,8 @@ python hub/canal_ml.py --dry-run        # el plan sin llamar a ML (ni token)
 python hub/canal_ml.py --reconciliar    # reconstruye data/canal_ml.json desde ML
 python hub/canal_ml.py --sincronizar    # pausas/activaciones/stock/precio
 python hub/canal_ml.py --publicar 5     # crea hasta 5 publicaciones nuevas
-python hub/canal_ml.py --sincronizar --publicar 3   # corrida completa
+python hub/canal_ml.py --titulos        # aplica titulos curados a lo publicado
+python hub/canal_ml.py --sincronizar --titulos --publicar 3   # corrida completa
 ```
 
 (sin banderas = dry-run: muestra el plan y un `reportes/plan_ml_*.json`)
@@ -164,6 +168,18 @@ van a `ignorados` y el plan deja de intentarlas.
 (`item.title.minimum_length`: "pide marca, modelo o categoría").
 `completar_titulo_ml()` los completa con el nombre de la categoría y la
 marca hasta 40 caracteres, siempre respetando el máximo de la categoría.
+
+**Títulos curados (fase A/B)** — el título de un canal viene de
+`titulo_final()`: si el SKU tiene título en `data/titulos_productos.json`
+manda ese; si no, la limpieza determinística de `hub/mejorar_titulo.py`
+(tildes de diccionario, medidas `20*20CM → 20x20cm`, `X 50 → x50`,
+capitalización natural, sin reordenar palabras). La fase B
+(`gen_descripciones.py --titulos`) propone títulos leyendo la foto real
+con las mismas guardias anti-inventar de las descripciones; lo que
+ya esté en el JSON nunca se pisa. El modo `--titulos` del adaptador
+aplica la curación a las publicaciones existentes (`PUT /items` con solo
+`title`) y el cron lo lleva en cada corrida; nunca toca externos ni
+ignorados (esos ya los renombró/escondió la dueña a mano).
 
 **User Products** — si `/users/me` trae el tag `user_product_seller`, el alta
 usa `family_name` y omite `title`; sin el tag usa el flujo legacy con `title`.

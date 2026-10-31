@@ -29,6 +29,7 @@ python qa_e2e.py            # suite completa: 42/42 esperado (Playwright + WebKi
 python qa_carrito.py        # carrito: identidad, aritmetica exacta, mensaje WhatsApp, vuelo y confeti (38/38)
 python qa_ml.py             # adaptador ML offline: precios, atributos, payloads, estado (sin red ni costos)
 python hub/ml_diagnostico.py --payloads   # arma payloads ML con datos publicos, sin publicar ni rotar token
+python hub/mejorar_titulo.py --escribir   # titulos curados fase A (limpieza determinista) -> data/titulos_productos.json
 python sync_posgold.py --dry-run   # sync de prueba sin tocar catalogo.js
 python sync_posgold.py --verificar-todas   # auditar/regenerar miniaturas
 python generar_enlace_config.py    # enlace de config (llave+tokens) para un navegador
@@ -36,6 +37,7 @@ python gen_dropi.py          # actualiza la carga masiva DROPI con Precio 5 de P
 python auditar_skus_dropi.py # login manual Dropi y vuelca TODOS los SKU (activos+archivados) a reportes/dropi_skus.json
 python auditar_skus_dropi.py --solo-revisar   # audita partes/principal contra el snapshot, sin navegador
 python gen_descripciones.py  # copys de campana con vision (API NVIDIA, llena data/descripciones_dropi.json por lotes)
+                             #   + --titulos: titulos de venta con keywords -> data/titulos_productos.json (fase B)
 ```
 
 Verificación de sintaxis JS del index (los dos primeros `<script>` son JSON-LD,
@@ -163,7 +165,21 @@ es rechazado, el cron movió el remoto: `git pull --rebase origin main` y de nue
    `ML_TOKEN_KEY` (verificado: `COSTOS_KEY` NO lo descifra); ambos secrets deben
    coincidir con el `.env` local, y un re-run de una corrida fallida usa SIEMPRE
    el commit viejo: hay que dispatchar una corrida nueva. Comandos: `--autorizar` (primera vez),
-  `--prueba`, `--dry-run` (sin red ni token), `--sincronizar --publicar N`.
+   `--prueba`, `--dry-run` (sin red ni token), `--sincronizar --publicar N`,
+   `--titulos`.
+   **Títulos curados (fase A, 31-10-2026)**: los nombres de POSGold son el
+   texto de la factura del proveedor y mataban las búsquedas. Capa nueva:
+   `hub/mejorar_titulo.py` (limpieza determinista: tildes de diccionario,
+   unidades `X 50 → x50`, medidas `20*20CM → 20x20cm`, capitalización
+   natural, SIN inventar keywords) escribe `data/titulos_productos.json`
+   (`{sku: título}`, se commitea; lo existente NUNCA se pisa: la dueña o
+   la visión de `gen_descripciones.py --titulos` manda, la fase A solo
+   rellena lo que falta). `titulo_final()` en canal_ml.py lo consume en
+   las altas y el modo `--titulos` aplica la curación a lo publicado
+   (`PUT /items` con solo `title`; primeras ~370 en la corrida
+   siguiente, después solo diferencias); el cron lleva `--titulos` y
+   `qa_ml.py` cubre el módulo (82/82). Nunca toca externos ni ignorados
+   (esos ya los renombró/escondió la dueña en el panel de ML).
   **Campaña de altas completa (29-10-2026)**: 678 publicaciones en
   `data/canal_ml.json` (658 activas, 0 elegibles pendientes, `qa_ml.py`
   70/70), subidas en tandas de `--publicar 50`. El ciclo de cada tanda:
@@ -308,8 +324,12 @@ es rechazado, el cron movió el remoto: `git pull --rebase origin main` y de nue
   POSGold y tiene prohibido inventar medidas/edades/materiales —
   llama-3.2-11b-vision inventaba specs y se descartó), por lotes
   `--limit N` ordenados por stock (mayor rotación primero),
-  incremental y reanudable: lo que ya está en el JSON no se pisa, las
-  correcciones de la dueña mandan. Conciliación dura antes de
+   incremental y reanudable: lo que ya está en el JSON no se pisa, las
+   correcciones de la dueña mandan. La bandera `--titulos` usa el mismo
+   motor para proponer TÍTULOS de venta con keywords
+   (data/titulos_productos.json, misma regla "lo existente nunca se
+   pisa"): canal_ml.py los consume en las altas y en el modo `--titulos`
+   (cron incluido). Conciliación dura antes de
   escribir: aborta si queda UNA fila sin precio, sin imagen, con
   stock ≤ 0, rentabilidad ≤ 0 al Precio 5, HTML en la descripción o
   sin el pie de la tienda. Los Excel de DROPI no se commitean (salen

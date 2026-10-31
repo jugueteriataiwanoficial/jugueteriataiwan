@@ -9,6 +9,13 @@ en TEXTO PLANO (la tienda decidio no usar HTML en Dropi), y
 gen_dropi.py lo une al Excel de carga masiva (lo que ya exista ahi
 NUNCA se pisa: las correcciones de la duena mandan).
 
+MODO --titulos (fase B): con la misma foto propone el TITULO de
+venta con keywords de busqueda (Producto + Marca + Categoria +
+Variante) y lo guarda en data/titulos_productos.json. Es el
+archivo que canal_ml.py usa para el titulo de las altas y el modo
+--titulos; lo que ya exista NUNCA se pisa (la duena corrige y
+gana).
+
 Flujo por producto:
   1. Toma los elegibles del Excel Dropi (los que van a publicarse).
   2. Salta los que ya tienen descripcion en el JSON.
@@ -22,6 +29,7 @@ Uso:
     python gen_descripciones.py                  # lote de 20 (top stock primero)
     python gen_descripciones.py --limit 100      # lote mas grande
     python gen_descripciones.py --sku 7020251238901   # un solo producto
+    python gen_descripciones.py --titulos        # fase B: titulos con keywords
     python gen_descripciones.py --modelo nvidia/nemotron-3.5-super-vl-120b-a12b
     python gen_descripciones.py --pausa 3        # mas lento (limites de la API)
 """
@@ -44,6 +52,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 RUTA_CATALOGO = os.path.join(BASE_DIR, "catalogo.js")
 RUTA_CARGA = os.path.join(BASE_DIR, "DROPI", "carga-masiva-productos-con-variables.xlsx")
 RUTA_JSON = os.path.join(BASE_DIR, "data", "descripciones_dropi.json")
+RUTA_TITULOS = os.path.join(BASE_DIR, "data", "titulos_productos.json")
 API_URL = "https://integrate.api.nvidia.com/v1/chat/completions"
 MODELO_DEFECTO = "nvidia/nemotron-3.5-super-vl-120b-a12b"
 MAX_TOKENS = 4000
@@ -64,6 +73,19 @@ Requisitos:
 - CRÍTICO — no inventes: NO incluyas medidas, pesos, capacidades, edades recomendadas, número de jugadores ni materiales SALVO que se vean claramente en la foto o estén escritos en el nombre del producto. Describe lo que ves (colores, formas, presentación, empaque) y el uso del juguete.
 - Sin datos de contacto, sin nombre de tienda, sin notas al final.
 - Entre 400 y 700 caracteres. Responde SOLO con el texto."""
+
+PROMPT_TITULO = """Escribe el TÍTULO de venta (para Mercado Libre) de este producto de juguetería. La imagen adjunta es la foto real del producto.
+
+El nombre crudo de la factura del proveedor es: "{nombre}" (categoría: {categoria}).
+
+Requisitos:
+- Español de Colombia, con tildes correctas, de 30 a 60 caracteres, una sola línea, sin punto final.
+- Estructura: [qué es el producto] [marca o personaje si la foto lo muestra o el nombre lo dice] [estilo o material SOLO si se ve claramente] [cantidad si se ve claramente, por ejemplo "x12" o "pack 6"].
+- Usa las palabras exactas que buscaría quien lo quiere comprar (rompecabezas, canicas, trompo, estuche, memorama, yoyo...).
+- CRÍTICO — no inventes: NADA de medidas, edades, jugadores, materiales ni capacidades que NO se vean claramente en la foto o estén escritos en el nombre. Si no estás seguro, omite ese dato.
+- Capitalización natural: primera letra y nombres propios en mayúscula, el resto en minúscula (nada de TODO EN MAYÚSCULAS).
+- Sin emojis, sin símbolos (!, #, ~, *), sin la palabra "juguetería" y sin nombres de tiendas.
+- Responde SOLO con el título."""
 
 
 def log(msg):
@@ -133,23 +155,23 @@ def leer_excel():
     return datos
 
 
-def cargar_json():
-    if os.path.exists(RUTA_JSON):
+def cargar_json(ruta=RUTA_JSON):
+    if os.path.exists(ruta):
         try:
-            with open(RUTA_JSON, encoding="utf-8") as f:
+            with open(ruta, encoding="utf-8") as f:
                 data = json.load(f)
             if isinstance(data, dict):
                 return data
         except Exception as e:
-            log(f"ERROR: {RUTA_JSON} corrupto ({e}); revisalo antes de continuar")
+            log(f"ERROR: {ruta} corrupto ({e}); revisalo antes de continuar")
             sys.exit(1)
     return {}
 
 
-def guardar_json(descripciones):
-    os.makedirs(os.path.dirname(RUTA_JSON), exist_ok=True)
-    with open(RUTA_JSON, "w", encoding="utf-8") as f:
-        json.dump(descripciones, f, ensure_ascii=False, indent=2)
+def guardar_json(datos, ruta=RUTA_JSON):
+    os.makedirs(os.path.dirname(ruta), exist_ok=True)
+    with open(ruta, "w", encoding="utf-8") as f:
+        json.dump(datos, f, ensure_ascii=False, indent=2)
         f.write("\n")
 
 
@@ -173,15 +195,14 @@ def limpiar_texto(texto):
     return "\n".join(lineas).strip()
 
 
-def pedir_copy(llave, modelo, nombre, categoria, foto_bytes, intentos=3):
+def pedir_copy(llave, modelo, prompt, nombre, categoria, foto_bytes, intentos=3):
     b64 = base64.b64encode(foto_bytes).decode()
     cuerpo = {
         "model": modelo,
         "messages": [{"role": "user", "content": [
             {"type": "image_url",
              "image_url": {"url": "data:image/jpeg;base64," + b64}},
-            {"type": "text",
-             "text": PROMPT.format(nombre=nombre, categoria=categoria)},
+            {"type": "text", "text": prompt.format(nombre=nombre, categoria=categoria)},
         ]}],
         "max_tokens": MAX_TOKENS,
         "temperature": 0.3,
@@ -225,24 +246,56 @@ def validar(texto, nombre):
     return True
 
 
+def limpiar_titulo(texto):
+    t = (texto or "").strip()
+    t = re.sub(r"^```(?:text|html)?\s*|\s*```$", "", t)
+    t = re.sub(r"\s+", " ", t).strip(" .!?\"'")
+    return t
+
+
+def validar_titulo(titulo):
+    t = (titulo or "").strip()
+    if not (25 <= len(t) <= 60):
+        return False
+    if "\n" in t:
+        return False
+    if re.search(r"[!#\*\[\]{}/<>_~|@]", t):
+        return False
+    prohibidos = ["jugueteria", "juguetería", "tienda", "3106988465",
+                  "https", "www."]
+    if any(p in t.lower() for p in prohibidos):
+        return False
+    # nada de TODO EN MAYUSCULAS (mas de la mitad de las letras)
+    letras = [c for c in t if c.isalpha()]
+    if letras and sum(1 for c in letras if c.isupper()) > len(letras) / 2:
+        return False
+    return True
+
+
 def main():
-    ap = argparse.ArgumentParser(description="Genera copys de campana Dropi con vision")
+    ap = argparse.ArgumentParser(description="Genera copys y titulos con vision")
     ap.add_argument("--limit", type=int, default=20, help="cuantos productos en esta corrida")
     ap.add_argument("--sku", help="procesar solo este SKU")
+    ap.add_argument("--titulos", action="store_true",
+                    help="fase B: titulos de venta (data/titulos_productos.json) "
+                         "en vez de descripciones de Dropi")
     ap.add_argument("--categoria", help="filtrar por categoria del Excel")
     ap.add_argument("--modelo", default=MODELO_DEFECTO)
     ap.add_argument("--pausa", type=float, default=1.0, help="segundos entre llamadas")
     args = ap.parse_args()
+    modo_titulos = args.titulos
+    ruta_salida = RUTA_TITULOS if modo_titulos else RUTA_JSON
+    prompt = PROMPT_TITULO if modo_titulos else PROMPT
 
     llave = leer_llave()
     catalogo = parsear_catalogo()
     excel = leer_excel()
-    descripciones = cargar_json()
+    guardadas = cargar_json(ruta_salida)
 
     pendientes = []
     for fila in excel:
         s = fila["sku"]
-        if s in descripciones:
+        if s in guardadas:
             continue
         if args.sku and s != args.sku:
             continue
@@ -255,15 +308,15 @@ def main():
     pendientes.sort(key=lambda x: -x[0]["stock"])
 
     if not pendientes:
-        log("Nada pendiente: todos los elegibles ya tienen descripcion "
-            "(o el filtro no encontro productos).")
+        log("Nada pendiente: todos los elegibles ya tienen "
+            + ("titulo" if modo_titulos else "descripcion")
+            + " (o el filtro no encontro productos).")
         return
 
     lote = pendientes[:args.limit] if not args.sku else pendientes
     log(f"pendientes: {len(pendientes)} | en esta corrida: {len(lote)} "
-        f"| modelo: {args.modelo}")
-    log(f"orden: mayor stock primero "
-        f"(rango de stock: {lote[-1][0]['stock']} - {lote[0][0]['stock']})" if len(lote) > 1 else "")
+        f"| modelo: {args.modelo} | modo: "
+        + ("TITULOS (fase B)" if modo_titulos else "DESCRIPCIONES Dropi"))
 
     exitos, fallos = 0, 0
     for i, (fila, p) in enumerate(lote, 1):
@@ -271,30 +324,41 @@ def main():
         t0 = time.time()
         try:
             foto = descargar_foto(url, fila["sku"])
-            texto = pedir_copy(llave, args.modelo, fila["nombre"],
+            texto = pedir_copy(llave, args.modelo, prompt, fila["nombre"],
                                fila["categoria"], foto)
-            if texto and validar(texto, fila["nombre"]):
-                descripciones[fila["sku"]] = texto
-                guardar_json(descripciones)
+            if modo_titulos:
+                texto = limpiar_titulo(texto) if texto else ""
+                valido = bool(texto) and validar_titulo(texto)
+            else:
+                valido = bool(texto) and validar(texto, fila["nombre"])
+            if valido:
+                guardadas[fila["sku"]] = texto
+                guardar_json(guardadas, ruta_salida)
                 exitos += 1
                 log(f"  [{i}/{len(lote)}] OK  {fila['sku']:16} "
-                    f"{fila['nombre'][:34]:34} ({len(texto)} chars, "
-                    f"{time.time()-t0:.0f}s)")
+                    + (texto[:46] if modo_titulos
+                       else f"{fila['nombre'][:34]:34} ({len(texto)} chars, "
+                            f"{time.time()-t0:.0f}s)"))
             else:
                 fallos += 1
                 log(f"  [{i}/{len(lote)}] DESCARTADO {fila['sku']} "
                     f"{fila['nombre'][:34]} (respuesta no valida)")
         except KeyboardInterrupt:
-            log(f"\nInterrumpido. Progreso guardado: {exitos} copys.")
+            log(f"\nInterrumpido. Progreso guardado: {exitos}.")
             return
         except Exception as e:
             fallos += 1
             log(f"  [{i}/{len(lote)}] ERROR {fila['sku']} {str(e)[:100]}")
         time.sleep(args.pausa)
 
-    log(f"\nListo: +{exitos} copys nuevos ({fallos} fallos). "
-        f"Total en el JSON: {len(descripciones)}.")
-    log("Ahora corre gen_dropi.py para volcarlos al Excel de carga masiva.")
+    log(f"\nListo: +{exitos} " + ("titulos" if modo_titulos else "copys")
+        + f" nuevos ({fallos} fallos). Total en el JSON: {len(guardadas)}.")
+    if modo_titulos:
+        log("Consume con: python hub/canal_ml.py --titulos "
+            "(o dejanlo pasar para el cron; la fase A rellena el resto con "
+            "python hub/mejorar_titulo.py --escribir).")
+    else:
+        log("Ahora corre gen_dropi.py para volcarlos al Excel de carga masiva.")
 
 
 if __name__ == "__main__":
