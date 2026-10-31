@@ -198,7 +198,7 @@ def cargar_token_cifrado(env):
     ruta = os.path.join(BASE_DIR, "hub", "ml_token.enc")
     if not (llave and os.path.exists(ruta)):
         return None
-    ok, texto = _openssl_correr(["-d"] + list(OPENSSL_ARGS) + ["-in", ruta],
+    ok, texto = _openssl_correr(list(OPENSSL_ARGS) + ["-d", "-in", ruta],
                                 llave)
     if ok and texto.strip():
         return texto.strip()
