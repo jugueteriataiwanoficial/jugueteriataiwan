@@ -146,8 +146,15 @@ es rechazado, el cron movió el remoto: `git pull --rebase origin main` y de nue
   commitea). El refresh token de ML **rota en cada uso**: se persiste cifrado
   en `hub/ml_token.enc` (AES-256+PBKDF2, mismo modelo que `costos.posgold.enc`;
    ese blob sí se commitea) y el workflow `sync-ml.yml` lo renueva y lo vuelve a
-   subir. **Cron activo 4×/día** (12:15, 13:15, 0:15, 1:15 UTC) + dispatch
-   manual; primera corrida verde completa 31-10-2026. GOTCHA aprendido ese día:
+   subir. **Cron activo 4×/día y zero-touch (31-10-2026)**: la corrida
+   programada (12:15, 13:15, 0:15, 1:15 UTC = 07:15, 08:15, 19:15, 20:15 CO)
+   sincroniza el canal y publica sola hasta 5 altas nuevas por corrida —
+   nadie da clic. El `publicar` del workflow cae a 5 gracias al fallback
+   `${{ inputs.publicar || '5' }}`: el input vacío del schedule antes moría
+   en el argparse de `canal_ml.py` (`--publicar ""`), arreglado en f67b1b3
+   (caía a 0) y 931980e (subió a 5; sin elegibles el alta no hace nada).
+   El dispatch manual sigue disponible (0 = solo sincronizar). Primera
+   corrida verde completa 31-10-2026 (19:18 UTC, dispatch). GOTCHA aprendido ese día:
    si una corrida cae en "Sincronizar y publicar en Mercado Libre" sin salir del
    sitio, sospechar del descifrado del blob — `cargar_token_cifrado()` armaba el
    `openssl` con el `-d` ANTES del subcomando `enc` y fallaba SIEMPRE en silencio

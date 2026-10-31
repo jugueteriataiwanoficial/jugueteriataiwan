@@ -1064,6 +1064,36 @@ def crear_publicacion(sesion, est, env, alta):
     return True, data
 
 
+def reintentar_descripciones(sesion, est, hub):
+    """Reenvia descripciones que fallaron en la alta: POST /items/{id}/
+    description; si el item ya tiene una (400 item.description.invalid
+    'use PUT instead'), la corrige con PUT."""
+    prod = {p["sku"]: p for p in hub["productos"] if p.get("sku")}
+    pendientes = sorted(sku for sku, l in est["listings"].items()
+                        if l.get("descripcion_error"))
+    log(f"\n[DESC] {len(pendientes)} descripciones por corregir...")
+    ok = fallos = 0
+    for sku in pendientes:
+        l = est["listings"][sku]
+        texto = descripcion_ml(prod.get(sku), l.get("titulo") or "",
+                               cargar_descripciones_ml().get(sku, ""))
+        ruta = f"/items/{l['listing_id']}/description"
+        codigo, data = sesion.post(ruta, {"plain_text": texto})
+        if codigo not in (200, 201) and "already has a description" in \
+                (data.get("message") if isinstance(data, dict) else ""):
+            codigo, data = sesion.put(ruta, {"plain_text": texto})
+        if codigo in (200, 201):
+            ok += 1
+            l.pop("descripcion_error", None)
+            log(f"  desc OK   {sku}")
+        else:
+            fallos += 1
+            log(f"  desc X    {sku}: {str(data)[:140]}")
+        time.sleep(0.4)
+    log(f"DESC RESUMEN: {ok} exitos, {fallos} fallos")
+    return fallos
+
+
 # ------------------------------------------------------------------
 # Comandos
 # ------------------------------------------------------------------
@@ -1183,6 +1213,8 @@ def main():
                     help="publica hasta N productos nuevos")
     ap.add_argument("--reconciliar", action="store_true",
                     help="reconstruye data/canal_ml.json desde ML")
+    ap.add_argument("--descripciones", action="store_true",
+                    help="reenvia las descripciones que fallaron en la alta")
     args = ap.parse_args()
     try:
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")
@@ -1205,7 +1237,8 @@ def main():
     log(f"canal ML: {len(estado['listings'])} publicaciones en data/canal_ml.json")
 
     sesion = None
-    necesita_ml = args.sincronizar or args.publicar is not None or args.reconciliar
+    necesita_ml = args.sincronizar or args.publicar is not None \
+        or args.reconciliar or args.descripciones
     if args.reconciliar or (necesita_ml and (not estado["listings"]
                                              or not estado.get("vendedor"))):
         sesion = SesionML(env)
@@ -1215,7 +1248,8 @@ def main():
 
     acciones, altas = construir_plan(hub, estado, env, limite)
 
-    if not (args.sincronizar or args.publicar is not None):
+    if not (args.sincronizar or args.publicar is not None
+            or args.descripciones):
         mostrar_plan(acciones, altas, limite)
         if estado.get("faltantes"):
             log(f"  con atributos faltantes: {len(estado['faltantes'])} SKUs "
@@ -1259,6 +1293,9 @@ def main():
                 log(f"  alta X    {a['sku']} ({a['titulo'][:40]}): {str(data)[:160]}")
             guardar_estado(estado)
             time.sleep(0.4)
+
+    if args.descripciones:
+        reintentar_descripciones(sesion, estado, hub)
 
     guardar_estado(estado)
     log(f"\nRESUMEN: {ok} exitos, {fallos} fallos")

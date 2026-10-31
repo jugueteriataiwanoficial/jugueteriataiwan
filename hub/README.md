@@ -37,7 +37,7 @@ plan completo (fases 2–4: backend de webhooks, OMS, panel unificado).
 | `hub/productos.json` | **El catálogo maestro, SIEMPRE trae costos** | **NUNCA** (gitignored) |
 | `hub/ml_token.enc` | Refresh token de ML cifrado (AES-256-CBC + PBKDF2) | Sí (cifrado) |
 | `data/canal_ml.json` | Estado del canal ML: SKU → listing, precios, stock publicado | Sí (sin costos) |
-| `.github/workflows/sync-ml.yml` | Cron de ML en Actions (4×/día, activo) + dispatch a mano | Sí |
+| `.github/workflows/sync-ml.yml` | Cron de ML en Actions (4×/día, zero-touch: sincroniza y publica hasta 5 altas por corrida) + dispatch a mano | Sí |
 
 Regla de oro: `hub/productos.json` y los reportes de plan viven fuera del repo
 porque contienen costos. La consola de los scripts nunca imprime valores de
@@ -225,12 +225,20 @@ también usa solo el access token.
    `python qa_ml.py` → `--publicar 1` y revisar la moderación antes de subir
    a 2-3. Si ML pide un atributo nuevo, el alta lo lista en `faltantes` y se
    agrega al producto o al mapa curado, nunca se inventa.
-4. **Listo (31 oct 2026)**: `sync-ml.yml` corre con cron 4×/día
-   (12:15, 13:15, 0:15, 1:15 UTC = 07:15, 08:15, 19:15, 20:15 CO) y también
-   acepta dispatch manual (`publicar` = cuántas altas crear; 0 = solo
-   sincronizar). Primera corrida verde completa 31-10-2026: sincronizó el
-   canal, rotó el token y commitea `data/canal_ml.json` + `hub/ml_token.enc`.
-   Si una corrida falla, dispatchar una NUEVA (el re-run usa el commit viejo).
+4. **Listo y zero-touch (31 oct 2026)**: `sync-ml.yml` corre con cron 4×/día
+    (12:15, 13:15, 0:15, 1:15 UTC = 07:15, 08:15, 19:15, 20:15 CO). Desde
+    31-10-2026 las corridas programadas quedaron solas: sincronizan el canal
+    (pausas/activaciones/stock/precio) y publican hasta 5 altas nuevas por
+    corrida — nadie da clic; si ML deja una alta en moderación (`paused`), la
+    corrida siguiente la activa. La cantidad la resuelve el fallback
+    `${{ inputs.publicar || '5' }}` del workflow: sin él, el input vacío del
+    schedule llegaba como `--publicar ""` y moría en el argparse de
+    `canal_ml.py` (sin elegibles el alta no hace nada, así que 5 es el tope,
+    no el mínimo). El dispatch manual sigue disponible (`publicar` = cuántas
+    altas crear; 0 = solo sincronizar). Primera corrida verde completa
+    31-10-2026: sincronizó el canal, rotó el token y commitea
+    `data/canal_ml.json` + `hub/ml_token.enc`.
+    Si una corrida falla, dispatchar una NUEVA (el re-run usa el commit viejo).
 
 ## Estado del canal ML (29-10-2026)
 
