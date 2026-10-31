@@ -4,9 +4,10 @@
 # Despachado a mano (workflow_dispatch) mientras se valida:
 #   Actions -> sync-ml -> Run workflow -> "publicar" = cuantos items
 #   nuevos crear en esta corrida (0 = solo sincronizar).
-# Cron activo desde 31-10-2026: las corridas programadas quedan con
-# publicar=0 (solo sincronizan; "|| '0'" cubre el input vacio del
-# schedule); las altas nuevas siguen yendo por dispatch manual.
+# Cron activo: corridas programadas sincronizan y publican hasta 5
+# altas nuevas por corrida ("|| '5'" cubre el input vacio del schedule;
+# sin elegibles no publica nada). Dispatch manual aparte: "publicar" =
+# cuantos crear (0 = solo sincronizar).
 #
 # Reutiliza el mismo patron de sync-top300: costos cifrados en el repo
 # (costos.posgold.enc) y .env armado desde secrets. El refresh token de
@@ -101,7 +102,7 @@ jobs:
           GIT_AUTHOR_EMAIL: actions@github.com
           GIT_COMMITTER_NAME: sync-hub
           GIT_COMMITTER_EMAIL: actions@github.com
-        run: python hub/canal_ml.py --sincronizar --publicar "${{ inputs.publicar || '0' }}"
+        run: python hub/canal_ml.py --sincronizar --publicar "${{ inputs.publicar || '5' }}"
 
       - name: Commitear estado del canal y token rotado
         run: |
