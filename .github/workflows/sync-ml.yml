@@ -21,6 +21,8 @@
 name: sync-ml
 
 on:
+  schedule:
+    - cron: "15 12,13,0,1 * * *"  # 07:15, 08:15, 19:15, 20:15 CO (igual que sync-top300)
   workflow_dispatch:
     inputs:
       publicar:
@@ -48,8 +50,8 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Instalar openpyxl
-        run: pip install openpyxl
+      - name: Instalar dependencias del hub
+        run: pip install -r hub/requirements.txt
 
       - name: Verificar mapas ML versionados
         run: |
