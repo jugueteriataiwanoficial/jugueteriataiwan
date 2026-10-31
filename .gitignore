@@ -24,6 +24,7 @@ hub/productos.json
 
 # --- Transcripciones, informacion privada y notas (NINGUN txt al repo) ---
 *.txt
+!hub/requirements.txt
 gen_presentacion.py
 gen_presentacion_vtex.py
 generar_enlace_config.py
