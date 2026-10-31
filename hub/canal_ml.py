@@ -202,6 +202,8 @@ def cargar_token_cifrado(env):
                                 llave)
     if ok and texto.strip():
         return texto.strip()
+    log("AVISO: ml_token.enc existe pero NO se pudo descifrar "
+        "(llave equivocada?): " + texto[:160])
     return None
 
 
@@ -230,9 +232,22 @@ def refrescar_token(env):
     sec = env.get("ML_CLIENT_SECRET")
     rt = cargar_token_cifrado(env) or env.get("ML_REFRESH_TOKEN")
     if not (cid and sec and rt):
+        blob = os.path.join(BASE_DIR, "hub", "ml_token.enc")
         log("ERROR: faltan credenciales ML (ML_CLIENT_ID, ML_CLIENT_SECRET,")
         log("       ML_REFRESH_TOKEN o ML_ACCESS_TOKEN en .env).")
         log("       Primera vez: python hub/canal_ml.py --autorizar")
+        log("  DETALLE -> ML_CLIENT_ID=%s | ML_CLIENT_SECRET=%s |"
+            " llave(ML_TOKEN_KEY)=%s | ml_token.enc=%s |"
+            " ML_REFRESH_TOKEN=%s" % (
+                "SI" if cid else "NO",
+                "SI" if sec else "NO",
+                "SI" if _llave_token(env) else "NO",
+                "SI" if os.path.exists(blob) else "NO",
+                "SI" if env.get("ML_REFRESH_TOKEN") else "NO"))
+        if os.path.exists(blob) and _llave_token(env):
+            log("  HINT: hay blob y llave, pero el descifrado fallo:")
+            log("        el secret ML_TOKEN_KEY no es la llave con la que")
+            log("        se cifro el hub/ml_token.enc Vigente.")
         sys.exit(1)
     cuerpo = urllib.parse.urlencode({
         "grant_type": "refresh_token",

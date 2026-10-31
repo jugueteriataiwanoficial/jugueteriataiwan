@@ -92,13 +92,14 @@ jobs:
         run: python qa_ml.py
 
       - name: Sincronizar y publicar en Mercado Libre
-        run: python hub/canal_ml.py --sincronizar --publicar "${{ inputs.publicar }}"
         env:
           ML_TOKEN_KEY: ${{ secrets.ML_TOKEN_KEY }}
+          COSTOS_KEY: ${{ secrets.COSTOS_KEY }}
           GIT_AUTHOR_NAME: sync-hub
           GIT_AUTHOR_EMAIL: actions@github.com
           GIT_COMMITTER_NAME: sync-hub
           GIT_COMMITTER_EMAIL: actions@github.com
+        run: python hub/canal_ml.py --sincronizar --publicar "${{ inputs.publicar }}"
 
       - name: Commitear estado del canal y token rotado
         run: |
