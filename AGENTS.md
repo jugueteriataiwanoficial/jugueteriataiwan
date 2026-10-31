@@ -145,9 +145,17 @@ es rechazado, el cron movió el remoto: `git pull --rebase origin main` y de nue
   (SKU→listing, sin costos) vive en `data/canal_ml.json` (generado, se
   commitea). El refresh token de ML **rota en cada uso**: se persiste cifrado
   en `hub/ml_token.enc` (AES-256+PBKDF2, mismo modelo que `costos.posgold.enc`;
-  ese blob sí se commitea) y el workflow `sync-ml.yml` lo renueva y lo vuelve a
-  subir. `sync-ml.yml` es dispatch-only hasta aprobar la app en
-  developers.mercadolibre.com.co. Comandos: `--autorizar` (primera vez),
+   ese blob sí se commitea) y el workflow `sync-ml.yml` lo renueva y lo vuelve a
+   subir. **Cron activo 4×/día** (12:15, 13:15, 0:15, 1:15 UTC) + dispatch
+   manual; primera corrida verde completa 31-10-2026. GOTCHA aprendido ese día:
+   si una corrida cae en "Sincronizar y publicar en Mercado Libre" sin salir del
+   sitio, sospechar del descifrado del blob — `cargar_token_cifrado()` armaba el
+   `openssl` con el `-d` ANTES del subcomando `enc` y fallaba SIEMPRE en silencio
+   (la corrida caía al `ML_REFRESH_TOKEN` viejo del secret → 401); corregido en
+   5824eb7 (el `-d` va después de `enc`). Ojo: el blob se descifra con la llave
+   `ML_TOKEN_KEY` (verificado: `COSTOS_KEY` NO lo descifra); ambos secrets deben
+   coincidir con el `.env` local, y un re-run de una corrida fallida usa SIEMPRE
+   el commit viejo: hay que dispatchar una corrida nueva. Comandos: `--autorizar` (primera vez),
   `--prueba`, `--dry-run` (sin red ni token), `--sincronizar --publicar N`.
   **Campaña de altas completa (29-10-2026)**: 678 publicaciones en
   `data/canal_ml.json` (658 activas, 0 elegibles pendientes, `qa_ml.py`

@@ -37,7 +37,7 @@ plan completo (fases 2–4: backend de webhooks, OMS, panel unificado).
 | `hub/productos.json` | **El catálogo maestro, SIEMPRE trae costos** | **NUNCA** (gitignored) |
 | `hub/ml_token.enc` | Refresh token de ML cifrado (AES-256-CBC + PBKDF2) | Sí (cifrado) |
 | `data/canal_ml.json` | Estado del canal ML: SKU → listing, precios, stock publicado | Sí (sin costos) |
-| `.github/workflows/sync-ml.yml` | Cron de ML en Actions (dispatch-only por ahora) | Sí |
+| `.github/workflows/sync-ml.yml` | Cron de ML en Actions (4×/día, activo) + dispatch a mano | Sí |
 
 Regla de oro: `hub/productos.json` y los reportes de plan viven fuera del repo
 porque contienen costos. La consola de los scripts nunca imprime valores de
@@ -184,6 +184,24 @@ El OAuth de ML **rota el refresh token en cada uso** (el access token dura
 3. Orden de lectura: blob cifrado → `.env` → error con instrucciones de
    `--autorizar`.
 
+**GOTCHA (31-10-2026, corregido en 5824eb7)**: `cargar_token_cifrado()`
+armaba el `openssl` como `openssl -d enc …` (el `-d` ANTES del subcomando
+`enc`): openssl lo rechazaba con `Invalid command '-d'` y el descifrado
+fallaba SIEMPRE y en silencio — la corrida caía entonces al
+`ML_REFRESH_TOKEN` del secret (ya rotado durante la campaña) y moría con
+`HTTP 401` justo en "Sincronizar y publicar en Mercado Libre". La forma
+correcta es `openssl enc -d …`. Aprendizajes de esa corrida:
+
+- El blob vigente se descifra con la llave `ML_TOKEN_KEY` (verificado:
+  `COSTOS_KEY` NO lo descifra). El workflow exporta ambas (`ML_TOKEN_KEY`
+  y, de respaldo, `COSTOS_KEY` desde 840240f); ambos secrets deben
+  coincidir con el `.env` local desde el que se cifró.
+- Un **re-run** de una corrida fallida usa SIEMPRE el commit con el que
+  nació (el workflow y el código viejos); para probar un arreglo hay que
+  **dispatchar una corrida nueva** desde Actions.
+- El paso falla en segundos (< 1 s): si "Sincronizar y publicar" muere
+  sin haber hablado con ML, rastrear el descifrado, no el API.
+
 Si ML rechaza el refresh (`HTTP 401` en `/oauth/token`), vuelve a autorizar:
 `python hub/canal_ml.py --autorizar`.
 
@@ -207,7 +225,12 @@ también usa solo el access token.
    `python qa_ml.py` → `--publicar 1` y revisar la moderación antes de subir
    a 2-3. Si ML pide un atributo nuevo, el alta lo lista en `faltantes` y se
    agrega al producto o al mapa curado, nunca se inventa.
-4. Hasta entonces `sync-ml.yml` es dispatch-only (no corre solo).
+4. **Listo (31 oct 2026)**: `sync-ml.yml` corre con cron 4×/día
+   (12:15, 13:15, 0:15, 1:15 UTC = 07:15, 08:15, 19:15, 20:15 CO) y también
+   acepta dispatch manual (`publicar` = cuántas altas crear; 0 = solo
+   sincronizar). Primera corrida verde completa 31-10-2026: sincronizó el
+   canal, rotó el token y commitea `data/canal_ml.json` + `hub/ml_token.enc`.
+   Si una corrida falla, dispatchar una NUEVA (el re-run usa el commit viejo).
 
 ## Estado del canal ML (29-10-2026)
 
