@@ -1,7 +1,7 @@
 {
  "version": 1,
  "site": "MCO",
- "actualizado": "2026-10-29T19:19:40",
+ "actualizado": "2026-10-31T19:18:29",
  "listings": {
   "001309": {
    "listing_id": "MCO2332448697",
@@ -3319,14 +3319,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591114480-encajable-numeros-tabla-30cm22cm-_JM",
    "estado": "active",
    "precio": 39500,
-   "stock_publicado": 98,
+   "stock_publicado": 95,
    "categoria_ml": "MCO1910",
    "seller_custom_field": "04537",
    "user_product_id": "MCOU5745530110",
    "family_name": "Encajable Numeros Tabla 30cm*22cm",
    "origen": "catalogo",
    "creado": "2026-10-29T17:23:19",
-   "actualizado": "2026-10-29T17:27:11"
+   "actualizado": "2026-10-31T19:18:22"
   },
   "04538": {
    "listing_id": "MCO4591114492",
@@ -3349,14 +3349,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591151962-encajable-rompecabeza-cuerpo-humano-30cm15cm-_JM",
    "estado": "active",
    "precio": 59100,
-   "stock_publicado": 66,
+   "stock_publicado": 61,
    "categoria_ml": "MCO1910",
    "seller_custom_field": "04539",
    "user_product_id": "MCOU5695905417",
    "family_name": "Encajable Rompecabeza Cuerpo Humano 30cm*15cm",
    "origen": "catalogo",
    "creado": "2026-10-29T17:23:26",
-   "actualizado": "2026-10-29T17:27:16"
+   "actualizado": "2026-10-31T19:18:23"
   },
   "04540": {
    "listing_id": "MCO4591114512",
@@ -3452,7 +3452,7 @@
    "listing_id": "MCO4591139116",
    "titulo": "Figuras Geometricas Encajable 5 Columnas",
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591139116-figuras-geometricas-encajable-5-columnas-_JM",
-   "estado": "active",
+   "estado": "paused",
    "precio": 44000,
    "stock_publicado": 19,
    "categoria_ml": "MCO457877",
@@ -3461,7 +3461,7 @@
    "family_name": "Figuras Geometricas Encajable 5 Columnas",
    "origen": "catalogo",
    "creado": "2026-10-29T17:23:56",
-   "actualizado": "2026-10-29T17:27:32"
+   "actualizado": "2026-10-31T19:18:23"
   },
   "04561": {
    "listing_id": "MCO4591126678",
@@ -4944,14 +4944,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591117160-4-en-linea-mediano-_JM",
    "estado": "active",
    "precio": 43600,
-   "stock_publicado": 81,
+   "stock_publicado": 79,
    "categoria_ml": "MCO1161",
    "seller_custom_field": "4720250429128",
    "user_product_id": "MCOU5695981701",
    "family_name": "4 En Linea Mediano",
    "origen": "catalogo",
    "creado": "2026-10-29T17:40:57",
-   "actualizado": "2026-10-29T17:44:55"
+   "actualizado": "2026-10-31T19:18:25"
   },
   "4891001002652": {
    "listing_id": "MCO4591154602",
@@ -9499,14 +9499,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591144764-tridomino-caja-roja-_JM",
    "estado": "active",
    "precio": 101800,
-   "stock_publicado": 45,
+   "stock_publicado": 39,
    "categoria_ml": "MCO1161",
    "seller_custom_field": "7703493022445",
    "user_product_id": "MCOU5696111163",
    "family_name": "Tridomino Caja Roja",
    "origen": "catalogo",
    "creado": "2026-10-29T18:11:46",
-   "actualizado": "2026-10-29T18:14:19"
+   "actualizado": "2026-10-31T19:18:27"
   },
   "7703493055993": {
    "listing_id": "MCO4591157524",
@@ -10777,7 +10777,7 @@
    "listing_id": "MCO2332923755",
    "titulo": "Tabla Cocina Juguete Kits De Utensilios Para Cocina",
    "permalink": "http://articulo.mercadolibre.com.co/MCO-2332923755-tabla-cocina-juguete-kits-de-utensilios-para-cocina-_JM",
-   "estado": "paused",
+   "estado": "active",
    "precio": 41000,
    "stock_publicado": 95,
    "categoria_ml": "MCO432830",
@@ -10785,13 +10785,14 @@
    "user_product_id": "MCOU5696397961",
    "family_name": "Tabla Cocina Juguete Kits De Utensilios Para Cocina",
    "origen": "catalogo",
-   "creado": "2026-10-29T19:18:57"
+   "creado": "2026-10-29T19:18:57",
+   "actualizado": "2026-10-31T19:18:18"
   },
   "02783": {
    "listing_id": "MCO2332949485",
    "titulo": "Busca La Pareja Caja Carton Cajas Registradoras",
    "permalink": "http://articulo.mercadolibre.com.co/MCO-2332949485-busca-la-pareja-caja-carton-cajas-registradoras-_JM",
-   "estado": "paused",
+   "estado": "active",
    "precio": 38600,
    "stock_publicado": 10,
    "categoria_ml": "MCO413461",
@@ -10799,13 +10800,14 @@
    "user_product_id": "MCOU5746022500",
    "family_name": "Busca La Pareja Caja Carton Cajas Registradoras",
    "origen": "catalogo",
-   "creado": "2026-10-29T19:19:04"
+   "creado": "2026-10-29T19:19:04",
+   "actualizado": "2026-10-31T19:18:20"
   },
   "2019030602328": {
    "listing_id": "MCO2332987591",
    "titulo": "Caja Juguete Princesa Elsa Fashion Girl 3d Light",
    "permalink": "http://articulo.mercadolibre.com.co/MCO-2332987591-caja-juguete-princesa-elsa-fashion-girl-3d-light-_JM",
-   "estado": "paused",
+   "estado": "active",
    "precio": 74400,
    "stock_publicado": 53,
    "categoria_ml": "MCO413461",
@@ -10833,7 +10835,8 @@
      "error": "validation_error",
      "status": 400
     }
-   }
+   },
+   "actualizado": "2026-10-31T19:18:24"
   },
   "2023100269793": {
    "listing_id": "MCO2332949525",
@@ -10867,7 +10870,7 @@
    "listing_id": "MCO2332987621",
    "titulo": "Caja Registradora Con Pilas Luz Ysonido En Caja",
    "permalink": "http://articulo.mercadolibre.com.co/MCO-2332987621-caja-registradora-con-pilas-luz-ysonido-en-caja-_JM",
-   "estado": "paused",
+   "estado": "active",
    "precio": 110600,
    "stock_publicado": 22,
    "categoria_ml": "MCO413461",
@@ -10875,13 +10878,14 @@
    "user_product_id": "MCOU5746024570",
    "family_name": "Caja Registradora Con Pilas Luz Ysonido En Caja",
    "origen": "catalogo",
-   "creado": "2026-10-29T19:19:23"
+   "creado": "2026-10-29T19:19:23",
+   "actualizado": "2026-10-31T19:18:26"
   },
   "6603888931462": {
    "listing_id": "MCO2332949543",
    "titulo": "Set De Herramientas Negra (pilas) Kits De Herramientas",
    "permalink": "http://articulo.mercadolibre.com.co/MCO-2332949543-set-de-herramientas-negra-pilas-kits-de-herramientas-_JM",
-   "estado": "paused",
+   "estado": "active",
    "precio": 112100,
    "stock_publicado": 27,
    "categoria_ml": "MCO432838",
@@ -10889,13 +10893,14 @@
    "user_product_id": "MCOU5696398559",
    "family_name": "Set De Herramientas Negra (pilas) Kits De Herramientas",
    "origen": "catalogo",
-   "creado": "2026-10-29T19:19:26"
+   "creado": "2026-10-29T19:19:26",
+   "actualizado": "2026-10-31T19:18:27"
   },
   "7706888846206": {
    "listing_id": "MCO2332923831",
    "titulo": "Caja Juguete Princesa Ana Rotating Princess",
    "permalink": "http://articulo.mercadolibre.com.co/MCO-2332923831-caja-juguete-princesa-ana-rotating-princess-_JM",
-   "estado": "paused",
+   "estado": "active",
    "precio": 53100,
    "stock_publicado": 47,
    "categoria_ml": "MCO413461",
@@ -10903,13 +10908,14 @@
    "user_product_id": "MCOU5696398629",
    "family_name": "Caja Juguete Princesa Ana Rotating Princess",
    "origen": "catalogo",
-   "creado": "2026-10-29T19:19:29"
+   "creado": "2026-10-29T19:19:29",
+   "actualizado": "2026-10-31T19:18:28"
   },
   "7706888846213": {
    "listing_id": "MCO2332974907",
    "titulo": "Caja Juguete Princesa Elsa Beautiful Rotating",
    "permalink": "http://articulo.mercadolibre.com.co/MCO-2332974907-caja-juguete-princesa-elsa-beautiful-rotating-_JM",
-   "estado": "paused",
+   "estado": "active",
    "precio": 59100,
    "stock_publicado": 20,
    "categoria_ml": "MCO413461",
@@ -10917,7 +10923,8 @@
    "user_product_id": "MCOU5746023392",
    "family_name": "Caja Juguete Princesa Elsa Beautiful Rotating",
    "origen": "catalogo",
-   "creado": "2026-10-29T19:19:39"
+   "creado": "2026-10-29T19:19:39",
+   "actualizado": "2026-10-31T19:18:29"
   }
  },
  "categorias": {
