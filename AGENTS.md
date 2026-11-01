@@ -601,6 +601,12 @@ es rechazado, el cron movió el remoto: `git pull --rebase origin main` y de nue
 - El push del cron puede ser rechazado si el panel publicó algo a media
   corrida (el remoto se movió entre el checkout y el push del runner): la
   corrida avisa "AVISO git push" y la siguiente lo publica todo. No es error.
+  Caso aparte: sync-ml y sync-top300 comparten cron y se pisan (visto 01-11-2026
+  en sync-ml #6: push rechazado en el paso de commit). `sync-ml.yml` ahora
+  reintenta 3 veces con `git pull --rebase`; si AUN así falla, la corrida queda
+  roja y el refresh token rotado se pierde (en main queda un blob viejo ya
+  consumido): hay que recuperar con `python hub/canal_ml.py --autorizar` y
+  reconciliar el estado (`--reconciliar`) para no reintentar altas ya creadas.
 - QA de WebKit: tocar una foto del lightbox solo cuando la miniatura de la
   tarjeta ya cargó (nadie toca una foto que no ve); si el QA de WebKit móvil
   falla por tiempo, revisar primero si es la red, no el código.
