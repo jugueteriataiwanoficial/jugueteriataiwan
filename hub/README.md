@@ -86,8 +86,8 @@ se pausan automáticamente.
 Diagnóstico y payloads sin publicar:
 
 ```bash
-python hub/ml_diagnostico.py                 # 5 SKUs de muestra, endpoints públicos
-python hub/ml_diagnostico.py --sku 001309 --sku 00723
+python hub/ml_diagnostico.py                 # 5 SKUs de muestra vigentes, endpoints públicos
+python hub/ml_diagnostico.py --sku 00711 --sku 04557
 python hub/ml_diagnostico.py --payloads      # payloads completos, no publica
 python hub/ml_diagnostico.py --con-token     # usa SOLO ML_ACCESS_TOKEN (no rota)
 python qa_ml.py                              # QA offline, sin red ni costos
@@ -262,16 +262,17 @@ también usa solo el access token.
     `data/canal_ml.json` + `hub/ml_token.enc`.
     Si una corrida falla, dispatchar una NUEVA (el re-run usa el commit viejo).
 
-## Estado del canal ML (29-10-2026)
+## Estado del canal ML (01-11-2026)
 
 Campaña de altas de fase 1 **completa** (corridas `--publicar 50` en lote):
-678 publicaciones en `data/canal_ml.json` (658 `active`, 20 `paused`),
+678 publicaciones en `data/canal_ml.json` (664 `active`, 14 `paused`),
 0 elegibles pendientes y 0 `faltantes`. Verificación: `python qa_ml.py`
-(70/70).
+(82/82).
 
-- **Altas recién creadas en `paused`** (9 al cierre): esperando moderación
-  de ML; el sync las activa en la corrida siguiente (patrón confirmado:
-  el alta se crea, la activación entra en la pasada siguiente).
+- **Altas recién creadas en `paused`** (3 al 01-11: `04557`,
+  `2023100269793`, `6603888928066`): esperando moderación de ML; el sync
+  las activa en la corrida siguiente (patrón confirmado: el alta se crea,
+  la activación entra en la pasada siguiente).
 - **Atascadas en `item.status.not_modifiable`** (10): ML no permite cambiar
   el estado por API (moderación colgada o transición vedada). Solo manual
   en el panel de ML — cada corrida lo reintentará en vano hasta que se

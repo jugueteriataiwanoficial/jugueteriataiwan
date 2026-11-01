@@ -29,9 +29,10 @@ Variables de .env (todas opcionales salvo las credenciales):
                                      omite, se usa COSTOS_KEY)
   ML_SITE_ID=MCO
   ML_TIPO_PUBLICACION=gold_special  (gold_special=Clasica, silver=Gratuita)
-  ML_PRECIO_FACTOR=0.20             recargo sobre Precio 5 (15% + 5%)
   ML_PRECIO_REDONDEO=100
-  ML_COMISION_PCT=16                comision ML aproximada (cuidado del precio)
+  ML_COMISION_PCT=15                comision ML (15% en juguetes)
+  ML_PASARELA_PCT=5                 pasarela de pago (5%)
+  ML_ENVIO_COSTO=23000              envio gratis asumido por el vendedor
   ML_MARGEN_MINIMO=0.25             utilidad/costo minima para publicar
   ML_STOCK_MINIMO=2                 no publicar con menos existencias
   ML_STOCK_MAXIMO=99                techo publicado (no regala el inventario)

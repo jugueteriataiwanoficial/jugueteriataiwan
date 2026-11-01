@@ -15,8 +15,8 @@ Objetivo: detectar categorias equivocadas, dominios que exigen family_name
 no estan en data/canal_ml.json, antes de tocar el canal.
 
 Uso:
-  python hub/ml_diagnostico.py                      # las 5 muestras del plan
-  python hub/ml_diagnostico.py --sku 001309 --sku 00723
+  python hub/ml_diagnostico.py                      # las 5 muestras vigentes
+  python hub/ml_diagnostico.py --sku 00711 --sku 04557
   python hub/ml_diagnostico.py --con-token --limite 50
   python hub/ml_diagnostico.py --payloads          # arma payloads, no publica
   python hub/ml_diagnostico.py --json              # guarda reportes/ml_diagnostico_*.json
@@ -43,12 +43,18 @@ SITE = "MCO"
 HUB_PATH = os.path.join(BASE_DIR, "hub", "productos.json")
 DIR_REPORTES = os.path.join(BASE_DIR, "reportes")
 
+# Muestras vigentes (01-11-2026): SKUs del alcance ML (jugueteria,
+# juego-de-mesa, didactico) que cubren los riesgos ya vistos — candidata
+# multiple con no-juguete (piano), sin candidatas (fallback, Nobody
+# Sausage), primera candidata no-juguete (marimba) y publicaciones
+# recientes (04557 en moderacion, 00752 activa). OJO: 001309 y 00695
+# salieron del set (ignorado / categoria fuera del alcance de altas).
 MUESTRAS = [
-    ("001309", "Abeja Baston Bolsa"),
-    ("00695", "Caja Cubo Rubik 3X3 Ivycube Hoja Neon"),
     ("00711", "Piano De Juguete Surtido"),
     ("00723", "Nobody Sausage Magic Dancer"),
     ("00742", "Caja Marimba De Colores Madera"),
+    ("04557", "Figuras Geometricas Encajable 5 Columnas"),
+    ("00752", "Caja Juguete Camion De Basura Verde Con Luces Y Sonido"),
 ]
 
 FALLBACK = "MCO1910"

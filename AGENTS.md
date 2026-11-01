@@ -194,8 +194,9 @@ es rechazado, el cron movió el remoto: `git pull --rebase origin main` y de nue
    "Yoyo Yoyo" sí era error del modelo (la factura dice "YOYO METALICO")
    y se corrigió puntual.
   **Campaña de altas completa (29-10-2026)**: 678 publicaciones en
-  `data/canal_ml.json` (658 activas, 0 elegibles pendientes, `qa_ml.py`
-  70/70), subidas en tandas de `--publicar 50`. El ciclo de cada tanda:
+  `data/canal_ml.json` (658 activas al cierre; **664 activas y 14
+  pausadas al 01-11-2026**, 0 elegibles pendientes, `qa_ml.py` 82/82),
+  subidas en tandas de `--publicar 50`. El ciclo de cada tanda:
   alta OK → `paused` → el sync siguiente la activa (la moderación de ML
   despeja entre corridas). Al cierre quedaban 3 puntas: (a) 9 recién
   creadas esperando moderación (se activan solas), (b) 10 congeladas por
