@@ -180,6 +180,19 @@ es rechazado, el cron movió el remoto: `git pull --rebase origin main` y de nue
    siguiente, después solo diferencias); el cron lleva `--titulos` y
    `qa_ml.py` cubre el módulo (82/82). Nunca toca externos ni ignorados
    (esos ya los renombró/escondió la dueña en el panel de ML).
+   **Fase B con visión (31-10-2026)**: `gen_descripciones.py --titulos`
+   ya corrió su piloto: **99 títulos** propuestos leyendo la foto real
+   (llave NVIDIA en variable de entorno, NUNCA en el repo). Regla
+   "mejorable": la visión solo reemplaza una entrada que sea
+   EXACTAMENTE el genérico determinista de la fase A — si la dueña (o
+   una vuelta previa) la tocó, no se pisa. La revisión antes→después
+   con el nombre de factura queda en `reportes/titulos_faseB_revision.csv`
+   (gitignored); quedan 82 elegibles para el siguiente lote, esperando el
+   visto bueno de la dueña. GOTCHA del piloto: NO colapsar palabras
+   repetidas automáticamente — este catálogo tiene nombres legítimos con
+   reduplicación (Ula Ula, Taki Taki, Yey Yey, Ugy Ugy, Raspa Raspa);
+   "Yoyo Yoyo" sí era error del modelo (la factura dice "YOYO METALICO")
+   y se corrigió puntual.
   **Campaña de altas completa (29-10-2026)**: 678 publicaciones en
   `data/canal_ml.json` (658 activas, 0 elegibles pendientes, `qa_ml.py`
   70/70), subidas en tandas de `--publicar 50`. El ciclo de cada tanda:

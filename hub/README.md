@@ -175,8 +175,14 @@ manda ese; si no, la limpieza determinística de `hub/mejorar_titulo.py`
 (tildes de diccionario, medidas `20*20CM → 20x20cm`, `X 50 → x50`,
 capitalización natural, sin reordenar palabras). La fase B
 (`gen_descripciones.py --titulos`) propone títulos leyendo la foto real
-con las mismas guardias anti-inventar de las descripciones; lo que
-ya esté en el JSON nunca se pisa. El modo `--titulos` del adaptador
+con las mismas guardias anti-inventar de las descripciones. Regla
+"mejorable": la visión solo reemplaza una entrada que sea EXACTAMENTE el
+genérico determinista de la fase A; las correcciones de la dueña jamás
+se pisan. Piloto corrido 31-10-2026: 99 títulos por foto (revisión
+antes→después en `reportes/titulos_faseB_revision.csv`; 82 elegibles
+pendientes del siguiente lote). OJO: en este catálogo las palabras
+repetidas suelen ser legítimas (Ula Ula, Taki Taki, Yey Yey, Ugy Ugy):
+nunca colapsarlas automáticamente. El modo `--titulos` del adaptador
 aplica la curación a las publicaciones existentes (`PUT /items` con solo
 `title`) y el cron lo lleva en cada corrida; nunca toca externos ni
 ignorados (esos ya los renombró/escondió la dueña a mano).
