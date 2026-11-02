@@ -1,7 +1,7 @@
 {
  "version": 1,
  "site": "MCO",
- "actualizado": "2026-11-01T12:59:04",
+ "actualizado": "2026-11-02T01:15:37",
  "listings": {
   "001309": {
    "listing_id": "MCO2332448697",
@@ -9944,14 +9944,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591120436-set-carro-construccion-x5-_JM",
    "estado": "active",
    "precio": 41400,
-   "stock_publicado": 99,
+   "stock_publicado": 97,
    "categoria_ml": "MCO433685",
    "seller_custom_field": "7708903081050",
    "user_product_id": "MCOU5696121735",
    "family_name": "Set Carro Construccion X5",
    "origen": "catalogo",
    "creado": "2026-10-29T18:15:29",
-   "actualizado": "2026-10-29T18:18:40"
+   "actualizado": "2026-11-02T01:12:09"
   },
   "7708968946752": {
    "listing_id": "MCO4591120440",
