@@ -1,7 +1,7 @@
 {
  "version": 1,
  "site": "MCO",
- "actualizado": "2026-11-04T13:15:20",
+ "actualizado": "2026-11-04T14:29:09",
  "listings": {
   "001309": {
    "listing_id": "MCO2332448697",
@@ -5369,14 +5369,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591117698-guitarra-en-bolsa-cierre-_JM",
    "estado": "active",
    "precio": 104800,
-   "stock_publicado": 29,
+   "stock_publicado": 28,
    "categoria_ml": "MCO1910",
    "seller_custom_field": "6603888902004",
    "user_product_id": "MCOU5745616956",
    "family_name": "Guitarra En Bolsa Cierre",
    "origen": "catalogo",
    "creado": "2026-10-29T17:45:34",
-   "actualizado": "2026-10-29T17:49:36"
+   "actualizado": "2026-11-04T14:25:31"
   },
   "6603888902073": {
    "listing_id": "MCO4591117714",
