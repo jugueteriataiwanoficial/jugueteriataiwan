@@ -1,7 +1,7 @@
 {
  "version": 1,
  "site": "MCO",
- "actualizado": "2026-11-06T01:21:01",
+ "actualizado": "2026-11-06T19:27:02",
  "listings": {
   "001309": {
    "listing_id": "MCO2332448697",
@@ -9080,14 +9080,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591119664-set-maquillaje-maleta-caja-201614cm-_JM",
    "estado": "active",
    "precio": 135000,
-   "stock_publicado": 59,
+   "stock_publicado": 58,
    "categoria_ml": "MCO1910",
    "seller_custom_field": "7702202571403",
    "user_product_id": "MCOU5696095867",
    "family_name": "Set Maquillaje Maleta Caja 20*16*14cm",
    "origen": "catalogo",
    "creado": "2026-10-29T18:08:18",
-   "actualizado": "2026-10-29T18:10:09"
+   "actualizado": "2026-11-06T19:23:19"
   },
   "7702202584083": {
    "listing_id": "MCO4591144506",
@@ -10926,6 +10926,20 @@
    "origen": "catalogo",
    "creado": "2026-10-29T19:19:39",
    "actualizado": "2026-10-31T19:18:29"
+  },
+  "7120251150873": {
+   "listing_id": "MCO2352283499",
+   "titulo": "Tangram Magnético 7 Piezas Dinosaurio Juegos De Mesa Y",
+   "permalink": "http://articulo.mercadolibre.com.co/MCO-2352283499-tangram-magnetico-7-piezas-dinosaurio-juegos-de-mesa-y-_JM",
+   "estado": "paused",
+   "precio": 43600,
+   "stock_publicado": 21,
+   "categoria_ml": "MCO1161",
+   "seller_custom_field": "7120251150873",
+   "user_product_id": "MCOU5782232557",
+   "family_name": "Tangram Magnético 7 Piezas Dinosaurio Juegos De Mesa Y",
+   "origen": "catalogo",
+   "creado": "2026-11-06T19:23:21"
   }
  },
  "categorias": {
@@ -11588,7 +11602,8 @@
   "ABACO CLASICO GRANDE MADERA": "MCO433049",
   "POKER LETRA PEQUENA PLASTICO SEMIORIGINAL": "MCO1910",
   "TABLERO MAGICO PERA X 2 COLORES": "MCO1910",
-  "TABLERO MAGICO CASITA 4 COLORES": "MCO1910"
+  "TABLERO MAGICO CASITA 4 COLORES": "MCO1910",
+  "TANGRAM MAGNETICO 7 PIEZAS DINOSAURIO": "MCO1161"
  },
  "dominios_cat": {},
  "categorias_version": 2,
@@ -12252,7 +12267,8 @@
   "ABACO CLASICO GRANDE MADERA": "curada",
   "POKER LETRA PEQUENA PLASTICO SEMIORIGINAL": "fallback",
   "TABLERO MAGICO PERA X 2 COLORES": "fallback",
-  "TABLERO MAGICO CASITA 4 COLORES": "fallback"
+  "TABLERO MAGICO CASITA 4 COLORES": "fallback",
+  "TANGRAM MAGNETICO 7 PIEZAS DINOSAURIO": "curada"
  },
  "categorias_info": {
   "MCO430205": {
@@ -34140,6 +34156,24 @@
    ],
    "errores": [],
    "actualizado": "2026-10-29T19:19:38"
+  },
+  "7120251150873": {
+   "http": 400,
+   "categoria": "MCO1161",
+   "causas": [
+    {
+     "department": "shipping",
+     "cause_id": 4053,
+     "type": "warning",
+     "code": "shipping.lost_me1_by_user",
+     "references": [
+      "user.shipping_preferences.modes"
+     ],
+     "message": "User has not mode me1"
+    }
+   ],
+   "errores": [],
+   "actualizado": "2026-11-06T19:23:20"
   }
  },
  "ignorados": [
