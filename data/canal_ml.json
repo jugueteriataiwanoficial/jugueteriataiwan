@@ -1,7 +1,7 @@
 {
  "version": 1,
  "site": "MCO",
- "actualizado": "2026-11-06T19:27:02",
+ "actualizado": "2026-11-07T05:59:58",
  "listings": {
   "001309": {
    "listing_id": "MCO2332448697",
@@ -10931,7 +10931,7 @@
    "listing_id": "MCO2352283499",
    "titulo": "Tangram Magnético 7 Piezas Dinosaurio Juegos De Mesa Y",
    "permalink": "http://articulo.mercadolibre.com.co/MCO-2352283499-tangram-magnetico-7-piezas-dinosaurio-juegos-de-mesa-y-_JM",
-   "estado": "paused",
+   "estado": "active",
    "precio": 43600,
    "stock_publicado": 21,
    "categoria_ml": "MCO1161",
@@ -10939,7 +10939,8 @@
    "user_product_id": "MCOU5782232557",
    "family_name": "Tangram Magnético 7 Piezas Dinosaurio Juegos De Mesa Y",
    "origen": "catalogo",
-   "creado": "2026-11-06T19:23:21"
+   "creado": "2026-11-06T19:23:21",
+   "actualizado": "2026-11-07T05:56:04"
   }
  },
  "categorias": {
