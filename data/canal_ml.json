@@ -1,7 +1,7 @@
 {
  "version": 1,
  "site": "MCO",
- "actualizado": "2026-11-07T17:48:49",
+ "actualizado": "2026-11-08T06:01:49",
  "listings": {
   "001309": {
    "listing_id": "MCO2332448697",
@@ -1575,14 +1575,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-2332813285-pitadora-aluminio-cocina-_JM",
    "estado": "active",
    "precio": 39500,
-   "stock_publicado": 10,
+   "stock_publicado": 4,
    "categoria_ml": "MCO1910",
    "seller_custom_field": "01915",
    "user_product_id": "MCOU5695734033",
    "family_name": "Pitadora Aluminio Cocina",
    "origen": "catalogo",
    "creado": "2026-10-29T16:47:24",
-   "actualizado": "2026-10-29T17:01:10"
+   "actualizado": "2026-11-08T05:58:01"
   },
   "01946": {
    "listing_id": "MCO2332813289",
@@ -3830,14 +3830,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591139284-jenga-madera-caja-rosada-_JM",
    "estado": "active",
    "precio": 37700,
-   "stock_publicado": 99,
+   "stock_publicado": 94,
    "categoria_ml": "MCO433049",
    "seller_custom_field": "05023",
    "user_product_id": "MCOU5745541176",
    "family_name": "Jenga Madera Caja Rosada",
    "origen": "catalogo",
    "creado": "2026-10-29T17:25:34",
-   "actualizado": "2026-10-29T17:28:07"
+   "actualizado": "2026-11-08T05:58:07"
   },
   "05030": {
    "listing_id": "MCO4591126902",
@@ -5640,14 +5640,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591155250-lanza-bolas-de-hidrogel-pila-recargable-_JM",
    "estado": "active",
    "precio": 91200,
-   "stock_publicado": 36,
+   "stock_publicado": 30,
    "categoria_ml": "MCO1910",
    "seller_custom_field": "6603888921883",
    "user_product_id": "MCOU5745617872",
    "family_name": "Lanza Bolas De Hidrogel (pila Recargable)",
    "origen": "catalogo",
    "creado": "2026-10-29T17:46:35",
-   "actualizado": "2026-11-05T01:12:05"
+   "actualizado": "2026-11-08T05:58:08"
   },
   "6603888922033": {
    "listing_id": "MCO4591130024",
@@ -6750,14 +6750,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591156126-tortuga-infantil-luz-y-sonido-pilas--_JM",
    "estado": "active",
    "precio": 67400,
-   "stock_publicado": 19,
+   "stock_publicado": 79,
    "categoria_ml": "MCO1910",
    "seller_custom_field": "6603888929841",
    "user_product_id": "MCOU5745659622",
    "family_name": "Tortuga Infantil Luz Y Sonido (pilas )",
    "origen": "catalogo",
    "creado": "2026-10-29T17:55:31",
-   "actualizado": "2026-10-29T17:58:10"
+   "actualizado": "2026-11-08T05:58:11"
   },
   "6603888929940": {
    "listing_id": "MCO4591143446",
@@ -6935,14 +6935,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591131030-set-tienda-con-caja-registradora-y-accesorios-_JM",
    "estado": "active",
    "precio": 73400,
-   "stock_publicado": 23,
+   "stock_publicado": 19,
    "categoria_ml": "MCO1910",
    "seller_custom_field": "6603888930458",
    "user_product_id": "MCOU5696046113",
    "family_name": "Set Tienda Con Caja Registradora Y Accesorios",
    "origen": "catalogo",
    "creado": "2026-10-29T17:56:03",
-   "actualizado": "2026-11-05T01:12:15"
+   "actualizado": "2026-11-08T05:58:12"
   },
   "6603888930465": {
    "listing_id": "MCO4591156166",
@@ -7220,7 +7220,7 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591143590-moto-de-carreras-x-4-_JM",
    "estado": "active",
    "precio": 58500,
-   "stock_publicado": 72,
+   "stock_publicado": 67,
    "categoria_ml": "MCO433685",
    "seller_custom_field": "6905112060161",
    "user_product_id": "MCOU5696048705",
@@ -7247,7 +7247,7 @@
      "status": 400
     }
    },
-   "actualizado": "2026-11-06T01:17:25"
+   "actualizado": "2026-11-08T05:58:13"
   },
   "6905489160624": {
    "listing_id": "MCO4591156250",
@@ -8030,14 +8030,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591119228-carta-uno-h2o-_JM",
    "estado": "active",
    "precio": 47000,
-   "stock_publicado": 66,
+   "stock_publicado": 60,
    "categoria_ml": "MCO1161",
    "seller_custom_field": "6978598795605",
    "user_product_id": "MCOU5696075433",
    "family_name": "Carta Uno H2o",
    "origen": "catalogo",
    "creado": "2026-10-29T18:02:58",
-   "actualizado": "2026-10-29T18:05:57"
+   "actualizado": "2026-11-08T05:58:15"
   },
   "6984831050011": {
    "listing_id": "MCO4591144042",
@@ -8870,14 +8870,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591144452-jenga-54-piezas-pq-18x6-cm-_JM",
    "estado": "active",
    "precio": 37700,
-   "stock_publicado": 90,
+   "stock_publicado": 82,
    "categoria_ml": "MCO1910",
    "seller_custom_field": "7702202502117",
    "user_product_id": "MCOU5745712442",
    "family_name": "Jenga 54 Piezas Pq 18x6 Cm",
    "origen": "catalogo",
    "creado": "2026-10-29T18:07:37",
-   "actualizado": "2026-10-29T18:09:55"
+   "actualizado": "2026-11-08T05:58:15"
   },
   "7702202502124": {
    "listing_id": "MCO4591157184",
@@ -9170,14 +9170,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591157382-batalla-de-bloques-construccion-madera-_JM",
    "estado": "active",
    "precio": 88300,
-   "stock_publicado": 6,
+   "stock_publicado": 5,
    "categoria_ml": "MCO433049",
    "seller_custom_field": "7702202664105",
    "user_product_id": "MCOU5745721946",
    "family_name": "Batalla De Bloques Construccion Madera",
    "origen": "catalogo",
    "creado": "2026-10-29T18:10:31",
-   "actualizado": "2026-10-29T18:13:57"
+   "actualizado": "2026-11-08T05:58:16"
   },
   "7702202664112": {
    "listing_id": "MCO4591132256",
@@ -10140,14 +10140,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591158108-set-cubiertos-_JM",
    "estado": "active",
    "precio": 41400,
-   "stock_publicado": 51,
+   "stock_publicado": 45,
    "categoria_ml": "MCO1910",
    "seller_custom_field": "7709976330137",
    "user_product_id": "MCOU5696125351",
    "family_name": "Set Cubiertos",
    "origen": "catalogo",
    "creado": "2026-10-29T18:16:08",
-   "actualizado": "2026-11-06T01:17:31"
+   "actualizado": "2026-11-08T05:58:17"
   },
   "7782060205044": {
    "listing_id": "MCO4591158120",
@@ -10780,14 +10780,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-2332923755-tabla-cocina-juguete-kits-de-utensilios-para-cocina-_JM",
    "estado": "active",
    "precio": 41000,
-   "stock_publicado": 95,
+   "stock_publicado": 89,
    "categoria_ml": "MCO432830",
    "seller_custom_field": "02407",
    "user_product_id": "MCOU5696397961",
    "family_name": "Tabla Cocina Juguete Kits De Utensilios Para Cocina",
    "origen": "catalogo",
    "creado": "2026-10-29T19:18:57",
-   "actualizado": "2026-10-31T19:18:18"
+   "actualizado": "2026-11-08T05:58:03"
   },
   "02783": {
    "listing_id": "MCO2332949485",
