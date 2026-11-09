@@ -1,7 +1,7 @@
 {
  "version": 1,
  "site": "MCO",
- "actualizado": "2026-11-09T06:25:37",
+ "actualizado": "2026-11-09T22:23:10",
  "listings": {
   "001309": {
    "listing_id": "MCO2332448697",
@@ -3365,14 +3365,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591114512-triki-madera-grande-30cm30cm-_JM",
    "estado": "active",
    "precio": 43600,
-   "stock_publicado": 79,
+   "stock_publicado": 76,
    "categoria_ml": "MCO433049",
    "seller_custom_field": "04540",
    "user_product_id": "MCOU5745530280",
    "family_name": "Triki Madera Grande 30cm*30cm",
    "origen": "catalogo",
    "creado": "2026-10-29T17:23:30",
-   "actualizado": "2026-11-05T01:11:57"
+   "actualizado": "2026-11-09T22:19:20"
   },
   "04541": {
    "listing_id": "MCO4591151978",
@@ -4045,14 +4045,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591127380-rompecabeza-madera-13-figuras-_JM",
    "estado": "active",
    "precio": 40700,
-   "stock_publicado": 55,
+   "stock_publicado": 54,
    "categoria_ml": "MCO457877",
    "seller_custom_field": "05273",
    "user_product_id": "MCOU5695941993",
    "family_name": "Rompecabeza Madera 13 Figuras",
    "origen": "catalogo",
    "creado": "2026-10-29T17:29:34",
-   "actualizado": "2026-10-29T17:33:19"
+   "actualizado": "2026-11-09T22:19:20"
   },
   "05276": {
    "listing_id": "MCO4591127392",
@@ -4570,14 +4570,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591116250-carrito-de-mercado-plastico-gnd-bolsa-_JM",
    "estado": "active",
    "precio": 118000,
-   "stock_publicado": 24,
+   "stock_publicado": 23,
    "categoria_ml": "MCO432837",
    "seller_custom_field": "2026888801049",
    "user_product_id": "MCOU5745586226",
    "family_name": "Carrito De Mercado Plastico Gnd Bolsa",
    "origen": "catalogo",
    "creado": "2026-10-29T17:36:02",
-   "actualizado": "2026-10-29T17:39:12"
+   "actualizado": "2026-11-09T22:19:22"
   },
   "2026888801155": {
    "listing_id": "MCO4591128376",
@@ -4600,14 +4600,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591153698-carro-moderno-moder-car-_JM",
    "estado": "active",
    "precio": 88300,
-   "stock_publicado": 72,
+   "stock_publicado": 71,
    "categoria_ml": "MCO433685",
    "seller_custom_field": "2026888802220",
    "user_product_id": "MCOU5745586400",
    "family_name": "Carro Moderno Moder Car",
    "origen": "catalogo",
    "creado": "2026-10-29T17:36:13",
-   "actualizado": "2026-10-29T17:39:16"
+   "actualizado": "2026-11-09T22:19:22"
   },
   "2026888804132": {
    "listing_id": "MCO4591128418",
@@ -5775,14 +5775,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591130074-set-accesorios-para-pulsera-en-caja-_JM",
    "estado": "active",
    "precio": 52600,
-   "stock_publicado": 87,
+   "stock_publicado": 84,
    "categoria_ml": "MCO1910",
    "seller_custom_field": "6603888923030",
    "user_product_id": "MCOU5745623522",
    "family_name": "Set Accesorios Para Pulsera En Caja",
    "origen": "catalogo",
    "creado": "2026-10-29T17:47:12",
-   "actualizado": "2026-11-05T01:12:06"
+   "actualizado": "2026-11-09T22:19:23"
   },
   "6603888923214": {
    "listing_id": "MCO4591142552",
@@ -7220,7 +7220,7 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591143590-moto-de-carreras-x-4-_JM",
    "estado": "active",
    "precio": 58500,
-   "stock_publicado": 67,
+   "stock_publicado": 66,
    "categoria_ml": "MCO433685",
    "seller_custom_field": "6905112060161",
    "user_product_id": "MCOU5696048705",
@@ -7247,7 +7247,7 @@
      "status": 400
     }
    },
-   "actualizado": "2026-11-08T05:58:13"
+   "actualizado": "2026-11-09T22:19:27"
   },
   "6905489160624": {
    "listing_id": "MCO4591156250",
@@ -7715,14 +7715,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591156500-avion-yei-yei-grande-_JM",
    "estado": "active",
    "precio": 58500,
-   "stock_publicado": 48,
+   "stock_publicado": 45,
    "categoria_ml": "MCO1910",
    "seller_custom_field": "6957738201343",
    "user_product_id": "MCOU5745677282",
    "family_name": "Avion Yei-yei Grande",
    "origen": "catalogo",
    "creado": "2026-10-29T18:00:07",
-   "actualizado": "2026-10-29T18:02:20"
+   "actualizado": "2026-11-09T22:19:28"
   },
   "6957738201428": {
    "listing_id": "MCO4591118970",
@@ -8000,14 +8000,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591156732-coche-para-munecas-md-_JM",
    "estado": "active",
    "precio": 73400,
-   "stock_publicado": 31,
+   "stock_publicado": 30,
    "categoria_ml": "MCO176633",
    "seller_custom_field": "6976261358898",
    "user_product_id": "MCOU5696075343",
    "family_name": "Coche Para Muñecas Md",
    "origen": "catalogo",
    "creado": "2026-10-29T18:02:52",
-   "actualizado": "2026-10-29T18:05:55"
+   "actualizado": "2026-11-09T22:19:29"
   },
   "6976261358911": {
    "listing_id": "MCO4591131606",
@@ -8015,14 +8015,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591131606-coche-moises-para-munecas-pq-_JM",
    "estado": "active",
    "precio": 76400,
-   "stock_publicado": 22,
+   "stock_publicado": 2,
    "categoria_ml": "MCO176633",
    "seller_custom_field": "6976261358911",
    "user_product_id": "MCOU5745694330",
    "family_name": "Coche Moises Para Muñecas Pq",
    "origen": "catalogo",
    "creado": "2026-10-29T18:02:55",
-   "actualizado": "2026-10-29T18:05:56"
+   "actualizado": "2026-11-09T22:19:30"
   },
   "6978598795605": {
    "listing_id": "MCO4591119228",
@@ -8415,14 +8415,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591131732-tetrix-con-reloj-de-arena-_JM",
    "estado": "active",
    "precio": 70400,
-   "stock_publicado": 11,
+   "stock_publicado": 2,
    "categoria_ml": "MCO455856",
    "seller_custom_field": "7120251151092",
    "user_product_id": "MCOU5745700624",
    "family_name": "Tetrix Con Reloj De Arena",
    "origen": "catalogo",
    "creado": "2026-10-29T18:04:19",
-   "actualizado": "2026-10-29T18:06:17"
+   "actualizado": "2026-11-09T22:19:30"
   },
   "7120251151214": {
    "listing_id": "MCO4591119370",
@@ -8928,7 +8928,7 @@
    "listing_id": "MCO4591119636",
    "titulo": "Yoyo Chino Carton",
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591119636-yoyo-chino-carton-_JM",
-   "estado": "active",
+   "estado": "paused",
    "precio": 35000,
    "stock_publicado": 99,
    "categoria_ml": "MCO1910",
@@ -8937,7 +8937,7 @@
    "family_name": "Yoyo Chino Carton",
    "origen": "catalogo",
    "creado": "2026-10-29T18:07:50",
-   "actualizado": "2026-10-29T18:09:59"
+   "actualizado": "2026-11-09T22:19:31"
   },
   "7702202511850": {
    "listing_id": "MCO4591119644",
@@ -10110,14 +10110,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591120482-poker-letra-pequena-semioriginal-_JM",
    "estado": "active",
    "precio": 41000,
-   "stock_publicado": 84,
+   "stock_publicado": 81,
    "categoria_ml": "MCO1910",
    "seller_custom_field": "7709682102561",
    "user_product_id": "MCOU5696130821",
    "family_name": "Poker Letra Pequeña Semioriginal",
    "origen": "catalogo",
    "creado": "2026-10-29T18:16:01",
-   "actualizado": "2026-10-29T18:18:51"
+   "actualizado": "2026-11-09T22:19:32"
   },
   "7709828967122": {
    "listing_id": "MCO4591120486",
