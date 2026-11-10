@@ -1,7 +1,7 @@
 {
  "version": 1,
  "site": "MCO",
- "actualizado": "2026-11-09T22:23:10",
+ "actualizado": "2026-11-10T07:18:02",
  "listings": {
   "001309": {
    "listing_id": "MCO2332448697",
@@ -4945,14 +4945,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591117160-4-en-linea-mediano-_JM",
    "estado": "active",
    "precio": 43600,
-   "stock_publicado": 79,
+   "stock_publicado": 76,
    "categoria_ml": "MCO1161",
    "seller_custom_field": "4720250429128",
    "user_product_id": "MCOU5695981701",
    "family_name": "4 En Linea Mediano",
    "origen": "catalogo",
    "creado": "2026-10-29T17:40:57",
-   "actualizado": "2026-10-31T19:18:25"
+   "actualizado": "2026-11-10T07:14:31"
   },
   "4891001002652": {
    "listing_id": "MCO4591154602",
@@ -5100,14 +5100,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591141908-carro-didactico-construccion-x2-en-bolsa-_JM",
    "estado": "active",
    "precio": 50100,
-   "stock_publicado": 52,
+   "stock_publicado": 50,
    "categoria_ml": "MCO433049",
    "seller_custom_field": "6603888892527",
    "user_product_id": "MCOU5745599166",
    "family_name": "Carro Didactico Construccion X2 En Bolsa",
    "origen": "catalogo",
    "creado": "2026-10-29T17:41:58",
-   "actualizado": "2026-10-29T17:45:03"
+   "actualizado": "2026-11-10T07:14:32"
   },
   "6603888892763": {
    "listing_id": "MCO4591141928",
@@ -5640,14 +5640,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591155250-lanza-bolas-de-hidrogel-pila-recargable-_JM",
    "estado": "active",
    "precio": 91200,
-   "stock_publicado": 30,
+   "stock_publicado": 28,
    "categoria_ml": "MCO1910",
    "seller_custom_field": "6603888921883",
    "user_product_id": "MCOU5745617872",
    "family_name": "Lanza Bolas De Hidrogel (pila Recargable)",
    "origen": "catalogo",
    "creado": "2026-10-29T17:46:35",
-   "actualizado": "2026-11-08T05:58:08"
+   "actualizado": "2026-11-10T07:14:32"
   },
   "6603888922033": {
    "listing_id": "MCO4591130024",
@@ -6610,14 +6610,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591118464-set-de-maquillaje-en-caja-_JM",
    "estado": "active",
    "precio": 64500,
-   "stock_publicado": 64,
+   "stock_publicado": 62,
    "categoria_ml": "MCO1910",
    "seller_custom_field": "6603888928899",
    "user_product_id": "MCOU5696031531",
    "family_name": "Set De Maquillaje En Caja",
    "origen": "catalogo",
    "creado": "2026-10-29T17:53:12",
-   "actualizado": "2026-10-29T17:55:03"
+   "actualizado": "2026-11-10T07:14:35"
   },
   "6603888929063": {
    "listing_id": "MCO4591130742",
@@ -7700,14 +7700,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591118968-tablero-magico-con-abaco-4-colores-_JM",
    "estado": "active",
    "precio": 42100,
-   "stock_publicado": 26,
+   "stock_publicado": 23,
    "categoria_ml": "MCO1910",
    "seller_custom_field": "6957362474274",
    "user_product_id": "MCOU5745679088",
    "family_name": "Tablero Magico Con Abaco 4 Colores",
    "origen": "catalogo",
    "creado": "2026-10-29T18:00:02",
-   "actualizado": "2026-10-29T18:02:19"
+   "actualizado": "2026-11-10T07:14:37"
   },
   "6957738201343": {
    "listing_id": "MCO4591156500",
@@ -8045,14 +8045,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591144042-tablero-magico-4-colores-_JM",
    "estado": "active",
    "precio": 42100,
-   "stock_publicado": 31,
+   "stock_publicado": 28,
    "categoria_ml": "MCO1910",
    "seller_custom_field": "6984831050011",
    "user_product_id": "MCOU5696075479",
    "family_name": "Tablero Magico 4 Colores",
    "origen": "catalogo",
    "creado": "2026-10-29T18:03:02",
-   "actualizado": "2026-11-06T01:17:27"
+   "actualizado": "2026-11-10T07:14:38"
   },
   "6985211123707": {
    "listing_id": "MCO4591131624",
