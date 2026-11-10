@@ -1,7 +1,7 @@
 {
  "version": 1,
  "site": "MCO",
- "actualizado": "2026-11-10T07:18:02",
+ "actualizado": "2026-11-10T19:45:48",
  "listings": {
   "001309": {
    "listing_id": "MCO2332448697",
@@ -1301,14 +1301,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-2332765503-camion-de-construccion-_JM",
    "estado": "active",
    "precio": 59100,
-   "stock_publicado": 17,
+   "stock_publicado": 16,
    "categoria_ml": "MCO433685",
    "seller_custom_field": "01527",
    "user_product_id": "MCOU5695265915",
    "family_name": "Camion De Construccion",
    "origen": "catalogo",
    "creado": "2026-10-29T15:22:37",
-   "actualizado": "2026-10-29T16:46:57"
+   "actualizado": "2026-11-10T19:42:01"
   },
   "01528": {
    "listing_id": "MCO2332777741",
@@ -1996,14 +1996,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591134552-jenga-numeros-caja-azul-23575cm-_JM",
    "estado": "active",
    "precio": 50000,
-   "stock_publicado": 85,
+   "stock_publicado": 83,
    "categoria_ml": "MCO1910",
    "seller_custom_field": "02886",
    "user_product_id": "MCOU5695737521",
    "family_name": "Jenga Numeros Caja Azul 23.5*7.5cm",
    "origen": "catalogo",
    "creado": "2026-10-29T16:49:16",
-   "actualizado": "2026-10-29T17:01:48"
+   "actualizado": "2026-11-10T19:42:05"
   },
   "02891": {
    "listing_id": "MCO4591147504",
@@ -2933,14 +2933,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591137018-helicoptero-militar-juguete-_JM",
    "estado": "active",
    "precio": 56300,
-   "stock_publicado": 10,
+   "stock_publicado": 8,
    "categoria_ml": "MCO455801",
    "seller_custom_field": "04352",
    "user_product_id": "MCOU5695834959",
    "family_name": "Helicoptero Militar Juguete",
    "origen": "catalogo",
    "creado": "2026-10-29T17:07:57",
-   "actualizado": "2026-10-29T17:21:37"
+   "actualizado": "2026-11-10T19:42:08"
   },
   "04353": {
    "listing_id": "MCO4591124488",
@@ -3545,14 +3545,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591139146-jenga-colores-caja-azul-grande-23575cm-_JM",
    "estado": "active",
    "precio": 47000,
-   "stock_publicado": 30,
+   "stock_publicado": 28,
    "categoria_ml": "MCO1910",
    "seller_custom_field": "04586",
    "user_product_id": "MCOU5745536174",
    "family_name": "Jenga Colores Caja Azul Grande 23.5*7.5cm",
    "origen": "catalogo",
    "creado": "2026-10-29T17:24:18",
-   "actualizado": "2026-10-29T17:27:42"
+   "actualizado": "2026-11-10T19:42:08"
   },
   "04588": {
    "listing_id": "MCO4591139162",
@@ -3745,7 +3745,7 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591152176-carro-deportivo-x5-und-_JM",
    "estado": "active",
    "precio": 51100,
-   "stock_publicado": 74,
+   "stock_publicado": 71,
    "categoria_ml": "MCO433685",
    "seller_custom_field": "04950",
    "user_product_id": "MCOU5745531774",
@@ -3772,7 +3772,7 @@
      "status": 400
     }
    },
-   "actualizado": "2026-11-06T01:17:15"
+   "actualizado": "2026-11-10T19:42:09"
   },
   "05011": {
    "listing_id": "MCO4591126852",
@@ -3845,7 +3845,7 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591126902-vajilla-tula-tradicional-_JM",
    "estado": "active",
    "precio": 51100,
-   "stock_publicado": 62,
+   "stock_publicado": 61,
    "categoria_ml": "MCO1910",
    "seller_custom_field": "05030",
    "user_product_id": "MCOU5745537438",
@@ -3872,7 +3872,7 @@
      "status": 400
     }
    },
-   "actualizado": "2026-11-06T01:17:16"
+   "actualizado": "2026-11-10T19:42:10"
   },
   "05031": {
    "listing_id": "MCO4591127252",
@@ -4000,14 +4000,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591127334-juguete-madera-letra-magnetico-_JM",
    "estado": "active",
    "precio": 46600,
-   "stock_publicado": 32,
+   "stock_publicado": 30,
    "categoria_ml": "MCO433049",
    "seller_custom_field": "05144",
    "user_product_id": "MCOU5745552862",
    "family_name": "Juguete Madera Letra Magnetico",
    "origen": "catalogo",
    "creado": "2026-10-29T17:29:16",
-   "actualizado": "2026-10-29T17:33:15"
+   "actualizado": "2026-11-10T19:42:10"
   },
   "05145": {
    "listing_id": "MCO4591127350",
@@ -4045,14 +4045,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591127380-rompecabeza-madera-13-figuras-_JM",
    "estado": "active",
    "precio": 40700,
-   "stock_publicado": 54,
+   "stock_publicado": 51,
    "categoria_ml": "MCO457877",
    "seller_custom_field": "05273",
    "user_product_id": "MCOU5695941993",
    "family_name": "Rompecabeza Madera 13 Figuras",
    "origen": "catalogo",
    "creado": "2026-10-29T17:29:34",
-   "actualizado": "2026-11-09T22:19:20"
+   "actualizado": "2026-11-10T19:42:11"
   },
   "05276": {
    "listing_id": "MCO4591127392",
@@ -4945,14 +4945,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591117160-4-en-linea-mediano-_JM",
    "estado": "active",
    "precio": 43600,
-   "stock_publicado": 76,
+   "stock_publicado": 74,
    "categoria_ml": "MCO1161",
    "seller_custom_field": "4720250429128",
    "user_product_id": "MCOU5695981701",
    "family_name": "4 En Linea Mediano",
    "origen": "catalogo",
    "creado": "2026-10-29T17:40:57",
-   "actualizado": "2026-11-10T07:14:31"
+   "actualizado": "2026-11-10T19:42:12"
   },
   "4891001002652": {
    "listing_id": "MCO4591154602",
@@ -5205,14 +5205,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591129544-ukulele-infantil-caja-48cm-_JM",
    "estado": "active",
    "precio": 59100,
-   "stock_publicado": 15,
+   "stock_publicado": 14,
    "categoria_ml": "MCO1910",
    "seller_custom_field": "6603888893678",
    "user_product_id": "MCOU5695988341",
    "family_name": "Ukulele Infantil Caja 48cm",
    "origen": "catalogo",
    "creado": "2026-10-29T17:42:46",
-   "actualizado": "2026-10-29T17:45:09"
+   "actualizado": "2026-11-10T19:42:13"
   },
   "6603888894460": {
    "listing_id": "MCO4591154806",
@@ -5520,14 +5520,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591142468-carro-construccion-x-2-_JM",
    "estado": "active",
    "precio": 51100,
-   "stock_publicado": 70,
+   "stock_publicado": 69,
    "categoria_ml": "MCO433685",
    "seller_custom_field": "6603888920664",
    "user_product_id": "MCOU5745622494",
    "family_name": "Carro Construccion X 2",
    "origen": "catalogo",
    "creado": "2026-10-29T17:46:09",
-   "actualizado": "2026-10-29T17:49:46"
+   "actualizado": "2026-11-10T19:42:13"
   },
   "6603888920725": {
    "listing_id": "MCO4591117766",
@@ -5595,14 +5595,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591130008-set-maleta-doctora-2-colores-_JM",
    "estado": "active",
    "precio": 55500,
-   "stock_publicado": 30,
+   "stock_publicado": 29,
    "categoria_ml": "MCO352340",
    "seller_custom_field": "6603888921333",
    "user_product_id": "MCOU5745617706",
    "family_name": "Set Maleta Doctora 2 Colores",
    "origen": "catalogo",
    "creado": "2026-10-29T17:46:25",
-   "actualizado": "2026-11-06T01:17:19"
+   "actualizado": "2026-11-10T19:42:14"
   },
   "6603888921388": {
    "listing_id": "MCO4591130012",
@@ -5910,14 +5910,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591142646-carro-construccion-volqueta-en-malla-_JM",
    "estado": "active",
    "precio": 58500,
-   "stock_publicado": 48,
+   "stock_publicado": 47,
    "categoria_ml": "MCO433685",
    "seller_custom_field": "6603888923849",
    "user_product_id": "MCOU5696004333",
    "family_name": "Carro Construccion Volqueta En Malla",
    "origen": "catalogo",
    "creado": "2026-10-29T17:47:41",
-   "actualizado": "2026-10-29T17:50:21"
+   "actualizado": "2026-11-10T19:42:15"
   },
   "6603888923856": {
    "listing_id": "MCO4591155386",
@@ -6045,14 +6045,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591130474-bebe-con-baner-en-bolsa-_JM",
    "estado": "active",
    "precio": 48100,
-   "stock_publicado": 82,
+   "stock_publicado": 80,
    "categoria_ml": "MCO1910",
    "seller_custom_field": "6603888925249",
    "user_product_id": "MCOU5745641886",
    "family_name": "Bebe Con Bañer En Bolsa",
    "origen": "catalogo",
    "creado": "2026-10-29T17:51:16",
-   "actualizado": "2026-10-29T17:54:28"
+   "actualizado": "2026-11-10T19:42:16"
   },
   "6603888925331": {
    "listing_id": "MCO4591118232",
@@ -7715,14 +7715,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591156500-avion-yei-yei-grande-_JM",
    "estado": "active",
    "precio": 58500,
-   "stock_publicado": 45,
+   "stock_publicado": 44,
    "categoria_ml": "MCO1910",
    "seller_custom_field": "6957738201343",
    "user_product_id": "MCOU5745677282",
    "family_name": "Avion Yei-yei Grande",
    "origen": "catalogo",
    "creado": "2026-10-29T18:00:07",
-   "actualizado": "2026-11-09T22:19:28"
+   "actualizado": "2026-11-10T19:42:21"
   },
   "6957738201428": {
    "listing_id": "MCO4591118970",
@@ -7810,14 +7810,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591118990-carro-policia-o-ambulancia-luz-y-sonido-_JM",
    "estado": "active",
    "precio": 54600,
-   "stock_publicado": 55,
+   "stock_publicado": 54,
    "categoria_ml": "MCO433685",
    "seller_custom_field": "6957738203323",
    "user_product_id": "MCOU5745683196",
    "family_name": "Carro Policia O Ambulancia Luz Y Sonido",
    "origen": "catalogo",
    "creado": "2026-10-29T18:00:23",
-   "actualizado": "2026-10-29T18:02:24"
+   "actualizado": "2026-11-10T19:42:21"
   },
   "6957738204412": {
    "listing_id": "MCO4591131328",
@@ -8015,14 +8015,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591131606-coche-moises-para-munecas-pq-_JM",
    "estado": "active",
    "precio": 76400,
-   "stock_publicado": 2,
+   "stock_publicado": 1,
    "categoria_ml": "MCO176633",
    "seller_custom_field": "6976261358911",
    "user_product_id": "MCOU5745694330",
    "family_name": "Coche Moises Para Muñecas Pq",
    "origen": "catalogo",
    "creado": "2026-10-29T18:02:55",
-   "actualizado": "2026-11-09T22:19:30"
+   "actualizado": "2026-11-10T19:42:22"
   },
   "6978598795605": {
    "listing_id": "MCO4591119228",
@@ -8355,14 +8355,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591119338-juego-de-ortografia-_JM",
    "estado": "active",
    "precio": 73400,
-   "stock_publicado": 22,
+   "stock_publicado": 21,
    "categoria_ml": "MCO433049",
    "seller_custom_field": "7120251150767",
    "user_product_id": "MCOU5745704090",
    "family_name": "Juego De Ortografia",
    "origen": "catalogo",
    "creado": "2026-10-29T18:04:05",
-   "actualizado": "2026-11-06T01:17:29"
+   "actualizado": "2026-11-10T19:42:23"
   },
   "7120251150798": {
    "listing_id": "MCO4591156880",
@@ -10615,14 +10615,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-2332972357-rompecabeza-animalitos-5-motivos-24-piezas-_JM",
    "estado": "active",
    "precio": 36200,
-   "stock_publicado": 18,
+   "stock_publicado": 14,
    "categoria_ml": "MCO436800",
    "seller_custom_field": "PT18246",
    "user_product_id": "MCOU5696295519",
    "family_name": "Rompecabeza Animalitos 5 Motivos 24 Piezas",
    "origen": "catalogo",
    "creado": "2026-10-29T18:59:21",
-   "actualizado": "2026-11-05T01:12:24"
+   "actualizado": "2026-11-10T19:42:24"
   },
   "PT18311": {
    "listing_id": "MCO2332921267",
