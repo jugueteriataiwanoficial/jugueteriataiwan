@@ -1,7 +1,7 @@
 {
  "version": 1,
  "site": "MCO",
- "actualizado": "2026-11-10T19:45:48",
+ "actualizado": "2026-11-11T06:16:20",
  "listings": {
   "001309": {
    "listing_id": "MCO2332448697",
@@ -1314,7 +1314,7 @@
    "listing_id": "MCO2332777741",
    "titulo": "Carro Juguete Bus Escolar Metalico Friccion",
    "permalink": "http://articulo.mercadolibre.com.co/MCO-2332777741-carro-juguete-bus-escolar-metalico-friccion-_JM",
-   "estado": "active",
+   "estado": "paused",
    "precio": 44000,
    "stock_publicado": 39,
    "categoria_ml": "MCO433685",
@@ -1323,7 +1323,7 @@
    "family_name": "Carro Juguete Bus Escolar Metalico Friccion",
    "origen": "catalogo",
    "creado": "2026-10-29T15:22:41",
-   "actualizado": "2026-10-29T16:46:58"
+   "actualizado": "2026-11-11T06:12:31"
   },
   "01529": {
    "listing_id": "MCO2332765513",
@@ -2856,7 +2856,7 @@
    "listing_id": "MCO4591123962",
    "titulo": "Vengadores Metalico Luz Y Sonido 4 Motivos Caja",
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591123962-vengadores-metalico-luz-y-sonido-4-motivos-caja-_JM",
-   "estado": "active",
+   "estado": "paused",
    "precio": 82000,
    "stock_publicado": 8,
    "categoria_ml": "MCO1910",
@@ -2865,7 +2865,7 @@
    "family_name": "Vengadores Metalico Luz Y Sonido 4 Motivos Caja",
    "origen": "catalogo",
    "creado": "2026-10-29T17:05:02",
-   "actualizado": "2026-10-29T17:07:08"
+   "actualizado": "2026-11-11T06:12:37"
   },
   "01795": {
    "listing_id": "MCO4591124306",
@@ -3955,14 +3955,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591139774-carro-metalico-taxi-x-12-_JM",
    "estado": "active",
    "precio": 49600,
-   "stock_publicado": 20,
+   "stock_publicado": 19,
    "categoria_ml": "MCO433685",
    "seller_custom_field": "05135",
    "user_product_id": "MCOU5745550680",
    "family_name": "Carro Metalico Taxi X 12",
    "origen": "catalogo",
    "creado": "2026-10-29T17:29:01",
-   "actualizado": "2026-10-29T17:33:08"
+   "actualizado": "2026-11-11T06:12:38"
   },
   "05137": {
    "listing_id": "MCO4591152658",
@@ -4015,14 +4015,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591127350-bingo-ruleta-pequeno-_JM",
    "estado": "active",
    "precio": 80800,
-   "stock_publicado": 50,
+   "stock_publicado": 49,
    "categoria_ml": "MCO1161",
    "seller_custom_field": "05145",
    "user_product_id": "MCOU5745552928",
    "family_name": "Bingo Ruleta Pequeño",
    "origen": "catalogo",
    "creado": "2026-10-29T17:29:22",
-   "actualizado": "2026-10-29T17:33:16"
+   "actualizado": "2026-11-11T06:12:38"
   },
   "05150": {
    "listing_id": "MCO4591152694",
@@ -5203,7 +5203,7 @@
    "listing_id": "MCO4591129544",
    "titulo": "Ukulele Infantil Caja 48cm",
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591129544-ukulele-infantil-caja-48cm-_JM",
-   "estado": "active",
+   "estado": "paused",
    "precio": 59100,
    "stock_publicado": 14,
    "categoria_ml": "MCO1910",
@@ -5212,7 +5212,7 @@
    "family_name": "Ukulele Infantil Caja 48cm",
    "origen": "catalogo",
    "creado": "2026-10-29T17:42:46",
-   "actualizado": "2026-11-10T19:42:13"
+   "actualizado": "2026-11-11T06:12:39"
   },
   "6603888894460": {
    "listing_id": "MCO4591154806",
@@ -8013,7 +8013,7 @@
    "listing_id": "MCO4591131606",
    "titulo": "Coche Moises Para Muñecas Pq",
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591131606-coche-moises-para-munecas-pq-_JM",
-   "estado": "active",
+   "estado": "paused",
    "precio": 76400,
    "stock_publicado": 1,
    "categoria_ml": "MCO176633",
@@ -8022,7 +8022,7 @@
    "family_name": "Coche Moises Para Muñecas Pq",
    "origen": "catalogo",
    "creado": "2026-10-29T18:02:55",
-   "actualizado": "2026-11-10T19:42:22"
+   "actualizado": "2026-11-11T06:12:45"
   },
   "6978598795605": {
    "listing_id": "MCO4591119228",
@@ -10355,14 +10355,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591120926-cubo-rompecabeza-x-54-_JM",
    "estado": "active",
    "precio": 43600,
-   "stock_publicado": 53,
+   "stock_publicado": 51,
    "categoria_ml": "MCO170729",
    "seller_custom_field": "9420040379408",
    "user_product_id": "MCOU5696144849",
    "family_name": "Cubo Rompecabeza X 54",
    "origen": "catalogo",
    "creado": "2026-10-29T18:19:28",
-   "actualizado": "2026-10-29T18:58:08"
+   "actualizado": "2026-11-11T06:12:46"
   },
   "9420220400892": {
    "listing_id": "MCO2332972271",
@@ -10555,14 +10555,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-2332921237-pop-it-stich-electronico-_JM",
    "estado": "active",
    "precio": 51100,
-   "stock_publicado": 90,
+   "stock_publicado": 89,
    "categoria_ml": "MCO432992",
    "seller_custom_field": "FOX-2266",
    "user_product_id": "MCOU5696295319",
    "family_name": "Pop It Stich Electronico",
    "origen": "catalogo",
    "creado": "2026-10-29T18:59:05",
-   "actualizado": "2026-10-29T19:00:16"
+   "actualizado": "2026-11-11T06:12:47"
   },
   "MIC-6267": {
    "listing_id": "MCO2332985135",
