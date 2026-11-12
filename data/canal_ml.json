@@ -1,7 +1,7 @@
 {
  "version": 1,
  "site": "MCO",
- "actualizado": "2026-11-12T07:11:30",
+ "actualizado": "2026-11-12T19:56:52",
  "listings": {
   "001309": {
    "listing_id": "MCO2332448697",
@@ -358,14 +358,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-2332776903-dado-colores-12-caras-_JM",
    "estado": "active",
    "precio": 29800,
-   "stock_publicado": 12,
+   "stock_publicado": 6,
    "categoria_ml": "MCO1910",
    "seller_custom_field": "01340",
    "user_product_id": "MCOU5744739682",
    "family_name": "Dado Colores 12 Caras",
    "origen": "catalogo",
    "creado": "2026-10-29T15:11:53",
-   "actualizado": "2026-10-29T15:18:37"
+   "actualizado": "2026-11-12T19:52:52"
   },
   "01341": {
    "listing_id": "MCO2332789325",
@@ -3745,7 +3745,7 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591152176-carro-deportivo-x5-und-_JM",
    "estado": "active",
    "precio": 51100,
-   "stock_publicado": 71,
+   "stock_publicado": 69,
    "categoria_ml": "MCO433685",
    "seller_custom_field": "04950",
    "user_product_id": "MCOU5745531774",
@@ -3772,7 +3772,7 @@
      "status": 400
     }
    },
-   "actualizado": "2026-11-10T19:42:09"
+   "actualizado": "2026-11-12T19:52:59"
   },
   "05011": {
    "listing_id": "MCO4591126852",
@@ -5640,14 +5640,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591155250-lanza-bolas-de-hidrogel-pila-recargable-_JM",
    "estado": "active",
    "precio": 91200,
-   "stock_publicado": 26,
+   "stock_publicado": 24,
    "categoria_ml": "MCO1910",
    "seller_custom_field": "6603888921883",
    "user_product_id": "MCOU5745617872",
    "family_name": "Lanza Bolas De Hidrogel (pila Recargable)",
    "origen": "catalogo",
    "creado": "2026-10-29T17:46:35",
-   "actualizado": "2026-11-12T07:07:46"
+   "actualizado": "2026-11-12T19:53:01"
   },
   "6603888922033": {
    "listing_id": "MCO4591130024",
@@ -6060,14 +6060,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591118232-carro-de-construccion-x-3-en-bolsa-_JM",
    "estado": "active",
    "precio": 65900,
-   "stock_publicado": 42,
+   "stock_publicado": 40,
    "categoria_ml": "MCO433685",
    "seller_custom_field": "6603888925331",
    "user_product_id": "MCOU5696022183",
    "family_name": "Carro De Construccion X 3 En Bolsa",
    "origen": "catalogo",
    "creado": "2026-10-29T17:51:21",
-   "actualizado": "2026-10-29T17:54:29"
+   "actualizado": "2026-11-12T19:53:02"
   },
   "6603888925393": {
    "listing_id": "MCO4591118236",
@@ -6470,7 +6470,7 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591118454-avion-de-impulso-luz-y-sonido-en-bolsa-mediano-_JM",
    "estado": "active",
    "precio": 55500,
-   "stock_publicado": 98,
+   "stock_publicado": 96,
    "categoria_ml": "MCO1910",
    "seller_custom_field": "6603888928738",
    "user_product_id": "MCOU5745648456",
@@ -6497,7 +6497,7 @@
      "status": 400
     }
    },
-   "actualizado": "2026-11-12T07:07:49"
+   "actualizado": "2026-11-12T19:53:04"
   },
   "6603888928745": {
    "listing_id": "MCO4591143162",
@@ -6505,7 +6505,7 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591143162-avion-de-impulso-luz-y-sonido-en-bolsa-grande-_JM",
    "estado": "active",
    "precio": 82300,
-   "stock_publicado": 52,
+   "stock_publicado": 51,
    "categoria_ml": "MCO1910",
    "seller_custom_field": "6603888928745",
    "user_product_id": "MCOU5696023761",
@@ -6532,7 +6532,7 @@
      "status": 400
     }
    },
-   "actualizado": "2026-11-12T07:07:49"
+   "actualizado": "2026-11-12T19:53:04"
   },
   "6603888928752": {
    "listing_id": "MCO4591118460",
@@ -6655,14 +6655,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591155900-mesa-con-bloques-de-construccion-x148-pcs-con-silla-_JM",
    "estado": "active",
    "precio": 296500,
-   "stock_publicado": 20,
+   "stock_publicado": 19,
    "categoria_ml": "MCO1161",
    "seller_custom_field": "6603888929261",
    "user_product_id": "MCOU5745656018",
    "family_name": "Mesa Con Bloques De Construccion X148 Pcs Con Silla",
    "origen": "catalogo",
    "creado": "2026-10-29T17:53:20",
-   "actualizado": "2026-10-29T17:55:06"
+   "actualizado": "2026-11-12T19:53:05"
   },
   "6603888929278": {
    "listing_id": "MCO4591118662",
@@ -8090,14 +8090,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591119260-bolsa-bus-piso-doble-_JM",
    "estado": "active",
    "precio": 44000,
-   "stock_publicado": 59,
+   "stock_publicado": 57,
    "categoria_ml": "MCO1910",
    "seller_custom_field": "6985842015440",
    "user_product_id": "MCOU5745694594",
    "family_name": "Bolsa Bus Piso Doble",
    "origen": "catalogo",
    "creado": "2026-10-29T18:03:15",
-   "actualizado": "2026-10-29T18:06:00"
+   "actualizado": "2026-11-12T19:53:10"
   },
   "6986202111161": {
    "listing_id": "MCO4591119266",
@@ -10946,7 +10946,7 @@
    "listing_id": "MCO2365341873",
    "titulo": "Bolsa Estufa Con 2 Ollas En Aluminio Otros",
    "permalink": "http://articulo.mercadolibre.com.co/MCO-2365341873-bolsa-estufa-con-2-ollas-en-aluminio-otros-_JM",
-   "estado": "paused",
+   "estado": "active",
    "precio": 48100,
    "stock_publicado": 99,
    "categoria_ml": "MCO1910",
@@ -10954,7 +10954,8 @@
    "user_product_id": "MCOU5838059781",
    "family_name": "Bolsa Estufa Con 2 Ollas En Aluminio Otros",
    "origen": "catalogo",
-   "creado": "2026-11-12T07:08:07"
+   "creado": "2026-11-12T07:08:07",
+   "actualizado": "2026-11-12T19:52:51"
   }
  },
  "categorias": {
