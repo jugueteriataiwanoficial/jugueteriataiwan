@@ -1,7 +1,7 @@
 {
  "version": 1,
  "site": "MCO",
- "actualizado": "2026-11-12T19:56:52",
+ "actualizado": "2026-11-13T06:45:33",
  "listings": {
   "001309": {
    "listing_id": "MCO2332448697",
@@ -1405,14 +1405,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-2332803137-busca-la-pareja-_JM",
    "estado": "active",
    "precio": 47000,
-   "stock_publicado": 99,
+   "stock_publicado": 80,
    "categoria_ml": "MCO1910",
    "seller_custom_field": "01734",
    "user_product_id": "MCOU5695278071",
    "family_name": "Busca La Pareja",
    "origen": "catalogo",
    "creado": "2026-10-29T15:23:08",
-   "actualizado": "2026-10-29T16:47:03"
+   "actualizado": "2026-11-13T06:41:37"
   },
   "01758": {
    "listing_id": "MCO2332777771",
@@ -4913,7 +4913,7 @@
    "listing_id": "MCO4591154530",
    "titulo": "Fichas Didacticas De Multiplicación",
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591154530-fichas-didacticas-de-multiplicacion-_JM",
-   "estado": "active",
+   "estado": "paused",
    "precio": 36200,
    "stock_publicado": 30,
    "categoria_ml": "MCO1161",
@@ -4922,7 +4922,7 @@
    "family_name": "Fichas Didacticas De Multiplicación",
    "origen": "catalogo",
    "creado": "2026-10-29T17:40:43",
-   "actualizado": "2026-11-05T01:12:02"
+   "actualizado": "2026-11-13T06:41:43"
   },
   "4720250427827": {
    "listing_id": "MCO4591129244",
@@ -7923,7 +7923,7 @@
    "listing_id": "MCO4591143836",
    "titulo": "Juego De Cartas Matematicas Sumas",
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591143836-juego-de-cartas-matematicas-sumas-_JM",
-   "estado": "active",
+   "estado": "paused",
    "precio": 37900,
    "stock_publicado": 20,
    "categoria_ml": "MCO1161",
@@ -7932,13 +7932,13 @@
    "family_name": "Juego De Cartas Matematicas Sumas",
    "origen": "catalogo",
    "creado": "2026-10-29T18:00:57",
-   "actualizado": "2026-11-05T01:12:19"
+   "actualizado": "2026-11-13T06:41:50"
   },
   "6973038368272": {
    "listing_id": "MCO4591156540",
    "titulo": "Juego De Cartas Matematicas Restas",
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591156540-juego-de-cartas-matematicas-restas-_JM",
-   "estado": "active",
+   "estado": "paused",
    "precio": 37900,
    "stock_publicado": 25,
    "categoria_ml": "MCO1161",
@@ -7947,13 +7947,13 @@
    "family_name": "Juego De Cartas Matematicas Restas",
    "origen": "catalogo",
    "creado": "2026-10-29T18:00:59",
-   "actualizado": "2026-11-05T01:12:20"
+   "actualizado": "2026-11-13T06:41:51"
   },
   "6973038368296": {
    "listing_id": "MCO4591156542",
    "titulo": "Juego De Cartas Matematicas Divisiones",
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591156542-juego-de-cartas-matematicas-divisiones-_JM",
-   "estado": "active",
+   "estado": "paused",
    "precio": 37900,
    "stock_publicado": 17,
    "categoria_ml": "MCO1161",
@@ -7962,7 +7962,7 @@
    "family_name": "Juego De Cartas Matematicas Divisiones",
    "origen": "catalogo",
    "creado": "2026-10-29T18:01:02",
-   "actualizado": "2026-10-29T18:02:30"
+   "actualizado": "2026-11-13T06:41:52"
   },
   "6974131950425": {
    "listing_id": "MCO4591144014",
