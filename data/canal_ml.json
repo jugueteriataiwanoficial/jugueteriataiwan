@@ -1,7 +1,7 @@
 {
  "version": 1,
  "site": "MCO",
- "actualizado": "2026-11-13T06:45:33",
+ "actualizado": "2026-11-13T19:43:15",
  "listings": {
   "001309": {
    "listing_id": "MCO2332448697",
@@ -1560,14 +1560,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591109774-parques-6-puestos-y-escalera-sencillo-51cm-x-51cm-_JM",
    "estado": "active",
    "precio": 51600,
-   "stock_publicado": 81,
+   "stock_publicado": 77,
    "categoria_ml": "MCO1161",
    "seller_custom_field": "01858",
    "user_product_id": "MCOU5695733975",
    "family_name": "Parques 6 Puestos Y Escalera Sencillo 51cm X 51cm",
    "origen": "catalogo",
    "creado": "2026-10-29T16:47:20",
-   "actualizado": "2026-10-29T17:01:09"
+   "actualizado": "2026-11-13T19:39:13"
   },
   "01915": {
    "listing_id": "MCO2332813285",
@@ -3745,7 +3745,7 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591152176-carro-deportivo-x5-und-_JM",
    "estado": "active",
    "precio": 51100,
-   "stock_publicado": 69,
+   "stock_publicado": 68,
    "categoria_ml": "MCO433685",
    "seller_custom_field": "04950",
    "user_product_id": "MCOU5745531774",
@@ -3772,7 +3772,7 @@
      "status": 400
     }
    },
-   "actualizado": "2026-11-12T19:52:59"
+   "actualizado": "2026-11-13T19:39:19"
   },
   "05011": {
    "listing_id": "MCO4591126852",
@@ -4570,14 +4570,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591116250-carrito-de-mercado-plastico-gnd-bolsa-_JM",
    "estado": "active",
    "precio": 118000,
-   "stock_publicado": 23,
+   "stock_publicado": 22,
    "categoria_ml": "MCO432837",
    "seller_custom_field": "2026888801049",
    "user_product_id": "MCOU5745586226",
    "family_name": "Carrito De Mercado Plastico Gnd Bolsa",
    "origen": "catalogo",
    "creado": "2026-10-29T17:36:02",
-   "actualizado": "2026-11-09T22:19:22"
+   "actualizado": "2026-11-13T19:39:22"
   },
   "2026888801155": {
    "listing_id": "MCO4591128376",
@@ -4675,14 +4675,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591116394-muneca-pila-luz-sonido-cj-alice-princess-_JM",
    "estado": "active",
    "precio": 76400,
-   "stock_publicado": 44,
+   "stock_publicado": 43,
    "categoria_ml": "MCO176611",
    "seller_custom_field": "2026888806587",
    "user_product_id": "MCOU5745588728",
    "family_name": "Muñeca Pila Luz Sonido Cj Alice Princess",
    "origen": "catalogo",
    "creado": "2026-10-29T17:36:51",
-   "actualizado": "2026-11-06T01:17:17"
+   "actualizado": "2026-11-13T19:39:23"
   },
   "2026888806655": {
    "listing_id": "MCO4591140962",
@@ -4795,14 +4795,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591116978-cafetera-vapor-luz-y-sonido-_JM",
    "estado": "active",
    "precio": 78800,
-   "stock_publicado": 49,
+   "stock_publicado": 48,
    "categoria_ml": "MCO1910",
    "seller_custom_field": "2422800823852",
    "user_product_id": "MCOU5695975823",
    "family_name": "Cafetera Vapor Luz Y Sonido",
    "origen": "catalogo",
    "creado": "2026-10-29T17:40:01",
-   "actualizado": "2026-10-29T17:44:44"
+   "actualizado": "2026-11-13T19:39:24"
   },
   "2422800825955": {
    "listing_id": "MCO4591154408",
@@ -4840,14 +4840,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591129162-ajedrez-caja-negra-mediano-32cmx32cm-_JM",
    "estado": "active",
    "precio": 97100,
-   "stock_publicado": 36,
+   "stock_publicado": 35,
    "categoria_ml": "MCO1161",
    "seller_custom_field": "2422800827607",
    "user_product_id": "MCOU5745596076",
    "family_name": "Ajedrez Caja Negra Mediano 32cmx32cm",
    "origen": "catalogo",
    "creado": "2026-10-29T17:40:19",
-   "actualizado": "2026-10-29T17:44:47"
+   "actualizado": "2026-11-13T19:39:25"
   },
   "4013594568951": {
    "listing_id": "MCO4591129172",
@@ -5295,14 +5295,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591129610-mascota-perro-con-guacal-_JM",
    "estado": "active",
    "precio": 82000,
-   "stock_publicado": 60,
+   "stock_publicado": 59,
    "categoria_ml": "MCO1910",
    "seller_custom_field": "6603888899175",
    "user_product_id": "MCOU5745603722",
    "family_name": "Mascota Perro Con Guacal",
    "origen": "catalogo",
    "creado": "2026-10-29T17:43:15",
-   "actualizado": "2026-10-29T17:45:16"
+   "actualizado": "2026-11-13T19:39:25"
   },
   "6603888900062": {
    "listing_id": "MCO4591142080",
@@ -5925,14 +5925,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591155386-mula-ninera-con-carros-2-colores-_JM",
    "estado": "active",
    "precio": 58500,
-   "stock_publicado": 63,
+   "stock_publicado": 62,
    "categoria_ml": "MCO433685",
    "seller_custom_field": "6603888923856",
    "user_product_id": "MCOU5696004475",
    "family_name": "Mula Niñera Con Carros 2 Colores",
    "origen": "catalogo",
    "creado": "2026-10-29T17:47:45",
-   "actualizado": "2026-10-29T17:50:22"
+   "actualizado": "2026-11-13T19:39:26"
   },
   "6603888923917": {
    "listing_id": "MCO4591155406",
@@ -5940,14 +5940,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591155406-maquina-de-trenza-infantil-_JM",
    "estado": "active",
    "precio": 95700,
-   "stock_publicado": 24,
+   "stock_publicado": 23,
    "categoria_ml": "MCO429209",
    "seller_custom_field": "6603888923917",
    "user_product_id": "MCOU5696008335",
    "family_name": "Maquina De Trenza Infantil",
    "origen": "catalogo",
    "creado": "2026-10-29T17:47:52",
-   "actualizado": "2026-10-29T17:50:23"
+   "actualizado": "2026-11-13T19:39:27"
   },
   "6603888924457": {
    "listing_id": "MCO4591142686",
@@ -6165,14 +6165,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591130510-set-de-plastilina-con-accesorios-_JM",
    "estado": "active",
    "precio": 52600,
-   "stock_publicado": 63,
+   "stock_publicado": 62,
    "categoria_ml": "MCO1910",
    "seller_custom_field": "6603888926055",
    "user_product_id": "MCOU5696022591",
    "family_name": "Set De Plastilina Con Accesorios",
    "origen": "catalogo",
    "creado": "2026-10-29T17:51:49",
-   "actualizado": "2026-11-05T01:12:07"
+   "actualizado": "2026-11-13T19:39:28"
   },
   "6603888926109": {
    "listing_id": "MCO4591155750",
@@ -6345,7 +6345,7 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591118398-carro-control-remoto-pilas-2-colores-_JM",
    "estado": "active",
    "precio": 76400,
-   "stock_publicado": 90,
+   "stock_publicado": 89,
    "categoria_ml": "MCO433685",
    "seller_custom_field": "6603888928196",
    "user_product_id": "MCOU5696023239",
@@ -6372,7 +6372,7 @@
      "status": 400
     }
    },
-   "actualizado": "2026-10-29T17:54:48"
+   "actualizado": "2026-11-13T19:39:30"
   },
   "6603888928332": {
    "listing_id": "MCO4591130670",
@@ -6750,14 +6750,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591156126-tortuga-infantil-luz-y-sonido-pilas--_JM",
    "estado": "active",
    "precio": 67400,
-   "stock_publicado": 78,
+   "stock_publicado": 77,
    "categoria_ml": "MCO1910",
    "seller_custom_field": "6603888929841",
    "user_product_id": "MCOU5745659622",
    "family_name": "Tortuga Infantil Luz Y Sonido (pilas )",
    "origen": "catalogo",
    "creado": "2026-10-29T17:55:31",
-   "actualizado": "2026-11-12T07:07:51"
+   "actualizado": "2026-11-13T19:39:30"
   },
   "6603888929940": {
    "listing_id": "MCO4591143446",
@@ -6905,14 +6905,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591131026-telefono-didactico-leon-pila-_JM",
    "estado": "active",
    "precio": 51100,
-   "stock_publicado": 62,
+   "stock_publicado": 61,
    "categoria_ml": "MCO433049",
    "seller_custom_field": "6603888930342",
    "user_product_id": "MCOU5696046011",
    "family_name": "Telefono Didactico Leon (pila)",
    "origen": "catalogo",
    "creado": "2026-10-29T17:55:58",
-   "actualizado": "2026-10-29T17:58:18"
+   "actualizado": "2026-11-13T19:39:33"
   },
   "6603888930410": {
    "listing_id": "MCO4591156156",
@@ -6935,14 +6935,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591131030-set-tienda-con-caja-registradora-y-accesorios-_JM",
    "estado": "active",
    "precio": 73400,
-   "stock_publicado": 17,
+   "stock_publicado": 16,
    "categoria_ml": "MCO1910",
    "seller_custom_field": "6603888930458",
    "user_product_id": "MCOU5696046113",
    "family_name": "Set Tienda Con Caja Registradora Y Accesorios",
    "origen": "catalogo",
    "creado": "2026-10-29T17:56:03",
-   "actualizado": "2026-11-12T07:07:53"
+   "actualizado": "2026-11-13T19:39:33"
   },
   "6603888930465": {
    "listing_id": "MCO4591156166",
@@ -7455,14 +7455,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591143714-carrito-de-helados-con-accesorios-_JM",
    "estado": "active",
    "precio": 80800,
-   "stock_publicado": 44,
+   "stock_publicado": 42,
    "categoria_ml": "MCO1910",
    "seller_custom_field": "6921202506029",
    "user_product_id": "MCOU5745675628",
    "family_name": "Carrito De Helados Con Accesorios",
    "origen": "catalogo",
    "creado": "2026-10-29T17:59:17",
-   "actualizado": "2026-10-29T18:02:01"
+   "actualizado": "2026-11-13T19:39:37"
   },
   "6921527120474": {
    "listing_id": "MCO4591156420",
@@ -7530,14 +7530,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591118928-caja-carro-monster-x4-_JM",
    "estado": "active",
    "precio": 104800,
-   "stock_publicado": 28,
+   "stock_publicado": 27,
    "categoria_ml": "MCO433685",
    "seller_custom_field": "6924171511742",
    "user_product_id": "MCOU5745675798",
    "family_name": "Caja Carro Monster X4",
    "origen": "catalogo",
    "creado": "2026-10-29T17:59:31",
-   "actualizado": "2026-11-12T07:07:57"
+   "actualizado": "2026-11-13T19:39:38"
   },
   "6924405508944": {
    "listing_id": "MCO4591156452",
@@ -8810,14 +8810,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591144440-pop-it-electronico-con-bomba-_JM",
    "estado": "active",
    "precio": 77400,
-   "stock_publicado": 40,
+   "stock_publicado": 39,
    "categoria_ml": "MCO432992",
    "seller_custom_field": "7702202400802",
    "user_product_id": "MCOU5696093273",
    "family_name": "Pop It Electronico Con Bomba",
    "origen": "catalogo",
    "creado": "2026-10-29T18:07:25",
-   "actualizado": "2026-10-29T18:09:52"
+   "actualizado": "2026-11-13T19:39:38"
   },
   "7702202416360": {
    "listing_id": "MCO4591132030",
@@ -10460,14 +10460,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-2332972299-carta-uno-dorada-_JM",
    "estado": "active",
    "precio": 59100,
-   "stock_publicado": 99,
+   "stock_publicado": 98,
    "categoria_ml": "MCO1161",
    "seller_custom_field": "FOX-2045",
    "user_product_id": "MCOU5696296789",
    "family_name": "Carta Uno Dorada",
    "origen": "catalogo",
    "creado": "2026-10-29T18:58:46",
-   "actualizado": "2026-10-29T19:00:11"
+   "actualizado": "2026-11-13T19:39:39"
   },
   "FOX-2260": {
    "listing_id": "MCO2332972305",
@@ -10585,14 +10585,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-2332947083-juego-gestos-con-timbre-caja-metalica-_JM",
    "estado": "active",
    "precio": 82000,
-   "stock_publicado": 79,
+   "stock_publicado": 78,
    "categoria_ml": "MCO1910",
    "seller_custom_field": "MIC-7153",
    "user_product_id": "MCOU5745922464",
    "family_name": "Juego Gestos Con Timbre Caja Metalica",
    "origen": "catalogo",
    "creado": "2026-10-29T18:59:12",
-   "actualizado": "2026-10-29T19:00:18"
+   "actualizado": "2026-11-13T19:39:40"
   },
   "MIC-7495": {
    "listing_id": "MCO2332985153",
@@ -10780,14 +10780,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-2332923755-tabla-cocina-juguete-kits-de-utensilios-para-cocina-_JM",
    "estado": "active",
    "precio": 41000,
-   "stock_publicado": 89,
+   "stock_publicado": 88,
    "categoria_ml": "MCO432830",
    "seller_custom_field": "02407",
    "user_product_id": "MCOU5696397961",
    "family_name": "Tabla Cocina Juguete Kits De Utensilios Para Cocina",
    "origen": "catalogo",
    "creado": "2026-10-29T19:18:57",
-   "actualizado": "2026-11-08T05:58:03"
+   "actualizado": "2026-11-13T19:39:15"
   },
   "02783": {
    "listing_id": "MCO2332949485",
@@ -10810,7 +10810,7 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-2332987591-caja-juguete-princesa-elsa-fashion-girl-3d-light-_JM",
    "estado": "active",
    "precio": 74400,
-   "stock_publicado": 53,
+   "stock_publicado": 52,
    "categoria_ml": "MCO413461",
    "seller_custom_field": "2019030602328",
    "user_product_id": "MCOU5746024258",
@@ -10837,7 +10837,7 @@
      "status": 400
     }
    },
-   "actualizado": "2026-10-31T19:18:24"
+   "actualizado": "2026-11-13T19:39:20"
   },
   "2023100269793": {
    "listing_id": "MCO2332949525",
