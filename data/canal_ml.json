@@ -1,7 +1,7 @@
 {
  "version": 1,
  "site": "MCO",
- "actualizado": "2026-11-14T06:22:29",
+ "actualizado": "2026-11-14T18:02:34",
  "listings": {
   "001309": {
    "listing_id": "MCO2332448697",
@@ -3605,14 +3605,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591152118-rompecabeza-madera-peq-1515cm-_JM",
    "estado": "active",
    "precio": 31900,
-   "stock_publicado": 37,
+   "stock_publicado": 23,
    "categoria_ml": "MCO433049",
    "seller_custom_field": "04592",
    "user_product_id": "MCOU5745531362",
    "family_name": "Rompecabeza Madera Peq 15*15cm",
    "origen": "catalogo",
    "creado": "2026-10-29T17:24:44",
-   "actualizado": "2026-10-29T17:27:48"
+   "actualizado": "2026-11-14T17:58:46"
   },
   "04593": {
    "listing_id": "MCO4591152126",
@@ -5503,7 +5503,7 @@
    "listing_id": "MCO4591129988",
    "titulo": "Carro Constructor En Bolsa",
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591129988-carro-constructor-en-bolsa-_JM",
-   "estado": "active",
+   "estado": "paused",
    "precio": 55500,
    "stock_publicado": 99,
    "categoria_ml": "MCO433685",
@@ -5512,7 +5512,7 @@
    "family_name": "Carro Constructor En Bolsa",
    "origen": "catalogo",
    "creado": "2026-10-29T17:46:07",
-   "actualizado": "2026-10-29T17:49:45"
+   "actualizado": "2026-11-14T17:58:49"
   },
   "6603888920664": {
    "listing_id": "MCO4591142468",
@@ -6655,14 +6655,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591155900-mesa-con-bloques-de-construccion-x148-pcs-con-silla-_JM",
    "estado": "active",
    "precio": 296500,
-   "stock_publicado": 19,
+   "stock_publicado": 18,
    "categoria_ml": "MCO1161",
    "seller_custom_field": "6603888929261",
    "user_product_id": "MCOU5745656018",
    "family_name": "Mesa Con Bloques De Construccion X148 Pcs Con Silla",
    "origen": "catalogo",
    "creado": "2026-10-29T17:53:20",
-   "actualizado": "2026-11-12T19:53:05"
+   "actualizado": "2026-11-14T17:58:52"
   },
   "6603888929278": {
    "listing_id": "MCO4591118662",
@@ -7220,7 +7220,7 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591143590-moto-de-carreras-x-4-_JM",
    "estado": "active",
    "precio": 58500,
-   "stock_publicado": 66,
+   "stock_publicado": 64,
    "categoria_ml": "MCO433685",
    "seller_custom_field": "6905112060161",
    "user_product_id": "MCOU5696048705",
@@ -7247,7 +7247,7 @@
      "status": 400
     }
    },
-   "actualizado": "2026-11-09T22:19:27"
+   "actualizado": "2026-11-14T17:58:55"
   },
   "6905489160624": {
    "listing_id": "MCO4591156250",
@@ -9945,14 +9945,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591120436-set-carro-construccion-x5-_JM",
    "estado": "active",
    "precio": 41400,
-   "stock_publicado": 87,
+   "stock_publicado": 85,
    "categoria_ml": "MCO433685",
    "seller_custom_field": "7708903081050",
    "user_product_id": "MCOU5696121735",
    "family_name": "Set Carro Construccion X5",
    "origen": "catalogo",
    "creado": "2026-10-29T18:15:29",
-   "actualizado": "2026-11-14T06:18:53"
+   "actualizado": "2026-11-14T17:58:57"
   },
   "7708968946752": {
    "listing_id": "MCO4591120440",
@@ -10956,6 +10956,20 @@
    "origen": "catalogo",
    "creado": "2026-11-12T07:08:07",
    "actualizado": "2026-11-12T19:52:51"
+  },
+  "6603888921005": {
+   "listing_id": "MCO4640700068",
+   "titulo": "Carro Constructor En Bolsa Vehículos Sin Control Remoto",
+   "permalink": "http://articulo.mercadolibre.com.co/MCO-4640700068-carro-constructor-en-bolsa-vehiculos-sin-control-remoto-_JM",
+   "estado": "paused",
+   "precio": 55500,
+   "stock_publicado": 99,
+   "categoria_ml": "MCO433685",
+   "seller_custom_field": "6603888921005",
+   "user_product_id": "MCOU5866941691",
+   "family_name": "Carro Constructor En Bolsa Vehículos Sin Control Remoto",
+   "origen": "catalogo",
+   "creado": "2026-11-14T17:59:00"
   }
  },
  "categorias": {
@@ -34224,6 +34238,24 @@
    ],
    "errores": [],
    "actualizado": "2026-11-12T07:08:06"
+  },
+  "6603888921005": {
+   "http": 400,
+   "categoria": "MCO433685",
+   "causas": [
+    {
+     "department": "shipping",
+     "cause_id": 4053,
+     "type": "warning",
+     "code": "shipping.lost_me1_by_user",
+     "references": [
+      "user.shipping_preferences.modes"
+     ],
+     "message": "User has not mode me1"
+    }
+   ],
+   "errores": [],
+   "actualizado": "2026-11-14T17:58:59"
   }
  },
  "ignorados": [
