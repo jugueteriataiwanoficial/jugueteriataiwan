@@ -1,7 +1,7 @@
 {
  "version": 1,
  "site": "MCO",
- "actualizado": "2026-11-14T18:02:34",
+ "actualizado": "2026-11-15T06:29:38",
  "listings": {
   "001309": {
    "listing_id": "MCO2332448697",
@@ -10961,7 +10961,7 @@
    "listing_id": "MCO4640700068",
    "titulo": "Carro Constructor En Bolsa Vehículos Sin Control Remoto",
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4640700068-carro-constructor-en-bolsa-vehiculos-sin-control-remoto-_JM",
-   "estado": "paused",
+   "estado": "active",
    "precio": 55500,
    "stock_publicado": 99,
    "categoria_ml": "MCO433685",
@@ -10969,7 +10969,8 @@
    "user_product_id": "MCOU5866941691",
    "family_name": "Carro Constructor En Bolsa Vehículos Sin Control Remoto",
    "origen": "catalogo",
-   "creado": "2026-11-14T17:59:00"
+   "creado": "2026-11-14T17:59:00",
+   "actualizado": "2026-11-15T06:26:11"
   }
  },
  "categorias": {
