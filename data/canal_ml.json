@@ -1,7 +1,7 @@
 {
  "version": 1,
  "site": "MCO",
- "actualizado": "2026-11-17T07:57:06",
+ "actualizado": "2026-11-17T20:57:26",
  "listings": {
   "001309": {
    "listing_id": "MCO2332448697",
@@ -39,7 +39,7 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4590915748-nobody-sausage-magic-dancer-_JM",
    "estado": "active",
    "precio": 36300,
-   "stock_publicado": 94,
+   "stock_publicado": 58,
    "categoria_ml": "MCO1910",
    "seller_custom_field": "00723",
    "user_product_id": "MCOU5743696034",
@@ -65,7 +65,8 @@
      "error": "validation_error",
      "status": 400
     }
-   }
+   },
+   "actualizado": "2026-11-17T20:52:52"
   },
   "00742": {
    "listing_id": "MCO4590852352",
@@ -2768,14 +2769,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591123904-carro-control-remoto-minecraft-4-motivos-caja-31cm15cm-_JM",
    "estado": "active",
    "precio": 112400,
-   "stock_publicado": 3,
+   "stock_publicado": 2,
    "categoria_ml": "MCO433685",
    "seller_custom_field": "04049",
    "user_product_id": "MCOU5695823253",
    "family_name": "Carro Control Remoto Minecraft 4 Motivos Caja 31cm*15cm",
    "origen": "catalogo",
    "creado": "2026-10-29T17:04:36",
-   "actualizado": "2026-10-29T17:07:01"
+   "actualizado": "2026-11-17T20:53:05"
   },
   "04061": {
    "listing_id": "MCO4591149476",
@@ -3320,14 +3321,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591114480-encajable-numeros-tabla-30cm22cm-_JM",
    "estado": "active",
    "precio": 39500,
-   "stock_publicado": 95,
+   "stock_publicado": 85,
    "categoria_ml": "MCO1910",
    "seller_custom_field": "04537",
    "user_product_id": "MCOU5745530110",
    "family_name": "Encajable Numeros Tabla 30cm*22cm",
    "origen": "catalogo",
    "creado": "2026-10-29T17:23:19",
-   "actualizado": "2026-10-31T19:18:22"
+   "actualizado": "2026-11-17T20:53:06"
   },
   "04538": {
    "listing_id": "MCO4591114492",
@@ -4015,14 +4016,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591127350-bingo-ruleta-pequeno-_JM",
    "estado": "active",
    "precio": 80800,
-   "stock_publicado": 46,
+   "stock_publicado": 44,
    "categoria_ml": "MCO1161",
    "seller_custom_field": "05145",
    "user_product_id": "MCOU5745552928",
    "family_name": "Bingo Ruleta Pequeño",
    "origen": "catalogo",
    "creado": "2026-10-29T17:29:22",
-   "actualizado": "2026-11-14T06:18:35"
+   "actualizado": "2026-11-17T20:53:07"
   },
   "05150": {
    "listing_id": "MCO4591152694",
@@ -4420,14 +4421,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591140640-cocina-integral-estufa-y-horno-_JM",
    "estado": "active",
    "precio": 82000,
-   "stock_publicado": 19,
+   "stock_publicado": 16,
    "categoria_ml": "MCO1910",
    "seller_custom_field": "2025041081045",
    "user_product_id": "MCOU5695966179",
    "family_name": "Cocina Integral Estufa Y Horno",
    "origen": "catalogo",
    "creado": "2026-10-29T17:34:53",
-   "actualizado": "2026-11-11T19:34:25"
+   "actualizado": "2026-11-17T20:53:08"
   },
   "2025041081083": {
    "listing_id": "MCO4591128190",
@@ -4525,14 +4526,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591116204-maquillaje-bolsito-fairy-makeup-case-caja-3-motivos-_JM",
    "estado": "active",
    "precio": 89500,
-   "stock_publicado": 50,
+   "stock_publicado": 49,
    "categoria_ml": "MCO1910",
    "seller_custom_field": "2025041082578",
    "user_product_id": "MCOU5695957645",
    "family_name": "Maquillaje Bolsito Fairy Makeup Case Caja 3 Motivos",
    "origen": "catalogo",
    "creado": "2026-10-29T17:35:43",
-   "actualizado": "2026-10-29T17:39:07"
+   "actualizado": "2026-11-17T20:53:10"
   },
   "2025041083322": {
    "listing_id": "MCO4591116216",
@@ -4660,14 +4661,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591153772-lavadora-ropa-accesorios-bolsa-2-colores-_JM",
    "estado": "active",
    "precio": 48100,
-   "stock_publicado": 76,
+   "stock_publicado": 73,
    "categoria_ml": "MCO1910",
    "seller_custom_field": "2026888805368",
    "user_product_id": "MCOU5745586904",
    "family_name": "Lavadora Ropa Accesorios Bolsa 2 Colores",
    "origen": "catalogo",
    "creado": "2026-10-29T17:36:44",
-   "actualizado": "2026-10-29T17:39:22"
+   "actualizado": "2026-11-17T20:53:11"
   },
   "2026888806587": {
    "listing_id": "MCO4591116394",
@@ -4705,14 +4706,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591116418-carro-robot-transformable-2-colores-_JM",
    "estado": "active",
    "precio": 91200,
-   "stock_publicado": 26,
+   "stock_publicado": 22,
    "categoria_ml": "MCO433685",
    "seller_custom_field": "2026888807539",
    "user_product_id": "MCOU5745592246",
    "family_name": "Carro Robot Transformable 2 Colores",
    "origen": "catalogo",
    "creado": "2026-10-29T17:37:02",
-   "actualizado": "2026-11-14T06:18:38"
+   "actualizado": "2026-11-17T20:53:12"
   },
   "2026888807768": {
    "listing_id": "MCO4591153914",
@@ -5070,14 +5071,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591129392-set-bomberos-mascara-en-bolsa-_JM",
    "estado": "active",
    "precio": 50100,
-   "stock_publicado": 51,
+   "stock_publicado": 47,
    "categoria_ml": "MCO1910",
    "seller_custom_field": "6603888891575",
    "user_product_id": "MCOU5745600612",
    "family_name": "Set Bomberos Mascara En Bolsa",
    "origen": "catalogo",
    "creado": "2026-10-29T17:41:45",
-   "actualizado": "2026-11-11T19:34:27"
+   "actualizado": "2026-11-17T20:53:13"
   },
   "6603888891582": {
    "listing_id": "MCO4591129402",
@@ -5085,14 +5086,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591129402-carro-construccion-aplanadora-en-bolsa-_JM",
    "estado": "active",
    "precio": 62500,
-   "stock_publicado": 35,
+   "stock_publicado": 29,
    "categoria_ml": "MCO433685",
    "seller_custom_field": "6603888891582",
    "user_product_id": "MCOU5745597588",
    "family_name": "Carro Construccion Aplanadora En Bolsa",
    "origen": "catalogo",
    "creado": "2026-10-29T17:41:50",
-   "actualizado": "2026-10-29T17:45:02"
+   "actualizado": "2026-11-17T20:53:13"
   },
   "6603888892527": {
    "listing_id": "MCO4591141908",
@@ -5100,14 +5101,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591141908-carro-didactico-construccion-x2-en-bolsa-_JM",
    "estado": "active",
    "precio": 50100,
-   "stock_publicado": 47,
+   "stock_publicado": 41,
    "categoria_ml": "MCO433049",
    "seller_custom_field": "6603888892527",
    "user_product_id": "MCOU5745599166",
    "family_name": "Carro Didactico Construccion X2 En Bolsa",
    "origen": "catalogo",
    "creado": "2026-10-29T17:41:58",
-   "actualizado": "2026-11-12T07:07:45"
+   "actualizado": "2026-11-17T20:53:14"
   },
   "6603888892763": {
    "listing_id": "MCO4591141928",
@@ -5355,14 +5356,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591142124-kit-bombero-casco-en-bolsa-_JM",
    "estado": "active",
    "precio": 62300,
-   "stock_publicado": 36,
+   "stock_publicado": 32,
    "categoria_ml": "MCO1910",
    "seller_custom_field": "6603888901748",
    "user_product_id": "MCOU5695992065",
    "family_name": "Kit Bombero Casco En Bolsa",
    "origen": "catalogo",
    "creado": "2026-10-29T17:43:31",
-   "actualizado": "2026-10-29T17:45:20"
+   "actualizado": "2026-11-17T20:53:15"
   },
   "6603888902004": {
    "listing_id": "MCO4591117698",
@@ -5430,14 +5431,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591129956-maquillaje-infantil-paleta-caja-x3-_JM",
    "estado": "active",
    "precio": 66800,
-   "stock_publicado": 38,
+   "stock_publicado": 37,
    "categoria_ml": "MCO1910",
    "seller_custom_field": "6603888903667",
    "user_product_id": "MCOU5745624030",
    "family_name": "Maquillaje Infantil Paleta Caja X3",
    "origen": "catalogo",
    "creado": "2026-10-29T17:45:49",
-   "actualizado": "2026-11-05T01:12:04"
+   "actualizado": "2026-11-17T20:53:15"
   },
   "6603888903940": {
    "listing_id": "MCO4591142440",
@@ -5640,14 +5641,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591155250-lanza-bolas-de-hidrogel-pila-recargable-_JM",
    "estado": "active",
    "precio": 91200,
-   "stock_publicado": 24,
+   "stock_publicado": 20,
    "categoria_ml": "MCO1910",
    "seller_custom_field": "6603888921883",
    "user_product_id": "MCOU5745617872",
    "family_name": "Lanza Bolas De Hidrogel (pila Recargable)",
    "origen": "catalogo",
    "creado": "2026-10-29T17:46:35",
-   "actualizado": "2026-11-12T19:53:01"
+   "actualizado": "2026-11-17T20:53:16"
   },
   "6603888922033": {
    "listing_id": "MCO4591130024",
@@ -5850,14 +5851,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591142592-carro-de-construccion-mezclador-en-bolsa-_JM",
    "estado": "active",
    "precio": 48100,
-   "stock_publicado": 91,
+   "stock_publicado": 85,
    "categoria_ml": "MCO433685",
    "seller_custom_field": "6603888923771",
    "user_product_id": "MCOU5745625570",
    "family_name": "Carro De Construccion Mezclador En Bolsa",
    "origen": "catalogo",
    "creado": "2026-10-29T17:47:29",
-   "actualizado": "2026-10-29T17:50:17"
+   "actualizado": "2026-11-17T20:53:18"
   },
   "6603888923788": {
    "listing_id": "MCO4591142604",
@@ -5880,14 +5881,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591142612-carro-construccion-volqueta-en-bolsa-_JM",
    "estado": "active",
    "precio": 50100,
-   "stock_publicado": 94,
+   "stock_publicado": 88,
    "categoria_ml": "MCO433685",
    "seller_custom_field": "6603888923795",
    "user_product_id": "MCOU5745624344",
    "family_name": "Carro Construccion Volqueta En Bolsa",
    "origen": "catalogo",
    "creado": "2026-10-29T17:47:35",
-   "actualizado": "2026-11-14T06:18:40"
+   "actualizado": "2026-11-17T20:53:18"
   },
   "6603888923832": {
    "listing_id": "MCO4591130132",
@@ -5895,14 +5896,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591130132-carro-constructor-cargador-en-malla-_JM",
    "estado": "active",
    "precio": 54000,
-   "stock_publicado": 45,
+   "stock_publicado": 39,
    "categoria_ml": "MCO433685",
    "seller_custom_field": "6603888923832",
    "user_product_id": "MCOU5745625852",
    "family_name": "Carro Constructor Cargador En Malla",
    "origen": "catalogo",
    "creado": "2026-10-29T17:47:37",
-   "actualizado": "2026-11-06T01:17:20"
+   "actualizado": "2026-11-17T20:53:19"
   },
   "6603888923849": {
    "listing_id": "MCO4591142646",
@@ -5910,14 +5911,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591142646-carro-construccion-volqueta-en-malla-_JM",
    "estado": "active",
    "precio": 58500,
-   "stock_publicado": 47,
+   "stock_publicado": 41,
    "categoria_ml": "MCO433685",
    "seller_custom_field": "6603888923849",
    "user_product_id": "MCOU5696004333",
    "family_name": "Carro Construccion Volqueta En Malla",
    "origen": "catalogo",
    "creado": "2026-10-29T17:47:41",
-   "actualizado": "2026-11-10T19:42:15"
+   "actualizado": "2026-11-17T20:53:20"
   },
   "6603888923856": {
    "listing_id": "MCO4591155386",
@@ -5925,14 +5926,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591155386-mula-ninera-con-carros-2-colores-_JM",
    "estado": "active",
    "precio": 58500,
-   "stock_publicado": 62,
+   "stock_publicado": 59,
    "categoria_ml": "MCO433685",
    "seller_custom_field": "6603888923856",
    "user_product_id": "MCOU5696004475",
    "family_name": "Mula Niñera Con Carros 2 Colores",
    "origen": "catalogo",
    "creado": "2026-10-29T17:47:45",
-   "actualizado": "2026-11-13T19:39:26"
+   "actualizado": "2026-11-17T20:53:20"
   },
   "6603888923917": {
    "listing_id": "MCO4591155406",
@@ -6030,14 +6031,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591155680-set-carro-de-construccion-dinosaurios-x-4-en-bolsa-_JM",
    "estado": "active",
    "precio": 58500,
-   "stock_publicado": 84,
+   "stock_publicado": 80,
    "categoria_ml": "MCO433685",
    "seller_custom_field": "6603888925218",
    "user_product_id": "MCOU5696020665",
    "family_name": "Set Carro De Construccion Dinosaurios X 4 En Bolsa",
    "origen": "catalogo",
    "creado": "2026-10-29T17:51:09",
-   "actualizado": "2026-11-12T07:07:47"
+   "actualizado": "2026-11-17T20:53:22"
   },
   "6603888925249": {
    "listing_id": "MCO4591130474",
@@ -6060,14 +6061,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591118232-carro-de-construccion-x-3-en-bolsa-_JM",
    "estado": "active",
    "precio": 65900,
-   "stock_publicado": 40,
+   "stock_publicado": 36,
    "categoria_ml": "MCO433685",
    "seller_custom_field": "6603888925331",
    "user_product_id": "MCOU5696022183",
    "family_name": "Carro De Construccion X 3 En Bolsa",
    "origen": "catalogo",
    "creado": "2026-10-29T17:51:21",
-   "actualizado": "2026-11-12T19:53:02"
+   "actualizado": "2026-11-17T20:53:22"
   },
   "6603888925393": {
    "listing_id": "MCO4591118236",
@@ -6105,14 +6106,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591155714-set-vehiculo-policia-x-4-en-bolsa-_JM",
    "estado": "active",
    "precio": 63000,
-   "stock_publicado": 50,
+   "stock_publicado": 46,
    "categoria_ml": "MCO433685",
    "seller_custom_field": "6603888925522",
    "user_product_id": "MCOU5696022353",
    "family_name": "Set Vehiculo Policia X 4 En Bolsa",
    "origen": "catalogo",
    "creado": "2026-10-29T17:51:34",
-   "actualizado": "2026-11-14T06:18:41"
+   "actualizado": "2026-11-17T20:53:23"
   },
   "6603888925539": {
    "listing_id": "MCO4591155718",
@@ -6195,14 +6196,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591143000-cocina-infantil-armable-_JM",
    "estado": "active",
    "precio": 207300,
-   "stock_publicado": 8,
+   "stock_publicado": 7,
    "categoria_ml": "MCO1910",
    "seller_custom_field": "6603888926406",
    "user_product_id": "MCOU5696030281",
    "family_name": "Cocina Infantil Armable",
    "origen": "catalogo",
    "creado": "2026-10-29T17:51:56",
-   "actualizado": "2026-11-05T01:12:08"
+   "actualizado": "2026-11-17T20:53:23"
   },
   "6603888926451": {
    "listing_id": "MCO4591118304",
@@ -6470,7 +6471,7 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591118454-avion-de-impulso-luz-y-sonido-en-bolsa-mediano-_JM",
    "estado": "active",
    "precio": 55500,
-   "stock_publicado": 96,
+   "stock_publicado": 90,
    "categoria_ml": "MCO1910",
    "seller_custom_field": "6603888928738",
    "user_product_id": "MCOU5745648456",
@@ -6497,7 +6498,7 @@
      "status": 400
     }
    },
-   "actualizado": "2026-11-12T19:53:04"
+   "actualizado": "2026-11-17T20:53:26"
   },
   "6603888928745": {
    "listing_id": "MCO4591143162",
@@ -6610,14 +6611,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591118464-set-de-maquillaje-en-caja-_JM",
    "estado": "active",
    "precio": 64500,
-   "stock_publicado": 62,
+   "stock_publicado": 61,
    "categoria_ml": "MCO1910",
    "seller_custom_field": "6603888928899",
    "user_product_id": "MCOU5696031531",
    "family_name": "Set De Maquillaje En Caja",
    "origen": "catalogo",
    "creado": "2026-10-29T17:53:12",
-   "actualizado": "2026-11-10T07:14:35"
+   "actualizado": "2026-11-17T20:53:26"
   },
   "6603888929063": {
    "listing_id": "MCO4591130742",
@@ -6735,14 +6736,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591143438-carro-infantil-luz-y-sonido-3-colores-_JM",
    "estado": "active",
    "precio": 65900,
-   "stock_publicado": 21,
+   "stock_publicado": 18,
    "categoria_ml": "MCO433685",
    "seller_custom_field": "6603888929575",
    "user_product_id": "MCOU5696040665",
    "family_name": "Carro Infantil Luz Y Sonido 3 Colores",
    "origen": "catalogo",
    "creado": "2026-10-29T17:55:28",
-   "actualizado": "2026-11-14T06:18:43"
+   "actualizado": "2026-11-17T20:53:27"
   },
   "6603888929841": {
    "listing_id": "MCO4591156126",
@@ -6750,14 +6751,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591156126-tortuga-infantil-luz-y-sonido-pilas--_JM",
    "estado": "active",
    "precio": 67400,
-   "stock_publicado": 77,
+   "stock_publicado": 75,
    "categoria_ml": "MCO1910",
    "seller_custom_field": "6603888929841",
    "user_product_id": "MCOU5745659622",
    "family_name": "Tortuga Infantil Luz Y Sonido (pilas )",
    "origen": "catalogo",
    "creado": "2026-10-29T17:55:31",
-   "actualizado": "2026-11-13T19:39:30"
+   "actualizado": "2026-11-17T20:53:28"
   },
   "6603888929940": {
    "listing_id": "MCO4591143446",
@@ -6905,14 +6906,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591131026-telefono-didactico-leon-pila-_JM",
    "estado": "active",
    "precio": 51100,
-   "stock_publicado": 58,
+   "stock_publicado": 52,
    "categoria_ml": "MCO433049",
    "seller_custom_field": "6603888930342",
    "user_product_id": "MCOU5696046011",
    "family_name": "Telefono Didactico Leon (pila)",
    "origen": "catalogo",
    "creado": "2026-10-29T17:55:58",
-   "actualizado": "2026-11-14T06:18:45"
+   "actualizado": "2026-11-17T20:53:34"
   },
   "6603888930410": {
    "listing_id": "MCO4591156156",
@@ -6935,14 +6936,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591131030-set-tienda-con-caja-registradora-y-accesorios-_JM",
    "estado": "active",
    "precio": 73400,
-   "stock_publicado": 16,
+   "stock_publicado": 14,
    "categoria_ml": "MCO1910",
    "seller_custom_field": "6603888930458",
    "user_product_id": "MCOU5696046113",
    "family_name": "Set Tienda Con Caja Registradora Y Accesorios",
    "origen": "catalogo",
    "creado": "2026-10-29T17:56:03",
-   "actualizado": "2026-11-13T19:39:33"
+   "actualizado": "2026-11-17T20:53:34"
   },
   "6603888930465": {
    "listing_id": "MCO4591156166",
@@ -7145,14 +7146,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591131078-bolsa-conejo-musical-y-luces-surtido-_JM",
    "estado": "active",
    "precio": 44000,
-   "stock_publicado": 22,
+   "stock_publicado": 21,
    "categoria_ml": "MCO189402",
    "seller_custom_field": "6854000166082",
    "user_product_id": "MCOU5696048505",
    "family_name": "Bolsa Conejo Musical Y Luces Surtido",
    "origen": "catalogo",
    "creado": "2026-10-29T17:56:51",
-   "actualizado": "2026-10-29T17:58:32"
+   "actualizado": "2026-11-17T20:53:36"
   },
   "6900000220009": {
    "listing_id": "MCO4591118764",
@@ -7160,14 +7161,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591118764-carro-friccion-x-6-pcs-_JM",
    "estado": "active",
    "precio": 58500,
-   "stock_publicado": 76,
+   "stock_publicado": 72,
    "categoria_ml": "MCO433685",
    "seller_custom_field": "6900000220009",
    "user_product_id": "MCOU5696044847",
    "family_name": "Carro Friccion X 6 Pcs",
    "origen": "catalogo",
    "creado": "2026-10-29T17:56:54",
-   "actualizado": "2026-11-06T01:17:24"
+   "actualizado": "2026-11-17T20:53:37"
   },
   "6900202605680": {
    "listing_id": "MCO4591118772",
@@ -7190,14 +7191,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591156234-carro-ninera-surtida-_JM",
    "estado": "active",
    "precio": 80800,
-   "stock_publicado": 22,
+   "stock_publicado": 20,
    "categoria_ml": "MCO433685",
    "seller_custom_field": "6902604171039",
    "user_product_id": "MCOU5696048617",
    "family_name": "Carro Niñera Surtida",
    "origen": "catalogo",
    "creado": "2026-10-29T17:57:01",
-   "actualizado": "2026-11-14T06:18:47"
+   "actualizado": "2026-11-17T20:53:37"
   },
   "6903656255678": {
    "listing_id": "MCO4591156236",
@@ -7220,7 +7221,7 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591143590-moto-de-carreras-x-4-_JM",
    "estado": "active",
    "precio": 58500,
-   "stock_publicado": 64,
+   "stock_publicado": 58,
    "categoria_ml": "MCO433685",
    "seller_custom_field": "6905112060161",
    "user_product_id": "MCOU5696048705",
@@ -7247,7 +7248,7 @@
      "status": 400
     }
    },
-   "actualizado": "2026-11-14T17:58:55"
+   "actualizado": "2026-11-17T20:53:38"
   },
   "6905489160624": {
    "listing_id": "MCO4591156250",
@@ -7270,14 +7271,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591156258-carro-constructor-surtido-_JM",
    "estado": "active",
    "precio": 46600,
-   "stock_publicado": 73,
+   "stock_publicado": 67,
    "categoria_ml": "MCO433685",
    "seller_custom_field": "6910095002459",
    "user_product_id": "MCOU5745674030",
    "family_name": "Carro Constructor Surtido",
    "origen": "catalogo",
    "creado": "2026-10-29T17:57:13",
-   "actualizado": "2026-11-14T06:18:47"
+   "actualizado": "2026-11-17T20:53:39"
   },
   "6912024640114": {
    "listing_id": "MCO4591156266",
@@ -7455,14 +7456,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591143714-carrito-de-helados-con-accesorios-_JM",
    "estado": "active",
    "precio": 80800,
-   "stock_publicado": 42,
+   "stock_publicado": 41,
    "categoria_ml": "MCO1910",
    "seller_custom_field": "6921202506029",
    "user_product_id": "MCOU5745675628",
    "family_name": "Carrito De Helados Con Accesorios",
    "origen": "catalogo",
    "creado": "2026-10-29T17:59:17",
-   "actualizado": "2026-11-13T19:39:37"
+   "actualizado": "2026-11-17T20:53:41"
   },
   "6921527120474": {
    "listing_id": "MCO4591156420",
@@ -7625,14 +7626,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591118944-carro-carreras-de-arenas-_JM",
    "estado": "active",
    "precio": 43600,
-   "stock_publicado": 92,
+   "stock_publicado": 80,
    "categoria_ml": "MCO433685",
    "seller_custom_field": "6931442691294",
    "user_product_id": "MCOU5696062019",
    "family_name": "Carro Carreras De Arenas",
    "origen": "catalogo",
    "creado": "2026-10-29T17:59:47",
-   "actualizado": "2026-11-12T07:07:59"
+   "actualizado": "2026-11-17T20:53:42"
   },
   "6933012580168": {
    "listing_id": "MCO4591118950",
@@ -8000,14 +8001,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591156732-coche-para-munecas-md-_JM",
    "estado": "active",
    "precio": 73400,
-   "stock_publicado": 26,
+   "stock_publicado": 23,
    "categoria_ml": "MCO176633",
    "seller_custom_field": "6976261358898",
    "user_product_id": "MCOU5696075343",
    "family_name": "Coche Para Muñecas Md",
    "origen": "catalogo",
    "creado": "2026-10-29T18:02:52",
-   "actualizado": "2026-11-14T06:18:51"
+   "actualizado": "2026-11-17T20:53:42"
   },
   "6976261358911": {
    "listing_id": "MCO4591131606",
@@ -8045,14 +8046,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591144042-tablero-magico-4-colores-_JM",
    "estado": "active",
    "precio": 42100,
-   "stock_publicado": 28,
+   "stock_publicado": 25,
    "categoria_ml": "MCO1910",
    "seller_custom_field": "6984831050011",
    "user_product_id": "MCOU5696075479",
    "family_name": "Tablero Magico 4 Colores",
    "origen": "catalogo",
    "creado": "2026-10-29T18:03:02",
-   "actualizado": "2026-11-10T07:14:38"
+   "actualizado": "2026-11-17T20:53:43"
   },
   "6985211123707": {
    "listing_id": "MCO4591131624",
@@ -8165,14 +8166,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591131668-tanke-militar-surtido-_JM",
    "estado": "active",
    "precio": 43600,
-   "stock_publicado": 80,
+   "stock_publicado": 74,
    "categoria_ml": "MCO1910",
    "seller_custom_field": "6992009021015",
    "user_product_id": "MCOU5696075941",
    "family_name": "Tanke Militar Surtido",
    "origen": "catalogo",
    "creado": "2026-10-29T18:03:35",
-   "actualizado": "2026-11-14T06:18:52"
+   "actualizado": "2026-11-17T20:53:44"
   },
   "7020241100034": {
    "listing_id": "MCO4591156820",
@@ -8325,14 +8326,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591156866-jenga-colores-caja-roja-29cmx8cm-_JM",
    "estado": "active",
    "precio": 51600,
-   "stock_publicado": 33,
+   "stock_publicado": 30,
    "categoria_ml": "MCO1161",
    "seller_custom_field": "7120250452077",
    "user_product_id": "MCOU5745700348",
    "family_name": "Jenga Colores Caja Roja 29cmx8cm",
    "origen": "catalogo",
    "creado": "2026-10-29T18:03:59",
-   "actualizado": "2026-11-12T07:08:01"
+   "actualizado": "2026-11-17T20:53:44"
   },
   "7120250452329": {
    "listing_id": "MCO4591119334",
@@ -9020,14 +9021,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591132072-bingo-set-_JM",
    "estado": "active",
    "precio": 112400,
-   "stock_publicado": 69,
+   "stock_publicado": 68,
    "categoria_ml": "MCO1161",
    "seller_custom_field": "7702202524003",
    "user_product_id": "MCOU5745717966",
    "family_name": "Bingo Set",
    "origen": "catalogo",
    "creado": "2026-10-29T18:08:07",
-   "actualizado": "2026-11-14T06:18:53"
+   "actualizado": "2026-11-17T20:53:45"
   },
   "7702202560728": {
    "listing_id": "MCO4591144492",
@@ -9138,7 +9139,7 @@
    "listing_id": "MCO4591144516",
    "titulo": "Torre De Equilibrio Con Pelotas Y Palos Madera",
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591144516-torre-de-equilibrio-con-pelotas-y-palos-madera-_JM",
-   "estado": "active",
+   "estado": "paused",
    "precio": 80800,
    "stock_publicado": 23,
    "categoria_ml": "MCO433049",
@@ -9147,7 +9148,7 @@
    "family_name": "Torre De Equilibrio Con Pelotas Y Palos Madera",
    "origen": "catalogo",
    "creado": "2026-10-29T18:08:30",
-   "actualizado": "2026-10-29T18:10:14"
+   "actualizado": "2026-11-17T20:53:46"
   },
   "7702202631732": {
    "listing_id": "MCO4591157238",
@@ -9485,14 +9486,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591132358-rompecabezas-1000-piezas-torre-eiffel-_JM",
    "estado": "active",
    "precio": 82000,
-   "stock_publicado": 41,
+   "stock_publicado": 40,
    "categoria_ml": "MCO436800",
    "seller_custom_field": "7703493009712",
    "user_product_id": "MCOU5696112915",
    "family_name": "Rompecabezas 1000 Piezas Torre Eiffel",
    "origen": "catalogo",
    "creado": "2026-10-29T18:11:43",
-   "actualizado": "2026-10-29T18:14:19"
+   "actualizado": "2026-11-17T20:53:46"
   },
   "7703493022445": {
    "listing_id": "MCO4591144764",
@@ -9575,14 +9576,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591132436-rompecabezas-1000-piezas-puente-de-la-t-_JM",
    "estado": "active",
    "precio": 72500,
-   "stock_publicado": 43,
+   "stock_publicado": 42,
    "categoria_ml": "MCO436800",
    "seller_custom_field": "7703493354065",
    "user_product_id": "MCOU5696111505",
    "family_name": "Rompecabezas 1000 Piezas Puente De La T",
    "origen": "catalogo",
    "creado": "2026-10-29T18:12:10",
-   "actualizado": "2026-10-29T18:14:25"
+   "actualizado": "2026-11-17T20:53:47"
   },
   "7703493418651": {
    "listing_id": "MCO4591120068",
@@ -9945,14 +9946,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591120436-set-carro-construccion-x5-_JM",
    "estado": "active",
    "precio": 41400,
-   "stock_publicado": 85,
+   "stock_publicado": 82,
    "categoria_ml": "MCO433685",
    "seller_custom_field": "7708903081050",
    "user_product_id": "MCOU5696121735",
    "family_name": "Set Carro Construccion X5",
    "origen": "catalogo",
    "creado": "2026-10-29T18:15:29",
-   "actualizado": "2026-11-14T17:58:57"
+   "actualizado": "2026-11-17T20:53:47"
   },
   "7708968946752": {
    "listing_id": "MCO4591120440",
@@ -10555,14 +10556,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-2332921237-pop-it-stich-electronico-_JM",
    "estado": "active",
    "precio": 51100,
-   "stock_publicado": 85,
+   "stock_publicado": 83,
    "categoria_ml": "MCO432992",
    "seller_custom_field": "FOX-2266",
    "user_product_id": "MCOU5696295319",
    "family_name": "Pop It Stich Electronico",
    "origen": "catalogo",
    "creado": "2026-10-29T18:59:05",
-   "actualizado": "2026-11-14T06:18:55"
+   "actualizado": "2026-11-17T20:53:49"
   },
   "MIC-6267": {
    "listing_id": "MCO2332985135",
