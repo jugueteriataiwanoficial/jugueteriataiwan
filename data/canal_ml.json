@@ -1,7 +1,7 @@
 {
  "version": 1,
  "site": "MCO",
- "actualizado": "2026-11-17T20:57:26",
+ "actualizado": "2026-11-18T07:28:26",
  "listings": {
   "001309": {
    "listing_id": "MCO2332448697",
@@ -1769,14 +1769,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-2332813423-juego-misterio-harry-potter-cluedo-_JM",
    "estado": "active",
    "precio": 135100,
-   "stock_publicado": 25,
+   "stock_publicado": 24,
    "categoria_ml": "MCO1161",
    "seller_custom_field": "02328",
    "user_product_id": "MCOU5695733821",
    "family_name": "Juego Misterio Harry Potter Cluedo",
    "origen": "catalogo",
    "creado": "2026-10-29T16:48:22",
-   "actualizado": "2026-10-29T17:01:28"
+   "actualizado": "2026-11-18T07:24:46"
   },
   "02337": {
    "listing_id": "MCO4591109918",
@@ -4646,14 +4646,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591116330-pista-neon-carro-pila-luz-con-numero-_JM",
    "estado": "active",
    "precio": 110600,
-   "stock_publicado": 29,
+   "stock_publicado": 28,
    "categoria_ml": "MCO433685",
    "seller_custom_field": "2026888805337",
    "user_product_id": "MCOU5745588390",
    "family_name": "Pista Neon Carro Pila Luz Con Numero",
    "origen": "catalogo",
    "creado": "2026-10-29T17:36:34",
-   "actualizado": "2026-11-12T07:07:43"
+   "actualizado": "2026-11-18T07:24:52"
   },
   "2026888805368": {
    "listing_id": "MCO4591153772",
@@ -4706,14 +4706,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591116418-carro-robot-transformable-2-colores-_JM",
    "estado": "active",
    "precio": 91200,
-   "stock_publicado": 22,
+   "stock_publicado": 21,
    "categoria_ml": "MCO433685",
    "seller_custom_field": "2026888807539",
    "user_product_id": "MCOU5745592246",
    "family_name": "Carro Robot Transformable 2 Colores",
    "origen": "catalogo",
    "creado": "2026-10-29T17:37:02",
-   "actualizado": "2026-11-17T20:53:12"
+   "actualizado": "2026-11-18T07:24:53"
   },
   "2026888807768": {
    "listing_id": "MCO4591153914",
@@ -5221,14 +5221,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591154806-carro-grafiti-bolsa-_JM",
    "estado": "active",
    "precio": 36200,
-   "stock_publicado": 99,
+   "stock_publicado": 94,
    "categoria_ml": "MCO433685",
    "seller_custom_field": "6603888894460",
    "user_product_id": "MCOU5745603344",
    "family_name": "Carro Grafiti Bolsa",
    "origen": "catalogo",
    "creado": "2026-10-29T17:42:51",
-   "actualizado": "2026-10-29T17:45:10"
+   "actualizado": "2026-11-18T07:24:54"
   },
   "6603888895689": {
    "listing_id": "MCO4591117384",
@@ -5431,14 +5431,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591129956-maquillaje-infantil-paleta-caja-x3-_JM",
    "estado": "active",
    "precio": 66800,
-   "stock_publicado": 37,
+   "stock_publicado": 35,
    "categoria_ml": "MCO1910",
    "seller_custom_field": "6603888903667",
    "user_product_id": "MCOU5745624030",
    "family_name": "Maquillaje Infantil Paleta Caja X3",
    "origen": "catalogo",
    "creado": "2026-10-29T17:45:49",
-   "actualizado": "2026-11-17T20:53:15"
+   "actualizado": "2026-11-18T07:24:54"
   },
   "6603888903940": {
    "listing_id": "MCO4591142440",
@@ -5971,14 +5971,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591130188-maquillaje-treza-con-accesorios-_JM",
    "estado": "active",
    "precio": 54000,
-   "stock_publicado": 72,
+   "stock_publicado": 69,
    "categoria_ml": "MCO1910",
    "seller_custom_field": "6603888924464",
    "user_product_id": "MCOU5696006813",
    "family_name": "Maquillaje Treza Con Accesorios",
    "origen": "catalogo",
    "creado": "2026-10-29T17:48:01",
-   "actualizado": "2026-10-29T17:50:25"
+   "actualizado": "2026-11-18T07:24:57"
   },
   "6603888924594": {
    "listing_id": "MCO4591142910",
@@ -5986,14 +5986,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591142910-caja-registradora-con-accesorios-pilas-nina-_JM",
    "estado": "active",
    "precio": 170100,
-   "stock_publicado": 11,
+   "stock_publicado": 10,
    "categoria_ml": "MCO1910",
    "seller_custom_field": "6603888924594",
    "user_product_id": "MCOU5696020309",
    "family_name": "Caja Registradora Con Accesorios (pilas) Niña",
    "origen": "catalogo",
    "creado": "2026-10-29T17:50:41",
-   "actualizado": "2026-10-29T17:54:21"
+   "actualizado": "2026-11-18T07:24:57"
   },
   "6603888925058": {
    "listing_id": "MCO4591155654",
@@ -9826,14 +9826,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591145190-caja-tito-el-rico-_JM",
    "estado": "active",
    "precio": 37900,
-   "stock_publicado": 99,
+   "stock_publicado": 92,
    "categoria_ml": "MCO1910",
    "seller_custom_field": "7707353150828",
    "user_product_id": "MCOU5745737860",
    "family_name": "Caja Tito El Rico",
    "origen": "catalogo",
    "creado": "2026-10-29T18:15:06",
-   "actualizado": "2026-10-29T18:18:31"
+   "actualizado": "2026-11-18T07:25:04"
   },
   "7707353150842": {
    "listing_id": "MCO4591145206",
@@ -10874,14 +10874,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-2332987621-caja-registradora-con-pilas-luz-ysonido-en-caja-_JM",
    "estado": "active",
    "precio": 110600,
-   "stock_publicado": 21,
+   "stock_publicado": 20,
    "categoria_ml": "MCO413461",
    "seller_custom_field": "6603888928073",
    "user_product_id": "MCOU5746024570",
    "family_name": "Caja Registradora Con Pilas Luz Ysonido En Caja",
    "origen": "catalogo",
    "creado": "2026-10-29T19:19:23",
-   "actualizado": "2026-11-05T01:12:10"
+   "actualizado": "2026-11-18T07:24:59"
   },
   "6603888931462": {
    "listing_id": "MCO2332949543",
