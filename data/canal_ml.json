@@ -1,7 +1,7 @@
 {
  "version": 1,
  "site": "MCO",
- "actualizado": "2026-11-18T07:28:26",
+ "actualizado": "2026-11-18T20:32:24",
  "listings": {
   "001309": {
    "listing_id": "MCO2332448697",
@@ -523,7 +523,7 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-2332789409-ajedrez-madera-no-2-25cmx25cm-_JM",
    "estado": "active",
    "precio": 83500,
-   "stock_publicado": 79,
+   "stock_publicado": 77,
    "categoria_ml": "MCO433049",
    "seller_custom_field": "01408",
    "user_product_id": "MCOU5744751326",
@@ -550,7 +550,7 @@
      "status": 400
     }
    },
-   "actualizado": "2026-11-12T07:07:33"
+   "actualizado": "2026-11-18T20:28:43"
   },
   "00772": {
    "listing_id": "MCO2332802857",
@@ -3291,14 +3291,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591114460-encajable-abecedario-o-numeros-tabla-30cm22cm-_JM",
    "estado": "active",
    "precio": 44000,
-   "stock_publicado": 40,
+   "stock_publicado": 20,
    "categoria_ml": "MCO1910",
    "seller_custom_field": "04534",
    "user_product_id": "MCOU5695907081",
    "family_name": "Encajable Abecedario O Numeros Tabla 30cm*22cm",
    "origen": "catalogo",
    "creado": "2026-10-29T17:23:09",
-   "actualizado": "2026-10-29T17:27:06"
+   "actualizado": "2026-11-18T20:28:50"
   },
   "04536": {
    "listing_id": "MCO4591139016",
@@ -4571,14 +4571,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591116250-carrito-de-mercado-plastico-gnd-bolsa-_JM",
    "estado": "active",
    "precio": 118000,
-   "stock_publicado": 22,
+   "stock_publicado": 21,
    "categoria_ml": "MCO432837",
    "seller_custom_field": "2026888801049",
    "user_product_id": "MCOU5745586226",
    "family_name": "Carrito De Mercado Plastico Gnd Bolsa",
    "origen": "catalogo",
    "creado": "2026-10-29T17:36:02",
-   "actualizado": "2026-11-13T19:39:22"
+   "actualizado": "2026-11-18T20:28:52"
   },
   "2026888801155": {
    "listing_id": "MCO4591128376",
@@ -4706,14 +4706,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591116418-carro-robot-transformable-2-colores-_JM",
    "estado": "active",
    "precio": 91200,
-   "stock_publicado": 21,
+   "stock_publicado": 20,
    "categoria_ml": "MCO433685",
    "seller_custom_field": "2026888807539",
    "user_product_id": "MCOU5745592246",
    "family_name": "Carro Robot Transformable 2 Colores",
    "origen": "catalogo",
    "creado": "2026-10-29T17:37:02",
-   "actualizado": "2026-11-18T07:24:53"
+   "actualizado": "2026-11-18T20:28:54"
   },
   "2026888807768": {
    "listing_id": "MCO4591153914",
@@ -4901,14 +4901,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591129226-set-tablero-fichas-magneticas-bx144-_JM",
    "estado": "active",
    "precio": 43600,
-   "stock_publicado": 99,
+   "stock_publicado": 38,
    "categoria_ml": "MCO1161",
    "seller_custom_field": "4720250426547",
    "user_product_id": "MCOU5745597992",
    "family_name": "Set Tablero Fichas Magneticas Bx144",
    "origen": "catalogo",
    "creado": "2026-10-29T17:40:40",
-   "actualizado": "2026-10-29T17:44:52"
+   "actualizado": "2026-11-18T20:28:54"
   },
   "4720250427810": {
    "listing_id": "MCO4591154530",
@@ -7701,14 +7701,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591118968-tablero-magico-con-abaco-4-colores-_JM",
    "estado": "active",
    "precio": 42100,
-   "stock_publicado": 23,
+   "stock_publicado": 20,
    "categoria_ml": "MCO1910",
    "seller_custom_field": "6957362474274",
    "user_product_id": "MCOU5745679088",
    "family_name": "Tablero Magico Con Abaco 4 Colores",
    "origen": "catalogo",
    "creado": "2026-10-29T18:00:02",
-   "actualizado": "2026-11-10T07:14:37"
+   "actualizado": "2026-11-18T20:29:03"
   },
   "6957738201343": {
    "listing_id": "MCO4591156500",
@@ -8046,14 +8046,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591144042-tablero-magico-4-colores-_JM",
    "estado": "active",
    "precio": 42100,
-   "stock_publicado": 25,
+   "stock_publicado": 21,
    "categoria_ml": "MCO1910",
    "seller_custom_field": "6984831050011",
    "user_product_id": "MCOU5696075479",
    "family_name": "Tablero Magico 4 Colores",
    "origen": "catalogo",
    "creado": "2026-10-29T18:03:02",
-   "actualizado": "2026-11-17T20:53:43"
+   "actualizado": "2026-11-18T20:29:03"
   },
   "6985211123707": {
    "listing_id": "MCO4591131624",
@@ -9081,14 +9081,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591119664-set-maquillaje-maleta-caja-201614cm-_JM",
    "estado": "active",
    "precio": 135000,
-   "stock_publicado": 57,
+   "stock_publicado": 56,
    "categoria_ml": "MCO1910",
    "seller_custom_field": "7702202571403",
    "user_product_id": "MCOU5696095867",
    "family_name": "Set Maquillaje Maleta Caja 20*16*14cm",
    "origen": "catalogo",
    "creado": "2026-10-29T18:08:18",
-   "actualizado": "2026-11-12T07:08:02"
+   "actualizado": "2026-11-18T20:29:04"
   },
   "7702202584083": {
    "listing_id": "MCO4591144506",
@@ -9621,14 +9621,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591132524-juego-de-mesa-pared-caja-2527cm-_JM",
    "estado": "active",
    "precio": 60000,
-   "stock_publicado": 26,
+   "stock_publicado": 23,
    "categoria_ml": "MCO1161",
    "seller_custom_field": "7706888861124",
    "user_product_id": "MCOU5696111881",
    "family_name": "Juego De Mesa Pared Caja 25*27cm",
    "origen": "catalogo",
    "creado": "2026-10-29T18:12:32",
-   "actualizado": "2026-10-29T18:14:28"
+   "actualizado": "2026-11-18T20:29:04"
   },
   "7706888874438": {
    "listing_id": "MCO4591120100",
@@ -10006,14 +10006,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591145276-domino-doble-9-caja-metalica-_JM",
    "estado": "active",
    "precio": 74400,
-   "stock_publicado": 67,
+   "stock_publicado": 66,
    "categoria_ml": "MCO1161",
    "seller_custom_field": "7709431663404",
    "user_product_id": "MCOU5696124811",
    "family_name": "Domino Doble 9 Caja Metalica",
    "origen": "catalogo",
    "creado": "2026-10-29T18:15:40",
-   "actualizado": "2026-11-06T01:17:30"
+   "actualizado": "2026-11-18T20:29:05"
   },
   "7709431663428": {
    "listing_id": "MCO4591158080",
@@ -10586,14 +10586,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-2332947083-juego-gestos-con-timbre-caja-metalica-_JM",
    "estado": "active",
    "precio": 82000,
-   "stock_publicado": 78,
+   "stock_publicado": 77,
    "categoria_ml": "MCO1910",
    "seller_custom_field": "MIC-7153",
    "user_product_id": "MCOU5745922464",
    "family_name": "Juego Gestos Con Timbre Caja Metalica",
    "origen": "catalogo",
    "creado": "2026-10-29T18:59:12",
-   "actualizado": "2026-11-13T19:39:40"
+   "actualizado": "2026-11-18T20:29:06"
   },
   "MIC-7495": {
    "listing_id": "MCO2332985153",
@@ -10874,14 +10874,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-2332987621-caja-registradora-con-pilas-luz-ysonido-en-caja-_JM",
    "estado": "active",
    "precio": 110600,
-   "stock_publicado": 20,
+   "stock_publicado": 19,
    "categoria_ml": "MCO413461",
    "seller_custom_field": "6603888928073",
    "user_product_id": "MCOU5746024570",
    "family_name": "Caja Registradora Con Pilas Luz Ysonido En Caja",
    "origen": "catalogo",
    "creado": "2026-10-29T19:19:23",
-   "actualizado": "2026-11-18T07:24:59"
+   "actualizado": "2026-11-18T20:28:58"
   },
   "6603888931462": {
    "listing_id": "MCO2332949543",
