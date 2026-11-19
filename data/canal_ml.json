@@ -1,7 +1,7 @@
 {
  "version": 1,
  "site": "MCO",
- "actualizado": "2026-11-19T07:26:16",
+ "actualizado": "2026-11-19T20:37:05",
  "listings": {
   "001309": {
    "listing_id": "MCO2332448697",
@@ -5401,14 +5401,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591129936-maleta-carros-deportivos-x5-_JM",
    "estado": "active",
    "precio": 59100,
-   "stock_publicado": 28,
+   "stock_publicado": 27,
    "categoria_ml": "MCO433685",
    "seller_custom_field": "6603888902981",
    "user_product_id": "MCOU5695997927",
    "family_name": "Maleta Carros Deportivos X5",
    "origen": "catalogo",
    "creado": "2026-10-29T17:45:41",
-   "actualizado": "2026-10-29T17:49:38"
+   "actualizado": "2026-11-19T20:33:12"
   },
   "6603888903537": {
    "listing_id": "MCO4591129948",
@@ -6686,14 +6686,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591130964-carro-lanza-bolas-hidrogel-control-remoto-pila-recargable-_JM",
    "estado": "active",
    "precio": 162600,
-   "stock_publicado": 15,
+   "stock_publicado": 13,
    "categoria_ml": "MCO433685",
    "seller_custom_field": "6603888929407",
    "user_product_id": "MCOU5745657660",
    "family_name": "Carro Lanza Bolas Hidrogel Control Remoto (pila Recargable)",
    "origen": "catalogo",
    "creado": "2026-10-29T17:55:23",
-   "actualizado": "2026-11-05T01:12:12"
+   "actualizado": "2026-11-19T20:33:16"
   },
   "6603888929551": {
    "listing_id": "MCO4591130976",
@@ -10811,7 +10811,7 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-2332987591-caja-juguete-princesa-elsa-fashion-girl-3d-light-_JM",
    "estado": "active",
    "precio": 74400,
-   "stock_publicado": 52,
+   "stock_publicado": 51,
    "categoria_ml": "MCO413461",
    "seller_custom_field": "2019030602328",
    "user_product_id": "MCOU5746024258",
@@ -10838,7 +10838,7 @@
      "status": 400
     }
    },
-   "actualizado": "2026-11-13T19:39:20"
+   "actualizado": "2026-11-19T20:33:08"
   },
   "2023100269793": {
    "listing_id": "MCO2332949525",
