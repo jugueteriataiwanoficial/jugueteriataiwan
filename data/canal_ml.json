@@ -1,7 +1,7 @@
 {
  "version": 1,
  "site": "MCO",
- "actualizado": "2026-11-18T20:32:24",
+ "actualizado": "2026-11-19T07:26:16",
  "listings": {
   "001309": {
    "listing_id": "MCO2332448697",
@@ -1404,7 +1404,7 @@
    "listing_id": "MCO2332803137",
    "titulo": "Busca La Pareja",
    "permalink": "http://articulo.mercadolibre.com.co/MCO-2332803137-busca-la-pareja-_JM",
-   "estado": "active",
+   "estado": "paused",
    "precio": 47000,
    "stock_publicado": 80,
    "categoria_ml": "MCO1910",
@@ -1413,7 +1413,7 @@
    "family_name": "Busca La Pareja",
    "origen": "catalogo",
    "creado": "2026-10-29T15:23:08",
-   "actualizado": "2026-11-13T06:41:37"
+   "actualizado": "2026-11-19T07:22:11"
   },
   "01758": {
    "listing_id": "MCO2332777771",
