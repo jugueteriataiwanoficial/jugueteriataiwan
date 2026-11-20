@@ -1,7 +1,7 @@
 {
  "version": 1,
  "site": "MCO",
- "actualizado": "2026-11-19T20:37:05",
+ "actualizado": "2026-11-20T07:15:00",
  "listings": {
   "001309": {
    "listing_id": "MCO2332448697",
@@ -6626,14 +6626,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591130742-carro-monster-control-remoto-pila-recargable-_JM",
    "estado": "active",
    "precio": 192400,
-   "stock_publicado": 46,
+   "stock_publicado": 44,
    "categoria_ml": "MCO433685",
    "seller_custom_field": "6603888929063",
    "user_product_id": "MCOU5696023923",
    "family_name": "Carro Monster Control Remoto Pila Recargable",
    "origen": "catalogo",
    "creado": "2026-10-29T17:53:15",
-   "actualizado": "2026-10-29T17:55:04"
+   "actualizado": "2026-11-20T07:11:03"
   },
   "6603888929247": {
    "listing_id": "MCO4591130746",
