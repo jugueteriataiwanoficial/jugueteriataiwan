@@ -1,7 +1,7 @@
 {
  "version": 1,
  "site": "MCO",
- "actualizado": "2026-11-20T07:15:00",
+ "actualizado": "2026-11-20T20:16:42",
  "listings": {
   "001309": {
    "listing_id": "MCO2332448697",
@@ -723,14 +723,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-2332789957-balotera-de-bingo-metalica-con-pimpones-_JM",
    "estado": "active",
    "precio": 127500,
-   "stock_publicado": 86,
+   "stock_publicado": 84,
    "categoria_ml": "MCO1161",
    "seller_custom_field": "01178",
    "user_product_id": "MCOU5744825248",
    "family_name": "Balotera De Bingo Metalica Con Pimpones",
    "origen": "catalogo",
    "creado": "2026-10-29T15:19:49",
-   "actualizado": "2026-11-14T06:18:26"
+   "actualizado": "2026-11-20T20:12:38"
   },
   "01235": {
    "listing_id": "MCO2332777527",
@@ -828,14 +828,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-2332777547-torre-hanoi-caja-_JM",
    "estado": "active",
    "precio": 47000,
-   "stock_publicado": 58,
+   "stock_publicado": 64,
    "categoria_ml": "MCO1161",
    "seller_custom_field": "01359",
    "user_product_id": "MCOU5744825856",
    "family_name": "Torre Hanoi Caja",
    "origen": "catalogo",
    "creado": "2026-10-29T15:20:07",
-   "actualizado": "2026-11-04T01:10:55"
+   "actualizado": "2026-11-20T20:12:40"
   },
   "01360": {
    "listing_id": "MCO2332802923",
@@ -1907,14 +1907,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591109970-cucaracha-economica-colores-_JM",
    "estado": "active",
    "precio": 72500,
-   "stock_publicado": 13,
+   "stock_publicado": 11,
    "categoria_ml": "MCO1161",
    "seller_custom_field": "02675",
    "user_product_id": "MCOU5745356460",
    "family_name": "Cucaracha Economica Colores",
    "origen": "catalogo",
    "creado": "2026-10-29T16:48:49",
-   "actualizado": "2026-10-29T17:01:42"
+   "actualizado": "2026-11-20T20:12:45"
   },
   "02699": {
    "listing_id": "MCO2332800439",
@@ -2130,14 +2130,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591122058-gonggi-largo-_JM",
    "estado": "active",
    "precio": 47000,
-   "stock_publicado": 32,
+   "stock_publicado": 31,
    "categoria_ml": "MCO1910",
    "seller_custom_field": "02975",
    "user_product_id": "MCOU5745366234",
    "family_name": "Gonggi Largo",
    "origen": "catalogo",
    "creado": "2026-10-29T16:49:50",
-   "actualizado": "2026-10-29T17:01:57"
+   "actualizado": "2026-11-20T20:12:47"
   },
   "03100": {
    "listing_id": "MCO4591134646",
@@ -6751,14 +6751,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591156126-tortuga-infantil-luz-y-sonido-pilas--_JM",
    "estado": "active",
    "precio": 67400,
-   "stock_publicado": 75,
+   "stock_publicado": 74,
    "categoria_ml": "MCO1910",
    "seller_custom_field": "6603888929841",
    "user_product_id": "MCOU5745659622",
    "family_name": "Tortuga Infantil Luz Y Sonido (pilas )",
    "origen": "catalogo",
    "creado": "2026-10-29T17:55:31",
-   "actualizado": "2026-11-17T20:53:28"
+   "actualizado": "2026-11-20T20:12:55"
   },
   "6603888929940": {
    "listing_id": "MCO4591143446",
@@ -10874,14 +10874,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-2332987621-caja-registradora-con-pilas-luz-ysonido-en-caja-_JM",
    "estado": "active",
    "precio": 110600,
-   "stock_publicado": 19,
+   "stock_publicado": 18,
    "categoria_ml": "MCO413461",
    "seller_custom_field": "6603888928073",
    "user_product_id": "MCOU5746024570",
    "family_name": "Caja Registradora Con Pilas Luz Ysonido En Caja",
    "origen": "catalogo",
    "creado": "2026-10-29T19:19:23",
-   "actualizado": "2026-11-18T20:28:58"
+   "actualizado": "2026-11-20T20:12:55"
   },
   "6603888931462": {
    "listing_id": "MCO2332949543",
