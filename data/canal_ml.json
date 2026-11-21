@@ -1,7 +1,7 @@
 {
  "version": 1,
  "site": "MCO",
- "actualizado": "2026-11-21T07:05:57",
+ "actualizado": "2026-11-21T19:16:33",
  "listings": {
   "001309": {
    "listing_id": "MCO2332448697",
@@ -1405,7 +1405,7 @@
    "titulo": "Busca La Pareja",
    "permalink": "http://articulo.mercadolibre.com.co/MCO-2332803137-busca-la-pareja-_JM",
    "estado": "active",
-   "precio": 47000,
+   "precio": 49600,
    "stock_publicado": 99,
    "categoria_ml": "MCO1910",
    "seller_custom_field": "01734",
@@ -1413,7 +1413,7 @@
    "family_name": "Busca La Pareja",
    "origen": "catalogo",
    "creado": "2026-10-29T15:23:08",
-   "actualizado": "2026-11-21T07:02:13"
+   "actualizado": "2026-11-21T19:12:53"
   },
   "01758": {
    "listing_id": "MCO2332777771",
@@ -3424,7 +3424,7 @@
    "listing_id": "MCO4591139102",
    "titulo": "Encajable Juego Didactico Figuras Geometricas Cuadrado",
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591139102-encajable-juego-didactico-figuras-geometricas-cuadrado-_JM",
-   "estado": "active",
+   "estado": "paused",
    "precio": 41000,
    "stock_publicado": 28,
    "categoria_ml": "MCO457877",
@@ -3433,7 +3433,7 @@
    "family_name": "Encajable Juego Didactico Figuras Geometricas Cuadrado",
    "origen": "catalogo",
    "creado": "2026-10-29T17:23:50",
-   "actualizado": "2026-11-21T07:02:18"
+   "actualizado": "2026-11-21T19:12:58"
   },
   "04556": {
    "listing_id": "MCO4591152024",
@@ -4314,7 +4314,7 @@
    "listing_id": "MCO4591152948",
    "titulo": "Bolsito Lol Muñeca Y Accesorios",
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591152948-bolsito-lol-muneca-y-accesorios-_JM",
-   "estado": "active",
+   "estado": "paused",
    "precio": 36900,
    "stock_publicado": 99,
    "categoria_ml": "MCO1910",
@@ -4323,7 +4323,7 @@
    "family_name": "Bolsito Lol Muñeca Y Accesorios",
    "origen": "catalogo",
    "creado": "2026-10-29T17:31:27",
-   "actualizado": "2026-10-29T17:33:50"
+   "actualizado": "2026-11-21T19:12:58"
   },
   "2023100268079": {
    "listing_id": "MCO4591128082",
@@ -4946,14 +4946,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591117160-4-en-linea-mediano-_JM",
    "estado": "active",
    "precio": 43600,
-   "stock_publicado": 71,
+   "stock_publicado": 69,
    "categoria_ml": "MCO1161",
    "seller_custom_field": "4720250429128",
    "user_product_id": "MCOU5695981701",
    "family_name": "4 En Linea Mediano",
    "origen": "catalogo",
    "creado": "2026-10-29T17:40:57",
-   "actualizado": "2026-11-12T07:07:44"
+   "actualizado": "2026-11-21T19:13:01"
   },
   "4891001002652": {
    "listing_id": "MCO4591154602",
@@ -5641,14 +5641,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591155250-lanza-bolas-de-hidrogel-pila-recargable-_JM",
    "estado": "active",
    "precio": 91200,
-   "stock_publicado": 20,
+   "stock_publicado": 16,
    "categoria_ml": "MCO1910",
    "seller_custom_field": "6603888921883",
    "user_product_id": "MCOU5745617872",
    "family_name": "Lanza Bolas De Hidrogel (pila Recargable)",
    "origen": "catalogo",
    "creado": "2026-10-29T17:46:35",
-   "actualizado": "2026-11-17T20:53:16"
+   "actualizado": "2026-11-21T19:13:02"
   },
   "6603888922033": {
    "listing_id": "MCO4591130024",
@@ -5776,14 +5776,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591130074-set-accesorios-para-pulsera-en-caja-_JM",
    "estado": "active",
    "precio": 52600,
-   "stock_publicado": 84,
+   "stock_publicado": 82,
    "categoria_ml": "MCO1910",
    "seller_custom_field": "6603888923030",
    "user_product_id": "MCOU5745623522",
    "family_name": "Set Accesorios Para Pulsera En Caja",
    "origen": "catalogo",
    "creado": "2026-10-29T17:47:12",
-   "actualizado": "2026-11-09T22:19:23"
+   "actualizado": "2026-11-21T19:13:03"
   },
   "6603888923214": {
    "listing_id": "MCO4591142552",
@@ -6936,14 +6936,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591131030-set-tienda-con-caja-registradora-y-accesorios-_JM",
    "estado": "active",
    "precio": 73400,
-   "stock_publicado": 14,
+   "stock_publicado": 13,
    "categoria_ml": "MCO1910",
    "seller_custom_field": "6603888930458",
    "user_product_id": "MCOU5696046113",
    "family_name": "Set Tienda Con Caja Registradora Y Accesorios",
    "origen": "catalogo",
    "creado": "2026-10-29T17:56:03",
-   "actualizado": "2026-11-17T20:53:34"
+   "actualizado": "2026-11-21T19:13:08"
   },
   "6603888930465": {
    "listing_id": "MCO4591156166",
@@ -9796,14 +9796,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591132814-caja-arma-palabras-_JM",
    "estado": "active",
    "precio": 37900,
-   "stock_publicado": 96,
+   "stock_publicado": 95,
    "categoria_ml": "MCO418879",
    "seller_custom_field": "7707353150156",
    "user_product_id": "MCOU5696121247",
    "family_name": "Caja Arma Palabras",
    "origen": "catalogo",
    "creado": "2026-10-29T18:15:01",
-   "actualizado": "2026-11-11T19:34:38"
+   "actualizado": "2026-11-21T19:13:12"
   },
   "7707353150798": {
    "listing_id": "MCO4591132818",
@@ -9871,14 +9871,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591158028-caja-loteria-las-letras-_JM",
    "estado": "active",
    "precio": 37900,
-   "stock_publicado": 67,
+   "stock_publicado": 66,
    "categoria_ml": "MCO1161",
    "seller_custom_field": "7707353151313",
    "user_product_id": "MCOU5696121511",
    "family_name": "Caja Loteria Las Letras",
    "origen": "catalogo",
    "creado": "2026-10-29T18:15:16",
-   "actualizado": "2026-11-05T01:12:24"
+   "actualizado": "2026-11-21T19:13:12"
   },
   "7707353151801": {
    "listing_id": "MCO4591120408",
@@ -10977,7 +10977,7 @@
    "listing_id": "MCO4662050600",
    "titulo": "Juego De Cartas Matemáticas Multiplicaciones",
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4662050600-juego-de-cartas-matematicas-multiplicaciones-_JM",
-   "estado": "paused",
+   "estado": "active",
    "precio": 38800,
    "stock_publicado": 37,
    "categoria_ml": "MCO1161",
@@ -10985,7 +10985,8 @@
    "user_product_id": "MCOU5942215137",
    "family_name": "Juego De Cartas Matemáticas Multiplicaciones",
    "origen": "catalogo",
-   "creado": "2026-11-21T07:02:36"
+   "creado": "2026-11-21T07:02:36",
+   "actualizado": "2026-11-21T19:13:11"
   }
  },
  "categorias": {
