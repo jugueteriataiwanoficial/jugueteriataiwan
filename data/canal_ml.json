@@ -1,7 +1,7 @@
 {
  "version": 1,
  "site": "MCO",
- "actualizado": "2026-11-20T20:16:42",
+ "actualizado": "2026-11-21T07:05:57",
  "listings": {
   "001309": {
    "listing_id": "MCO2332448697",
@@ -1404,16 +1404,16 @@
    "listing_id": "MCO2332803137",
    "titulo": "Busca La Pareja",
    "permalink": "http://articulo.mercadolibre.com.co/MCO-2332803137-busca-la-pareja-_JM",
-   "estado": "paused",
+   "estado": "active",
    "precio": 47000,
-   "stock_publicado": 80,
+   "stock_publicado": 99,
    "categoria_ml": "MCO1910",
    "seller_custom_field": "01734",
    "user_product_id": "MCOU5695278071",
    "family_name": "Busca La Pareja",
    "origen": "catalogo",
    "creado": "2026-10-29T15:23:08",
-   "actualizado": "2026-11-19T07:22:11"
+   "actualizado": "2026-11-21T07:02:13"
   },
   "01758": {
    "listing_id": "MCO2332777771",
@@ -3426,14 +3426,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591139102-encajable-juego-didactico-figuras-geometricas-cuadrado-_JM",
    "estado": "active",
    "precio": 41000,
-   "stock_publicado": 29,
+   "stock_publicado": 28,
    "categoria_ml": "MCO457877",
    "seller_custom_field": "04555",
    "user_product_id": "MCOU5745530606",
    "family_name": "Encajable Juego Didactico Figuras Geometricas Cuadrado",
    "origen": "catalogo",
    "creado": "2026-10-29T17:23:50",
-   "actualizado": "2026-10-29T17:27:28"
+   "actualizado": "2026-11-21T07:02:18"
   },
   "04556": {
    "listing_id": "MCO4591152024",
@@ -3441,14 +3441,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591152024-torre-didactica-tetris-madera-_JM",
    "estado": "active",
    "precio": 41000,
-   "stock_publicado": 89,
+   "stock_publicado": 88,
    "categoria_ml": "MCO433049",
    "seller_custom_field": "04556",
    "user_product_id": "MCOU5695907759",
    "family_name": "Torre Didactica Tetris Madera",
    "origen": "catalogo",
    "creado": "2026-10-29T17:23:52",
-   "actualizado": "2026-10-29T17:27:29"
+   "actualizado": "2026-11-21T07:02:19"
   },
   "04557": {
    "listing_id": "MCO4591139116",
@@ -5836,14 +5836,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591155328-carro-de-bomberos-en-bolsa-_JM",
    "estado": "active",
    "precio": 51100,
-   "stock_publicado": 87,
+   "stock_publicado": 86,
    "categoria_ml": "MCO433685",
    "seller_custom_field": "6603888923757",
    "user_product_id": "MCOU5745623686",
    "family_name": "Carro De Bomberos En Bolsa",
    "origen": "catalogo",
    "creado": "2026-10-29T17:47:26",
-   "actualizado": "2026-11-14T06:18:39"
+   "actualizado": "2026-11-21T07:02:23"
   },
   "6603888923771": {
    "listing_id": "MCO4591142592",
@@ -7924,37 +7924,37 @@
    "listing_id": "MCO4591143836",
    "titulo": "Juego De Cartas Matematicas Sumas",
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591143836-juego-de-cartas-matematicas-sumas-_JM",
-   "estado": "paused",
+   "estado": "active",
    "precio": 37900,
-   "stock_publicado": 20,
+   "stock_publicado": 17,
    "categoria_ml": "MCO1161",
    "seller_custom_field": "6973038368265",
    "user_product_id": "MCOU5745677894",
    "family_name": "Juego De Cartas Matematicas Sumas",
    "origen": "catalogo",
    "creado": "2026-10-29T18:00:57",
-   "actualizado": "2026-11-13T06:41:50"
+   "actualizado": "2026-11-21T07:02:31"
   },
   "6973038368272": {
    "listing_id": "MCO4591156540",
    "titulo": "Juego De Cartas Matematicas Restas",
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591156540-juego-de-cartas-matematicas-restas-_JM",
-   "estado": "paused",
+   "estado": "active",
    "precio": 37900,
-   "stock_publicado": 25,
+   "stock_publicado": 12,
    "categoria_ml": "MCO1161",
    "seller_custom_field": "6973038368272",
    "user_product_id": "MCOU5745683646",
    "family_name": "Juego De Cartas Matematicas Restas",
    "origen": "catalogo",
    "creado": "2026-10-29T18:00:59",
-   "actualizado": "2026-11-13T06:41:51"
+   "actualizado": "2026-11-21T07:02:32"
   },
   "6973038368296": {
    "listing_id": "MCO4591156542",
    "titulo": "Juego De Cartas Matematicas Divisiones",
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591156542-juego-de-cartas-matematicas-divisiones-_JM",
-   "estado": "paused",
+   "estado": "active",
    "precio": 37900,
    "stock_publicado": 17,
    "categoria_ml": "MCO1161",
@@ -7963,7 +7963,7 @@
    "family_name": "Juego De Cartas Matematicas Divisiones",
    "origen": "catalogo",
    "creado": "2026-10-29T18:01:02",
-   "actualizado": "2026-11-13T06:41:52"
+   "actualizado": "2026-11-21T07:02:33"
   },
   "6974131950425": {
    "listing_id": "MCO4591144014",
@@ -8211,14 +8211,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591131680-torre-columna-laberinto-_JM",
    "estado": "active",
    "precio": 59100,
-   "stock_publicado": 71,
+   "stock_publicado": 70,
    "categoria_ml": "MCO433049",
    "seller_custom_field": "7020241100607",
    "user_product_id": "MCOU5745701968",
    "family_name": "Torre Columna Laberinto",
    "origen": "catalogo",
    "creado": "2026-10-29T18:03:43",
-   "actualizado": "2026-10-29T18:06:07"
+   "actualizado": "2026-11-21T07:02:33"
   },
   "7020241100638": {
    "listing_id": "MCO4591144110",
@@ -8401,14 +8401,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591156892-table-multifunciones-con-marimba-_JM",
    "estado": "active",
    "precio": 80800,
-   "stock_publicado": 40,
+   "stock_publicado": 39,
    "categoria_ml": "MCO189402",
    "seller_custom_field": "7120251151078",
    "user_product_id": "MCOU5745695454",
    "family_name": "Table Multifunciones Con Marimba",
    "origen": "catalogo",
    "creado": "2026-10-29T18:04:13",
-   "actualizado": "2026-10-29T18:06:16"
+   "actualizado": "2026-11-21T07:02:34"
   },
   "7120251151092": {
    "listing_id": "MCO4591131732",
@@ -10972,6 +10972,20 @@
    "origen": "catalogo",
    "creado": "2026-11-14T17:59:00",
    "actualizado": "2026-11-15T06:26:11"
+  },
+  "6973038368289": {
+   "listing_id": "MCO4662050600",
+   "titulo": "Juego De Cartas Matemáticas Multiplicaciones",
+   "permalink": "http://articulo.mercadolibre.com.co/MCO-4662050600-juego-de-cartas-matematicas-multiplicaciones-_JM",
+   "estado": "paused",
+   "precio": 38800,
+   "stock_publicado": 37,
+   "categoria_ml": "MCO1161",
+   "seller_custom_field": "6973038368289",
+   "user_product_id": "MCOU5942215137",
+   "family_name": "Juego De Cartas Matemáticas Multiplicaciones",
+   "origen": "catalogo",
+   "creado": "2026-11-21T07:02:36"
   }
  },
  "categorias": {
@@ -11636,7 +11650,8 @@
   "TABLERO MAGICO PERA X 2 COLORES": "MCO1910",
   "TABLERO MAGICO CASITA 4 COLORES": "MCO1910",
   "TANGRAM MAGNETICO 7 PIEZAS DINOSAURIO": "MCO1161",
-  "BOLSA ESTUFA CON 2 OLLAS EN ALUMINIO": "MCO1910"
+  "BOLSA ESTUFA CON 2 OLLAS EN ALUMINIO": "MCO1910",
+  "JUEGO DE CARTAS MATEMATICAS MULTIPLICACIONES": "MCO1161"
  },
  "dominios_cat": {},
  "categorias_version": 2,
@@ -12302,7 +12317,8 @@
   "TABLERO MAGICO PERA X 2 COLORES": "fallback",
   "TABLERO MAGICO CASITA 4 COLORES": "fallback",
   "TANGRAM MAGNETICO 7 PIEZAS DINOSAURIO": "curada",
-  "BOLSA ESTUFA CON 2 OLLAS EN ALUMINIO": "fallback"
+  "BOLSA ESTUFA CON 2 OLLAS EN ALUMINIO": "fallback",
+  "JUEGO DE CARTAS MATEMATICAS MULTIPLICACIONES": "curada"
  },
  "categorias_info": {
   "MCO430205": {
@@ -34258,6 +34274,24 @@
    ],
    "errores": [],
    "actualizado": "2026-11-14T17:58:59"
+  },
+  "6973038368289": {
+   "http": 400,
+   "categoria": "MCO1161",
+   "causas": [
+    {
+     "department": "shipping",
+     "cause_id": 4053,
+     "type": "warning",
+     "code": "shipping.lost_me1_by_user",
+     "references": [
+      "user.shipping_preferences.modes"
+     ],
+     "message": "User has not mode me1"
+    }
+   ],
+   "errores": [],
+   "actualizado": "2026-11-21T07:02:35"
   }
  },
  "ignorados": [
