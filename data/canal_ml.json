@@ -1,7 +1,7 @@
 {
  "version": 1,
  "site": "MCO",
- "actualizado": "2026-11-21T19:16:33",
+ "actualizado": "2026-11-22T06:47:10",
  "listings": {
   "001309": {
    "listing_id": "MCO2332448697",
@@ -6471,7 +6471,7 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591118454-avion-de-impulso-luz-y-sonido-en-bolsa-mediano-_JM",
    "estado": "active",
    "precio": 55500,
-   "stock_publicado": 90,
+   "stock_publicado": 89,
    "categoria_ml": "MCO1910",
    "seller_custom_field": "6603888928738",
    "user_product_id": "MCOU5745648456",
@@ -6498,7 +6498,7 @@
      "status": 400
     }
    },
-   "actualizado": "2026-11-17T20:53:26"
+   "actualizado": "2026-11-22T06:43:45"
   },
   "6603888928745": {
    "listing_id": "MCO4591143162",
