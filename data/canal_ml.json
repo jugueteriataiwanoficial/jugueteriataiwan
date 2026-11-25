@@ -1,7 +1,7 @@
 {
  "version": 1,
  "site": "MCO",
- "actualizado": "2026-11-24T22:28:37",
+ "actualizado": "2026-11-25T08:33:11",
  "listings": {
   "001309": {
    "listing_id": "MCO2332448697",
@@ -5926,14 +5926,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591155386-mula-ninera-con-carros-2-colores-_JM",
    "estado": "active",
    "precio": 58500,
-   "stock_publicado": 56,
+   "stock_publicado": 53,
    "categoria_ml": "MCO433685",
    "seller_custom_field": "6603888923856",
    "user_product_id": "MCOU5696004475",
    "family_name": "Mula Niñera Con Carros 2 Colores",
    "origen": "catalogo",
    "creado": "2026-10-29T17:47:45",
-   "actualizado": "2026-11-23T23:52:10"
+   "actualizado": "2026-11-25T08:29:17"
   },
   "6603888923917": {
    "listing_id": "MCO4591155406",
@@ -6736,14 +6736,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591143438-carro-infantil-luz-y-sonido-3-colores-_JM",
    "estado": "active",
    "precio": 65900,
-   "stock_publicado": 17,
+   "stock_publicado": 15,
    "categoria_ml": "MCO433685",
    "seller_custom_field": "6603888929575",
    "user_product_id": "MCOU5696040665",
    "family_name": "Carro Infantil Luz Y Sonido 3 Colores",
    "origen": "catalogo",
    "creado": "2026-10-29T17:55:28",
-   "actualizado": "2026-11-23T23:52:17"
+   "actualizado": "2026-11-25T08:29:20"
   },
   "6603888929841": {
    "listing_id": "MCO4591156126",
