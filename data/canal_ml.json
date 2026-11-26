@@ -1,7 +1,7 @@
 {
  "version": 1,
  "site": "MCO",
- "actualizado": "2026-11-25T21:43:38",
+ "actualizado": "2026-11-26T08:16:53",
  "listings": {
   "001309": {
    "listing_id": "MCO2332448697",
@@ -6671,14 +6671,14 @@
    "permalink": "http://articulo.mercadolibre.com.co/MCO-4591118662-mesa-con-bloques-de-construccion-x-108-pcs-con-silla-_JM",
    "estado": "active",
    "precio": 155200,
-   "stock_publicado": 31,
+   "stock_publicado": 30,
    "categoria_ml": "MCO1161",
    "seller_custom_field": "6603888929278",
    "user_product_id": "MCOU5696040555",
    "family_name": "Mesa Con Bloques De Construccion X 108 Pcs Con Silla",
    "origen": "catalogo",
    "creado": "2026-10-29T17:55:19",
-   "actualizado": "2026-11-24T22:24:37"
+   "actualizado": "2026-11-26T08:13:08"
   },
   "6603888929407": {
    "listing_id": "MCO4591130964",
